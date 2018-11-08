@@ -62,7 +62,6 @@ router.post('/:userId/parcels', [
       res.status(404).send({
         error: 'Something went wrong',
       });
-      return;
     }
     res.json(message);
   }
@@ -74,7 +73,6 @@ router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
     res.status(404).send({
       error: 'The order is not found',
     });
-    return;
   }
   res.json(message);
 });
@@ -85,7 +83,6 @@ router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
     res.status(404).send({
       error: 'The order is not found',
     });
-    return;
   }
   res.json(message);
 });
