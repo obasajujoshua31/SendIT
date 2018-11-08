@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import request from 'supertest';
 import app from '../app';
-import testorder from './testorders.test';
+// import testorder from './testorders.test';
 
 describe('Test User Routes ', () => {
   describe('Get All Users', () => {
@@ -63,31 +63,32 @@ describe('Test User Routes ', () => {
       done();
     });
   });
-  // describe('Put Request for Cancelling Order by a user', () => {
-  //   const userId = 'userA';
-  //   const orderId = 'userA1';
-  //   const unknown = 'unknown';
-  //   it('Test for a valid order', (done) => {
-  //     request(app)
-  //       .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
-  //       .end((err, res) => {
-  //         assert.equal(res.statusCode, '200');
-  //         assert.isArray(res.body);
-  //         assert.equal(res.body.length, '3');
-  //         assert.equal(res.body[0].status, 'CANCELLED');
-  //       });
-  //     done();
-  //   });
-  //   it('Test for a non Valid Order', (done) => {
-  //     request(app)
-  //       .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
-  //       .end((err, res) => {
-  //         assert.equal(res.statusCode, '404');
-  //         assert.isDefined(res.body.error);
-  //       });
-  //     done();
-  //   });
-  // });
+});
+// describe('Put Request for Cancelling Order by a user', () => {
+//   const userId = 'userA';
+//   const orderId = 'userA1';
+//   const unknown = 'unknown';
+//   it('Test for a valid order', (done) => {
+//     request(app)
+//       .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
+//       .end((err, res) => {
+//         assert.equal(res.statusCode, '200');
+//         assert.isArray(res.body);
+//         assert.equal(res.body.length, '3');
+//         assert.equal(res.body[0].status, 'CANCELLED');
+//       });
+//     done();
+//   });
+//   it('Test for a non Valid Order', (done) => {
+//     request(app)
+//       .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
+//       .end((err, res) => {
+//         assert.equal(res.statusCode, '404');
+//         assert.isDefined(res.body.error);
+//       });
+//     done();
+//   });
+// });
 //   describe('Test Post Route to create new Orders', () => {
 //     const userId = 'userA';
 //     it('Should Post for a valid user', (done) => {
@@ -134,4 +135,3 @@ describe('Test User Routes ', () => {
 //       done();
 //     });
 //   });
-// })
