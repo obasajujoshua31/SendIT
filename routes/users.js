@@ -5,7 +5,7 @@ import {
   getOrderById,
   // cancelOrderByUser,
   addNewOrderByUser,
-  // removeOrderByUser,
+  removeOrderByUser,
   getAllOrders,
 } from '../data/methods';
 
@@ -67,17 +67,17 @@ router.post('/:userId/parcels', [
     res.json(message);
   }
 });
-// router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
-//   const { userId, orderId } = req.params;
-//   const message = removeOrderByUser(userId, orderId);
-//   if (!message) {
-//     res.status(404).send({
-//       error: 'The order is not found',
-//     });
-//     return;
-//   }
-//   res.json(message);
-// });
+router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
+  const { userId, orderId } = req.params;
+  const message = removeOrderByUser(userId, orderId);
+  if (!message) {
+    res.status(404).send({
+      error: 'The order is not found',
+    });
+    return;
+  }
+  res.json(message);
+});
 // router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
 //   const { userId, orderId } = req.params;
 //   const message = cancelOrderByUser(userId, orderId);
