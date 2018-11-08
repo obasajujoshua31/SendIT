@@ -7,7 +7,6 @@ import {
   addNewOrderByUser,
   removeOrderByUser,
   getAllOrders,
-  cancelOrderByAdminById,
 } from '../data/methods';
 
 const router = express.Router();

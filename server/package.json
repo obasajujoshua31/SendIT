@@ -7,7 +7,7 @@
     "test": "rimraf .nyc_output/ && rimraf .coverage/ && nyc mocha --require babel-register ",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./coverage,./node_modules,./Procfile,./README.md,./.babelrc,./test,./package.json,./npm-debug.log --copy-files",
     "start": "npm run build && node dist/app.js",
-    "coverage": "nyc report --reporter=html"
+    "coverage": "nyc report --reporter=text-lcov|coveralls"
   },
   "engines": {
     "node": "10.x"
