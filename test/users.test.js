@@ -79,17 +79,6 @@ describe('Put Request for Cancelling Order by a user', () => {
     done();
   });
 });
-it('Test for a non Valid Order', (done) => {
-  const userId = 'userA';
-  const unknown = 'unknown';
-  request(app)
-    .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
-    .end((err, res) => {
-      assert.equal(res.statusCode, '404');
-      assert.isDefined(res.body.error);
-    });
-  done();
-});
 describe('Test Post Route to create new Orders', () => {
   const userId = 'userA';
   it('Should Post for a valid user', (done) => {
