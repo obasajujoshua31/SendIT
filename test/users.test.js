@@ -16,7 +16,6 @@ describe('Test User Routes ', () => {
       done();
     });
   });
-
   describe('# Get Users/Parcels', () => {
     it('# GET Users/Parcel Valid Test', (done) => {
       request(app)
@@ -64,11 +63,9 @@ describe('Test User Routes ', () => {
     });
   });
 });
-// /////////// My checking cuprip///////
 describe('Put Request for Cancelling Order by a user', () => {
   const userId = 'userA';
   const orderId = 'userA1';
-  // const unknown = 'unknown';
   it('Test for a valid order', (done) => {
     request(app)
       .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
