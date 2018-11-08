@@ -117,7 +117,7 @@ describe('Test User Routes ', () => {
       const orderId = 'userA1';
       const userId = 'userA';
       request(app)
-        .delete(`api/v1/${userId}/parcels/${orderId}/remove`)
+        .delete(`api/v1/users/${userId}/parcels/${orderId}/remove`)
         .end((err, res) => {
           assert.equal(res.body.length, '2');
           assert.isArray(res.body);
@@ -127,7 +127,7 @@ describe('Test User Routes ', () => {
     });
     it('Should return invalid for an invalid order', (done) => {
       request(app)
-        .delete('api/v1/userA/parcels/unknown/remove')
+        .delete('api/v1/users/userA/parcels/unknown/remove')
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.isDefined(res.body.error);
