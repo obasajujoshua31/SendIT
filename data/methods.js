@@ -57,7 +57,10 @@ const addNewOrderByUser = (userId, order) => {
 const cancelOrderByUser = (userId, orderId) => {
   const allOrders = getOrderByUserId(userId);
   const allOrdersById = getOrderById(orderId);
-  if ((!allOrdersById) || (!allOrders)) {
+  if (!allOrders) {
+    return null;
+  }
+  if (!allOrdersById) {
     return null;
   }
   for (const order of allOrders) {
