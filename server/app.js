@@ -13,6 +13,4 @@ app.use('/v1/admin', admin);
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT} `);
 });
-
-
 export default app;
