@@ -113,11 +113,10 @@ describe('Test User Routes ', () => {
 
   describe('Request to remove order', () => {
     it('Should return array length of 2 succesfully', (done) => {
-      const orderId = 'userA1';
-      const userId = 'userA';
       request(app)
-        .delete(`api/v1/users/${userId}/parcels/${orderId}/remove`)
+        .delete('api/v1/users/userA/parcels/userA1/remove')
         .end((err, res) => {
+          assert.equal(res.statusCode, '200');
           assert.equal(res.body.length, '2');
           assert.isArray(res.body);
           assert.isDefined(res.body);
