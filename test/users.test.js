@@ -66,6 +66,7 @@ describe('Test User Routes ', () => {
   describe('Put Request for Cancelling Order by a user', () => {
     const userId = 'userA';
     const orderId = 'userA1';
+    const unknown = 'unknown';
     it('Test for a valid order', (done) => {
       request(app)
         .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
@@ -79,7 +80,7 @@ describe('Test User Routes ', () => {
     });
     it('Test for a non Valid Order', (done) => {
       request(app)
-        .put(`/api/v1/users/${userId}/parcels/unknown/cancel`)
+        .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.isDefined(res.body.error);
