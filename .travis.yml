@@ -10,9 +10,9 @@ after_success:
 env:
   global:
     - CC_TEST_REPORTER_ID=5b871f77cba7f281ded56f81fdd33ea83c0769a1173b81789da3c2e079f1af2a
-language: ruby
-rvm:
-  - 2.2.0
+language: node_js
+node_js:
+  - "stable"
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
