@@ -114,7 +114,7 @@ describe('Test User Routes ', () => {
   describe('Request to remove order', () => {
     it('Should return array length of 2 succesfully', (done) => {
       request(app)
-        .delete('api/v1/users/userA/parcels/userA1/remove')
+        .delete('/api/v1/users/userA/parcels/userA1/remove')
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.equal(res.body.length, '2');
@@ -125,7 +125,7 @@ describe('Test User Routes ', () => {
     });
     it('Should return invalid for an invalid order', (done) => {
       request(app)
-        .delete('api/v1/users/userA/parcels/unknown/remove')
+        .delete('/api/v1/users/userA/parcels/unknown/remove')
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.isDefined(res.body.error);
