@@ -88,10 +88,11 @@ describe('Test User Routes ', () => {
     });
   });
   describe('Test Post Route to create new Orders', () => {
+    const userId = 'userA';
     it('Should Post for a valid user', (done) => {
-      const userId = 'userA';
       request(app)
-        .post(`/api/v1/users/${userId}/parcels/?pickUpLocation=${testorder.testOrder.pickUpLocation}&destination=${testorder.testOrder.destination}`)
+        .post(`/api/v1/users/${userId}/parcels`)
+        .send(testorder.testOrder)
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isArray(res.body);
@@ -101,9 +102,8 @@ describe('Test User Routes ', () => {
       done();
     });
     it('Should return an error for error in Posting', (done) => {
-      const userId = 'userA';
       request(app)
-        .post(`/api/v1/users/${userId}/parcels/?pickupLocation=&destination=`)
+        .post('/api/v1/users/userA/parcels/')
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           assert.isDefined(res.body.error);
