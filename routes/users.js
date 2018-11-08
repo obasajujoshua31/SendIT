@@ -72,6 +72,7 @@ router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
     res.status(404).send({
       error: 'The order is not found',
     });
+    return;
   }
   res.json(message);
 });
