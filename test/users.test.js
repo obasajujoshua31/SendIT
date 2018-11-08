@@ -91,17 +91,7 @@ describe('Test Post Route to create new Orders', () => {
       });
     done();
   });
-  it('Should return an error for error in Posting', (done) => {
-    request(app)
-      .post('/api/v1/users/userA/parcels/')
-      .end((err, res) => {
-        assert.equal(res.statusCode, '400');
-        assert.isDefined(res.body.error);
-      });
-    done();
-  });
 });
-
 describe('Request to remove order', () => {
   const userId = 'userA';
   const orderId = 'userA1';
