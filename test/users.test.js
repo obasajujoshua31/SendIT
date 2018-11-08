@@ -91,7 +91,7 @@ describe('Test User Routes ', () => {
     const userId = 'userA';
     it('Should Post for a valid user', (done) => {
       request(app)
-        .post(`/api/v1/users/${userId}/parcels?pickUpLocation=${testorder.testOrder.pickUpLocation}&destination=${testorder.testOrder.destination}`)
+        .post(`/api/v1/users/${userId}/parcels/?pickUpLocation=${testorder.testOrder.pickUpLocation}&destination=${testorder.testOrder.destination}`)
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isArray(res.body);
