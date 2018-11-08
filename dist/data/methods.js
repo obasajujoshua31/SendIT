@@ -101,7 +101,10 @@ var addNewOrderByUser = function addNewOrderByUser(userId, order) {
 var cancelOrderByUser = function cancelOrderByUser(userId, orderId) {
   var allOrders = getOrderByUserId(userId);
   var allOrdersById = getOrderById(orderId);
-  if (!allOrdersById || !allOrders) {
+  if (!allOrders) {
+    return null;
+  }
+  if (!allOrdersById) {
     return null;
   }
   var _iteratorNormalCompletion2 = true;
@@ -155,7 +158,11 @@ var getAllUsers = function getAllUsers() {
 
 var removeOrderByUser = function removeOrderByUser(userId, orderId) {
   var allOrders = getOrderByUserId(userId);
+  var allOrdersById = getOrderById(orderId);
   if (!allOrders) {
+    return null;
+  }
+  if (!allOrdersById) {
     return null;
   }
   return allOrders.filter(function (order) {

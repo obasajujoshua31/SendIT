@@ -55,6 +55,7 @@ router.put('/parcels/:userId/:orderId/location', [
     res.status(400).send({
       error: errors.array(),
     });
+    return;
   }
   const { orderId } = req.params;
   const { presentLocation } = req.body;
@@ -63,6 +64,7 @@ router.put('/parcels/:userId/:orderId/location', [
     res.status(404).send({
       error: 'The order is not found',
     });
+    return;
   }
   res.status(200).json(message);
 });

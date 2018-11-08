@@ -44,6 +44,7 @@ router.get('/:userId/parcels/:orderId', function (req, res) {
     res.status(404).send({
       error: 'the Order is not found'
     });
+    return;
   }
   res.json(message);
 });
@@ -66,6 +67,7 @@ router.post('/:userId/parcels', [(0, _check.check)('pickUpLocation').isLength({ 
       res.status(404).send({
         error: 'Something went wrong'
       });
+      return;
     }
     res.json(message);
   }
@@ -76,10 +78,11 @@ router.delete('/:userId/parcels/:orderId/remove', function (req, res) {
       orderId = _req$params.orderId;
 
   var message = (0, _methods.removeOrderByUser)(userId, orderId);
-  if (message === null) {
+  if (!message) {
     res.status(404).send({
       error: 'The order is not found'
     });
+    return;
   }
   res.json(message);
 });
@@ -89,7 +92,7 @@ router.put('/:userId/parcels/:orderId/cancel', function (req, res) {
       orderId = _req$params2.orderId;
 
   var message = (0, _methods.cancelOrderByUser)(userId, orderId);
-  if (message === null) {
+  if (!message) {
     res.status(404).send({
       error: 'The order is not found'
     });

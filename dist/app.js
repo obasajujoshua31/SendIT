@@ -29,5 +29,4 @@ app.use('/v1/admin', _admin2.default);
 app.listen(PORT, function () {
   console.log('Server started at port ' + PORT + ' ');
 });
-
 exports.default = app;
