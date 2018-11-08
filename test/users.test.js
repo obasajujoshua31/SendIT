@@ -119,7 +119,7 @@ describe('Test User Routes ', () => {
       request(app)
         .delete(`api/v1/${userId}/parcels/${orderId}/remove`)
         .end((err, res) => {
-          console.log('res.statuscode', res.statusCode);
+          console.log('res.statuscode', res.status);
           assert.equal(res.body, '2');
           assert.isArray(res.body);
           assert.isDefined(res.body);
