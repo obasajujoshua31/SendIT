@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import request from 'supertest';
 import app from '../app';
-// import testorder from './testorders.test';
+import testorder from './testorders.test';
 
 describe('Test User Routes ', () => {
   describe('Get All Users', () => {
@@ -89,29 +89,29 @@ describe('Test User Routes ', () => {
 //     done();
 //   });
 // });
-//   describe('Test Post Route to create new Orders', () => {
-//     const userId = 'userA';
-//     it('Should Post for a valid user', (done) => {
-//       request(app)
-//         .post(`/api/v1/users/${userId}/parcels/?pickUpLocation=${testorder.testOrder.pickUpLocation}&destination=${testorder.testOrder.destination}`)
-//         .end((err, res) => {
-//           assert.equal(res.statusCode, '200');
-//           assert.isArray(res.body);
-//           assert.equal(res.body.length, '4');
-//           assert.isDefined(res.body);
-//         });
-//       done();
-//     });
-//     it('Should return an error for error in Posting', (done) => {
-//       request(app)
-//         .post('/api/v1/users/userA/parcels/')
-//         .end((err, res) => {
-//           assert.equal(res.statusCode, '400');
-//           assert.isDefined(res.body.error);
-//         });
-//       done();
-//     });
-//   });
+describe('Test Post Route to create new Orders', () => {
+  const userId = 'userA';
+  it('Should Post for a valid user', (done) => {
+    request(app)
+      .post(`/api/v1/users/${userId}/parcels/?pickUpLocation=${testorder.testOrder.pickUpLocation}&destination=${testorder.testOrder.destination}`)
+      .end((err, res) => {
+        assert.equal(res.statusCode, '200');
+        assert.isArray(res.body);
+        assert.equal(res.body.length, '4');
+        assert.isDefined(res.body);
+      });
+    done();
+  });
+  it('Should return an error for error in Posting', (done) => {
+    request(app)
+      .post('/api/v1/users/userA/parcels/')
+      .end((err, res) => {
+        assert.equal(res.statusCode, '400');
+        assert.isDefined(res.body.error);
+      });
+    done();
+  });
+});
 
 describe('Request to remove order', () => {
   const userId = 'userA';
