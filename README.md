@@ -1,6 +1,6 @@
 
 Travis Continous Integration
-
+[![Build Status](https://travis-ci.org/obasajujoshua31/SendIT.svg?branch=develop)](https://travis-ci.org/obasajujoshua31/SendIT)
 
 CodeClimate
 Maintainability
@@ -11,3 +11,4 @@ Test Coverage
 
 
 Coveralls Coverage
+[![Coverage Status](https://coveralls.io/repos/github/obasajujoshua31/SendIT/badge.svg?branch=develop)](https://coveralls.io/github/obasajujoshua31/SendIT?branch=develop)
