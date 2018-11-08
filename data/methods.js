@@ -92,7 +92,11 @@ const getAllUsers = () => {
 
 const removeOrderByUser = (userId, orderId) => {
   const allOrders = getOrderByUserId(userId);
+  const allOrdersById = getOrderById(orderId);
   if (!allOrders) {
+    return null;
+  }
+  if (!allOrdersById) {
     return null;
   }
   return allOrders.filter(order => order.id !== orderId);
