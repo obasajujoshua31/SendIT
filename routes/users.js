@@ -89,5 +89,4 @@ router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
   }
   res.json(message);
 });
-
 export default router;
