@@ -78,6 +78,31 @@ describe('Put Request for Cancelling Order by a user', () => {
     done();
   });
 });
+describe('Put Request for Cancelling Order by a user', () => {
+  const userId = 'userA';
+  const orderId = 'userA1';
+  it('Test for a valid order', (done) => {
+    request(app)
+      .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
+      .end((err, res) => {
+        assert.equal(res.statusCode, '200');
+        assert.isArray(res.body);
+        assert.equal(res.body.length, '3');
+        assert.equal(res.body[0].status, 'CANCELLED');
+      });
+    done();
+  });
+});
+//   it('Test for a non Valid Order', (done) => {
+//     request(app)
+//       .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
+//       .end((err, res) => {
+//         assert.equal(res.statusCode, '404');
+//         assert.isDefined(res.body.error);
+//       });
+//     done();
+//   });
+// });
 describe('Test Post Route to create new Orders', () => {
   const userId = 'userA';
   it('Should Post for a valid user', (done) => {

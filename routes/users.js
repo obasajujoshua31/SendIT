@@ -3,7 +3,7 @@ import { check, validationResult } from 'express-validator/check';
 import {
   getOrderByUserId,
   getOrderById,
-  cancelOrderByUser,
+  // cancelOrderByUser,
   addNewOrderByUser,
   removeOrderByUser,
   getAllOrders,
@@ -78,16 +78,16 @@ router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
   }
   res.json(message);
 });
-router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
-  const { userId, orderId } = req.params;
-  const message = cancelOrderByUser(userId, orderId);
-  if (!message) {
-    res.status(404).send({
-      error: 'The order is not found',
-    });
-    return;
-  }
-  res.json(message);
-});
+// router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
+//   const { userId, orderId } = req.params;
+//   const message = cancelOrderByUser(userId, orderId);
+//   if (!message) {
+//     res.status(404).send({
+//       error: 'The order is not found',
+//     });
+//     return;
+//   }
+//   res.json(message);
+// });
 
 export default router;
