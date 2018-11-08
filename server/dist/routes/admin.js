@@ -74,10 +74,11 @@ router.put('/parcels/:userId/:orderId/location', [(0, _check.check)('presentLoca
 router.put('/parcels/:userId/:orderId/cancel', function (req, res) {
   var message = (0, _methods.cancelOrderByAdminById)(req.params.orderId);
   if (message === null) {
-    res.status(400).send({
-      error: 'The order is not found'
+    res.status(404).send({
+      error: 'The Order is not found'
     });
+    return;
   }
-  res.status(200).json(message);
+  res.json(message);
 });
 exports.default = router;

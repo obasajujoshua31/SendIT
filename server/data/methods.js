@@ -7,7 +7,9 @@ const getAllOrders = () => {
   const allOrders = [];
   for (const key in orders) {
     if ({}.hasOwnProperty.call(orders, key)) {
-      allOrders.push(orders[key]);
+      for (const order of [...orders[key]]) {
+        allOrders.push(order);
+      }
     }
   }
   return allOrders;
@@ -39,6 +41,9 @@ const getOrderById = (orderId) => {
 const addNewOrderByUser = (userId, order) => {
   const { pickUpLocation, destination } = order;
   const allOrders = getOrderByUserId(userId);
+  if (!allOrders) {
+    return null;
+  }
   const index = allOrders.length + 1;
   const newOrder = {
     id: userId + index,
@@ -51,7 +56,8 @@ const addNewOrderByUser = (userId, order) => {
 };
 const cancelOrderByUser = (userId, orderId) => {
   const allOrders = getOrderByUserId(userId);
-  if (!allOrders) {
+  const allOrdersById = getOrderById(orderId);
+  if ((!allOrdersById) || (!allOrders)) {
     return null;
   }
   for (const order of allOrders) {
@@ -93,7 +99,7 @@ const changePresentLocationByAdminById = (orderId, presentLocation) => {
   if (!allOrders) {
     return null;
   }
-  allOrders.location = presentLocation;
+  allOrders.presentLocation = presentLocation;
   return allOrders;
 };
 export {

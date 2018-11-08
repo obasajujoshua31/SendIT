@@ -25,7 +25,12 @@ var getAllOrders = function getAllOrders() {
   var allOrders = [];
   for (var key in _orders2.default) {
     if ({}.hasOwnProperty.call(_orders2.default, key)) {
-      allOrders.push(_orders2.default[key]);
+      var _arr = [].concat(_toConsumableArray(_orders2.default[key]));
+
+      for (var _i = 0; _i < _arr.length; _i++) {
+        var order = _arr[_i];
+        allOrders.push(order);
+      }
     }
   }
   return allOrders;
@@ -80,6 +85,9 @@ var addNewOrderByUser = function addNewOrderByUser(userId, order) {
       destination = order.destination;
 
   var allOrders = getOrderByUserId(userId);
+  if (!allOrders) {
+    return null;
+  }
   var index = allOrders.length + 1;
   var newOrder = {
     id: userId + index,
@@ -92,7 +100,8 @@ var addNewOrderByUser = function addNewOrderByUser(userId, order) {
 };
 var cancelOrderByUser = function cancelOrderByUser(userId, orderId) {
   var allOrders = getOrderByUserId(userId);
-  if (!allOrders) {
+  var allOrdersById = getOrderById(orderId);
+  if (!allOrdersById || !allOrders) {
     return null;
   }
   var _iteratorNormalCompletion2 = true;
@@ -158,7 +167,7 @@ var changePresentLocationByAdminById = function changePresentLocationByAdminById
   if (!allOrders) {
     return null;
   }
-  allOrders.location = presentLocation;
+  allOrders.presentLocation = presentLocation;
   return allOrders;
 };
 exports.getAllOrdersByAdmin = getAllOrdersByAdmin;

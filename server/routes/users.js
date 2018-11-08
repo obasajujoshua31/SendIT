@@ -7,6 +7,7 @@ import {
   addNewOrderByUser,
   removeOrderByUser,
   getAllOrders,
+  cancelOrderByAdminById,
 } from '../data/methods';
 
 const router = express.Router();
@@ -26,7 +27,7 @@ router.get('/:userId/parcels', (req, res) => {
       error: 'The user has no orders',
     });
   }
-  res.status(200).json(message);
+  res.json(message);
 });
 router.get('/:userId', (req, res) => {
   const { userId } = req.params;
@@ -41,17 +42,6 @@ router.get('/:userId/parcels/:orderId', (req, res) => {
   }
   res.json(message);
 });
-router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
-  const { userId, orderId } = req.params;
-  const message = cancelOrderByUser(userId, orderId);
-  if (message === null) {
-    res.status(404).send({
-      error: 'The order is not found',
-    });
-  }
-  res.json(message);
-});
-
 router.post('/:userId/parcels', [
   check('pickUpLocation').isLength({ min: 1 }).withMessage('Pick up location cannot be empty'),
   check('destination').isLength({ min: 1 }).withMessage('Destination field cannot be empty'),
@@ -62,18 +52,19 @@ router.post('/:userId/parcels', [
     res.status(400).send({
       error: errors.array(),
     });
+  } else {
+    const { pickUpLocation, destination } = req.body;
+    const order = {
+      pickUpLocation, destination,
+    };
+    const message = addNewOrderByUser(req.params.userId, order);
+    if (!message) {
+      res.status(404).send({
+        error: 'Something went wrong',
+      });
+    }
+    res.json(message);
   }
-  const { pickUpLocation, destination } = req.body;
-  const order = {
-    pickUpLocation, destination,
-  };
-  const message = addNewOrderByUser(req.params.userId, order);
-  if (!message) {
-    res.status(404).send({
-      error: 'Something went wrong',
-    });
-  }
-  res.status(200).json(message);
 });
 router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
   const { userId, orderId } = req.params;
@@ -83,6 +74,17 @@ router.delete('/:userId/parcels/:orderId/remove', (req, res) => {
       error: 'The order is not found',
     });
   }
-  res.status(200).json(message);
+  res.json(message);
+});
+router.put('/:userId/parcels/:orderId/cancel', (req, res) => {
+  const { userId, orderId } = req.params;
+  const message = cancelOrderByUser(userId, orderId);
+  if (message === null) {
+    res.status(404).send({
+      error: 'The order is not found',
+    });
+    return;
+  }
+  res.json(message);
 });
 export default router;
