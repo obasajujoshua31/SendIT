@@ -64,21 +64,24 @@ describe('Test User Routes ', () => {
     });
   });
 });
-// describe('Put Request for Cancelling Order by a user', () => {
-//   const userId = 'userA';
-//   const orderId = 'userA1';
-//   const unknown = 'unknown';
-//   it('Test for a valid order', (done) => {
-//     request(app)
-//       .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
-//       .end((err, res) => {
-//         assert.equal(res.statusCode, '200');
-//         assert.isArray(res.body);
-//         assert.equal(res.body.length, '3');
-//         assert.equal(res.body[0].status, 'CANCELLED');
-//       });
-//     done();
-//   });
+// /////////// My checking cuprip///////
+describe('Put Request for Cancelling Order by a user', () => {
+  const userId = 'userA';
+  const orderId = 'userA1';
+  // const unknown = 'unknown';
+  it('Test for a valid order', (done) => {
+    request(app)
+      .put(`/api/v1/users/${userId}/parcels/${orderId}/cancel`)
+      .end((err, res) => {
+        assert.equal(res.statusCode, '200');
+        assert.isArray(res.body);
+        assert.equal(res.body.length, '3');
+        assert.equal(res.body[0].status, 'CANCELLED');
+      });
+    done();
+  });
+});
+//     My Checking culprite /////////////////////////
 //   it('Test for a non Valid Order', (done) => {
 //     request(app)
 //       .put(`/api/v1/users/${userId}/parcels/${unknown}/cancel`)
