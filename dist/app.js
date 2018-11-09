@@ -23,9 +23,12 @@ var app = (0, _express2.default)();
 
 app.use(_express2.default.json());
 app.use(_express2.default.urlencoded({ extended: false }));
-
+app.get('/', function (req, res) {
+  res.redirect('/api/v1/users');
+});
 app.use('/api/v1/users', _users2.default);
 app.use('/v1/admin', _admin2.default);
+
 app.listen(PORT, function () {
   console.log('Server started at port ' + PORT + ' ');
 });
