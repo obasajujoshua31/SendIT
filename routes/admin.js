@@ -24,12 +24,9 @@ router.get('/parcels/:userId', (req, res) => {
     res.status(404).send({
       error: 'The User cannot be found',
     });
+    return;
   }
   res.status(200).json(message);
-});
-router.get('/:userId', (req, res) => {
-  const { userId } = req.params;
-  res.redirect(`/v1/admin/parcels/${userId}`);
 });
 router.get('/parcels/:userId/:orderId', (req, res) => {
   const { orderId } = req.params;
@@ -38,6 +35,7 @@ router.get('/parcels/:userId/:orderId', (req, res) => {
     res.status(404).send({
       error: 'The order cannot be found',
     });
+    return;
   }
   res.status(200).json(message);
 });

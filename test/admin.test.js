@@ -12,12 +12,12 @@ describe('Admin Test for Send IT application', () => {
           assert.isArray(res.body);
           assert.equal(res.body.length, 3);
           assert.isDefined(res.body);
+          done();
         });
-      done();
     });
   });
   describe('Get Admin Get all parcel', () => {
-    it('Should return all Users with their parcels', () => {
+    it('Should return all Users with their parcels', (done) => {
       request(app)
         .get('/v1/admin/parcels')
         .end((err, res) => {
@@ -27,6 +27,7 @@ describe('Admin Test for Send IT application', () => {
           assert.isTrue(Object.prototype.hasOwnProperty.call(res.body, 'userB'));
           assert.isTrue(Object.prototype.hasOwnProperty.call(res.body, 'userC'));
           assert.equal(Object.keys(res.body).length, '3');
+          done();
         });
     });
     describe('Get Orders By UserId', () => {
@@ -37,8 +38,8 @@ describe('Admin Test for Send IT application', () => {
             assert.equal(res.statusCode, '200');
             assert.isArray(res.body);
             assert.equal(res.body.length, '3');
+            done();
           });
-        done();
       });
       it('Should return an array of length 2 for userB', (done) => {
         request(app)
@@ -47,8 +48,8 @@ describe('Admin Test for Send IT application', () => {
             assert.equal(res.statusCode, '200');
             assert.isArray(res.body);
             assert.equal(res.body.length, '2');
+            done();
           });
-        done();
       });
       it('Should return an array of length 2 for userC', (done) => {
         request(app)
@@ -57,8 +58,8 @@ describe('Admin Test for Send IT application', () => {
             assert.equal(res.statusCode, '200');
             assert.isArray(res.body);
             assert.equal(res.body.length, '2');
+            done();
           });
-        done();
       });
     });
     describe('Cancel Order by Admin ', () => {
@@ -75,8 +76,8 @@ describe('Admin Test for Send IT application', () => {
             assert.isTrue(Object.prototype.hasOwnProperty.call(res.body, 'orderDate'));
             assert.equal(Object.keys(res.body).length, '5');
             assert.equal(res.body.status, 'CANCELLED');
+            done();
           });
-        done();
       });
     });
     describe('TEst for invalid Order', () => {
@@ -86,16 +87,16 @@ describe('Admin Test for Send IT application', () => {
           .end((err, res) => {
             assert.equal(res.statusCode, '404');
             assert.isDefined(res.body.error);
+            done();
           });
-        done();
       });
     });
 
     describe('Admin changing the present Location of an order', () => {
+      const location = {
+        presentLocation: 'badagry',
+      };
       it('Should return a new Object with a new key present Location', (done) => {
-        const location = {
-          presentLocation: 'badagry',
-        };
         request(app)
           .put('/v1/admin/parcels/userA/userA1/location')
           .send(location)
@@ -105,8 +106,27 @@ describe('Admin Test for Send IT application', () => {
             assert.isTrue(Object.prototype.hasOwnProperty.call(res.body, 'presentLocation'));
             assert.equal(Object.keys(res.body).length, '6');
             assert.equal(res.body.presentLocation, 'badagry');
+            done();
           });
-        done();
+      });
+      it('Should return an error for an empty location field', (done) => {
+        request(app)
+          .put('/v1/admin/parcels/userA/userA1/location')
+          .end((err, res) => {
+            assert.equal(res.statusCode, '400');
+            assert.isDefined(res.body.error);
+            done();
+          });
+      });
+      it('Should return an error for an invalid order Id', (done) => {
+        request(app)
+          .put('/v1/admin/parcels/userA/unknown/location')
+          .send(location)
+          .end((err, res) => {
+            assert.equal(res.statusCode, '404');
+            assert.isDefined(res.body.error);
+            done();
+          });
       });
     });
   });

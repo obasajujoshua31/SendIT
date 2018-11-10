@@ -30,7 +30,23 @@ const userA1 = {
   status: status.ONTRANSIT,
   orderDate: new Date().toLocaleString(),
 };
-export default {
+const userB2 = {
+  id: 'userB2',
+  pickUpLocation: '104A Doherty lane, Lekki, Lagos',
+  destination: 'B324A Banana Island Ikoyi, Lagos',
+  status: status.ONTRANSIT,
+  orderDate: new Date().toLocaleString(),
+};
+const userC1 = {
+  id: 'userC1',
+  pickUpLocation: '102 Lagos Hostel, University of Ilorin, Ilorin',
+  destination: '23 Airport Road, Jabu Abuja',
+  status: status.CANCELLED,
+  orderDate: new Date().toLocaleString(),
+};
+export {
   userA,
   userA1,
+  userB2,
+  userC1,
 };

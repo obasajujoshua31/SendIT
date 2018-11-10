@@ -4,10 +4,11 @@
   "description": "A Parcel delivery application",
   "main": "app.js",
   "scripts": {
-    "test": "rimraf .nyc_output/ && rimraf .coverage/ && nyc mocha --require babel-register ",
+    "test": "rimraf .nyc_output/ && rimraf .coverage/ && nyc mocha --require babel-register",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./coverage,./node_modules,./Procfile,./README.md,./.babelrc,./test,./package.json,./npm-debug.log --copy-files",
     "start": "npm run build && node dist/app.js",
-    "coverage": "nyc report --reporter=text-lcov|coveralls"
+    "coverage": "nyc report --reporter=text-lcov|coveralls",
+    "show": "nyc report"
   },
   "engines": {
     "node": "10.x"
@@ -34,6 +35,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "eslint": "^5.8.0",
@@ -42,7 +44,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-mocha": "^5.2.0",
     "eslint-plugin-react": "^7.11.1",
-    "mocha": "^5.2.0",
+    "mocha": "^3.5.3",
     "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
     "supertest": "^3.3.0"
