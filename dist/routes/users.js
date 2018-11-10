@@ -21,6 +21,7 @@ router.get('/', function (req, res) {
     res.status(404).send({
       error: 'There are no orders'
     });
+    return;
   }
   res.json(message);
 });
@@ -30,13 +31,9 @@ router.get('/:userId/parcels', function (req, res) {
     res.status(404).send({
       error: 'The user has no orders'
     });
+    return;
   }
   res.json(message);
-});
-router.get('/:userId', function (req, res) {
-  var userId = req.params.userId;
-
-  res.redirect('/api/v1/users/' + userId + '/parcels');
 });
 router.get('/:userId/parcels/:orderId', function (req, res) {
   var message = (0, _methods.getOrderById)(req.params.orderId);
