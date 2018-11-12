@@ -61,6 +61,15 @@ describe('Admin Test for Send IT application', () => {
             done();
           });
       });
+      it('Should  return error 404 for an unknown user', (done) => {
+        request(app)
+          .get('/v1/admin/parcels/unknown')
+          .end((err, res) => {
+            assert.equal(res.statusCode, '404');
+            assert.isDefined(res.body.error);
+            done();
+          });
+      });
     });
     describe('Cancel Order by Admin ', () => {
       it('Should return an object with the status cancelled', (done) => {
@@ -79,11 +88,9 @@ describe('Admin Test for Send IT application', () => {
             done();
           });
       });
-    });
-    describe('TEst for invalid Order', () => {
-      it('Should return error message for a wrong order', (done) => {
+      it('Should return an eror 404 for an invalid order', (done) => {
         request(app)
-          .put('/v1/admin/parcels/userA/userA6/cancel')
+          .put('/v1/admin/parcels/userA/unknown/cancel')
           .end((err, res) => {
             assert.equal(res.statusCode, '404');
             assert.isDefined(res.body.error);
@@ -91,7 +98,6 @@ describe('Admin Test for Send IT application', () => {
           });
       });
     });
-
     describe('Admin changing the present Location of an order', () => {
       const location = {
         presentLocation: 'badagry',
