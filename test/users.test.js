@@ -95,6 +95,15 @@ describe('Test User Routes ', () => {
           done();
         });
     });
+    it('Should return error for an invalid order', (done) => {
+      request(app)
+        .put('/api/v1/users/userA/parcels/unknown/cancel')
+        .end((err, res) => {
+          assert.equal(res.statusCode, '404');
+          assert.isDefined(res.body.error);
+          done();
+        });
+    });
   });
   describe('Test Post Route to create new Orders', () => {
     const userId = 'userA';
@@ -106,6 +115,15 @@ describe('Test User Routes ', () => {
           assert.isArray(res.body);
           assert.equal(res.body.length, '4');
           assert.isDefined(res.body);
+          done();
+        });
+    });
+    it('Should return error 400 for an empty field', (done) => {
+      request(app)
+        .post('/api/v1/users/userA/parcels')
+        .end((err, res) => {
+          assert.equal(res.statusCode, '400');
+          assert.isDefined(res.body.error);
           done();
         });
     });
