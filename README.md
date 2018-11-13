@@ -1,40 +1,50 @@
 
 
-[![Build Status](https://travis-ci.org/obasajujoshua31/SendIT.svg?branch=master)](https://travis-ci.org/obasajujoshua31/SendIT)
-
-Maintainability
-[![Maintainability](https://api.codeclimate.com/v1/badges/014ab05de2a59ad994f9/maintainability)](https://codeclimate.com/github/obasajujoshua31/SendIT/maintainability)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/014ab05de2a59ad994f9/test_coverage)](https://codeclimate.com/github/obasajujoshua31/SendIT/test_coverage)
+[![Build Status](https://travis-ci.org/obasajujoshua31/SendIT.svg?branch=master)](https://travis-ci.org/obasajujoshua31/SendIT) [![Maintainability](https://api.codeclimate.com/v1/badges/014ab05de2a59ad994f9/maintainability)](https://codeclimate.com/github/obasajujoshua31/SendIT/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/014ab05de2a59ad994f9/test_coverage)](https://codeclimate.com/github/obasajujoshua31/SendIT/test_coverage) [![Coverage Status](https://coveralls.io/repos/github/obasajujoshua31/SendIT/badge.svg?branch=master)](https://coveralls.io/github/obasajujoshua31/SendIT?branch=master)
 
 
-[![Coverage Status](https://coveralls.io/repos/github/obasajujoshua31/SendIT/badge.svg?branch=master)](https://coveralls.io/github/obasajujoshua31/SendIT?branch=master)
-
+## Project Title
 This is a send IT Repository for a SendIT Courier Project
-It has three branches 
-    - master
-    - develop
-    - gh-pages
+# Getting started
+These instructions will get you a copy of the project up and running on your machine for development and testing purposes. 
+see deployment for notes on how to deploy the project on a live system.
 
-    The develop branch implements the server side of the Project while the GH Pages implements the front-end part of the project.
+## Prerequisites
+What things you need to install the software and how to install them
 
-    npm install - to install all dependencies
+1. A stable Node Software
+2. A preferred Text editor of your choice
 
-    npm run test - to check the test and nyc report also.
-    npm run coverage - to send coverall reports to coveralls.io
-    npm run build - To build the project with babel
-    npm start - to start the development server on port 5200. 
-    npm start will build the project and will also start the server on port 5200.
+## Installing 
+Carry out this on command line
+1. npm clone https://github.com/obasajujoshua31/SendIT
+2. cd SendIT
+3. npm install
+4. open the project with your preferrred Code Editor
 
-    
-    - users route through /api/v1/users
+## Running the test
+1. npm run test - to run test
+2. npm run coverage - to generate test coverage report
 
-    The users route implements the major activities the user can carry out in the website.
-    GET /api/v1 - to get home page - it will return all the parcel orders.
-    GET /api/v1/users/:userId/parcels - it will deliver all the parcels by the User by his ID
-    GET /api/v1/parcels/:parceId - it wil return a specific order by ID from the params.
-    POST /api/v1/parcels/ - Users can create Post 
-    PUT /api/v1/parcels/:parcelId/cancel - Users can change the status of their order, they can cancel, it will update the status of their orders to cancel.
-    
+Npm run test
+1. Test the routes from api.test.js
+2. test the controllers from controllers.test.js
+
+## Running the code on your local machine
+1. npm start 
+it will build the project into dist and Node dist/app.js will create a server and it will listen at port 5200
+
+## BUIlt With
+1. Express - The node Framework used
+2. Mocha - the framework used to generate test
+
+## Authors 
+Obasaju Joshua
+
+## Acknowledgement 
+Samson - my LFA at Andela Bootcamp cycle 38
+Abdul - my friend providing help
+Team mates at andela-samson slack channer
+
 
    
