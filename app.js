@@ -1,6 +1,5 @@
 import express from 'express';
-import admin from './routes/admin';
-import users from './routes/users';
+import api from './routes/api';
 
 const PORT = process.env.PORT || 5200;
 const app = express();
@@ -8,10 +7,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.get('/', (req, res) => {
-  res.redirect('/api/v1/users');
+  res.redirect('/api/v1');
 });
-app.use('/api/v1/users', users);
-app.use('/v1/admin', admin);
+app.use('/api/v1', api);
 
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT} `);

@@ -26,24 +26,15 @@ It has three branches
     npm start - to start the development server on port 5200. 
     npm start will build the project and will also start the server on port 5200.
 
-    There are two routes
+    
     - users route through /api/v1/users
-    - admin route /admin/v1
 
     The users route implements the major activities the user can carry out in the website.
-    GET /api/v1/users - to get home page - it will return all the orders
+    GET /api/v1 - to get home page - it will return all the parcel orders.
     GET /api/v1/users/:userId/parcels - it will deliver all the parcels by the User by his ID
-    GET /api/v1/users/:userId/parcels/:orderId - it wil return a specific order by the user by                                              the userID and the OrderID provided from params.
-    POST /api/v1/users/:userId/parcels - Users can create Post by their User ID provided from params and it will add to their list of orders and it will return them to the orders they have made. Two parameter required - the pickup Location and the Destination.
-    PUT /api/v1/users/:userId/parcels/:orderId - Users can change the status of their order, they can cancel, it will update the status of their orders to cancel.
-    DELETE /api/v1/users/:userId/parcels/:orderId - Users are able to delete the orders through this route.
-
-    ADMIN route
-    The adminstrator can see all the users of the services provided.
-    GET /admin/v1 - returns all the registered Users by username
-    GET /admin/v1/parcels - returns all the Users with their orders.
-    GET /admin/v1/parcels/:userId - returns all the orders by a particular User
-    GET /admin/v1/parcels/:userId/:orderId - returns a specific order by a user.
-    PUT /admin/v1/parcels/:userId/:orderId/location - the Admin is able to change the location of a particular order
-    PUT /admin/v1/parcels/:userId/:orderId/cancel - The Admin is able to the change the status of an order to cancel.
+    GET /api/v1/parcels/:parceId - it wil return a specific order by ID from the params.
+    POST /api/v1/parcels/ - Users can create Post 
+    PUT /api/v1/parcels/:parcelId/cancel - Users can change the status of their order, they can cancel, it will update the status of their orders to cancel.
     
+
+   

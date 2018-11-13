@@ -1,7 +1,7 @@
 const status = {
-  ONTRANSIT: 'ONTRANSIT',
+  TRANSITING: 'TRANSITING',
   DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED',
+  PLACED: 'PLACED',
 };
 
 export default status;

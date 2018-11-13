@@ -228,3 +228,8 @@ background-color: brown;
   font-weight: bold;
   float: right;
 }
+
+.myButton a {
+  text-decoration: none;
+  color: white;
+}

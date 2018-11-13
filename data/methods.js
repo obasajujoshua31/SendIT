@@ -1,123 +1,66 @@
 import orders from './orders';
 import status from './status';
 
-const getAllOrdersByAdmin = () => (orders);
 
-const getAllOrders = () => {
-  const allOrders = [];
-  for (const key in orders) {
-    if ({}.hasOwnProperty.call(orders, key)) {
-      for (const order of [...orders[key]]) {
-        allOrders.push(order);
-      }
-    }
-  }
-  return allOrders;
-};
+const getAllOrders = () => orders;
 const getOrderByUserId = (userId) => {
-  let allOrders;
-  for (const key in orders) {
-    if ({}.hasOwnProperty.call(orders, key)) {
-      if (key === userId) {
-        allOrders = [...orders[key]];
-      }
+  const allOrders = [];
+  const allTheOrders = [...orders];
+  for (const order of allTheOrders) {
+    if (order.placedBy === userId) {
+      allOrders.push(order);
     }
   }
   return allOrders;
 };
 const getOrderById = (orderId) => {
-  let allOrders;
-  for (const key in orders) {
-    if ({}.hasOwnProperty.call(orders, key)) {
-      for (const order of orders[key]) {
-        if (order.id === orderId) {
-          allOrders = order;
-        }
-      }
-    }
-  }
-  return allOrders;
-};
-const addNewOrderByUser = (userId, order) => {
-  const { pickUpLocation, destination } = order;
-  const allOrders = getOrderByUserId(userId);
-  if (!allOrders) {
-    return null;
-  }
-  const index = allOrders.length + 1;
-  const newOrder = {
-    id: userId + index,
-    pickUpLocation,
-    destination,
-    status: status.ONTRANSIT,
-    orderDate: new Date(),
-  };
-  return [...allOrders, newOrder];
-};
-const cancelOrderByUser = (userId, orderId) => {
-  const allOrders = getOrderByUserId(userId);
-  const allOrdersById = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  if (!allOrdersById) {
-    return null;
-  }
-  for (const order of allOrders) {
+  const allOrders = [];
+  for (const order of orders) {
     if (order.id === orderId) {
-      order.status = status.CANCELLED;
+      allOrders.push(order);
     }
   }
   return allOrders;
 };
-
-const cancelOrderByAdminById = (orderId) => {
-  const allOrders = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  allOrders.status = status.CANCELLED;
-  return allOrders;
+const addNewOrder = (order) => {
+  const {
+    placedBy, weight, weightMetric, from, to,
+  } = order;
+  const lastIndex = getAllOrders.length;
+  const newOrder = {
+    id: lastIndex + 1,
+    from,
+    placedBy,
+    weight,
+    weightMetric,
+    sentOn: new Date().toLocaleString(),
+    deliveredOn: '',
+    to,
+    status: status.PLACED,
+    currentLocation: '',
+  };
+  orders.push(newOrder);
+  return [{
+    id: lastIndex + 1,
+    message: 'order created',
+  }];
 };
-
-const getAllUsers = () => {
-  const users = [];
-  for (const key in orders) {
-    if ({}.hasOwnProperty.call(orders, key)) {
-      users.push(key);
+const cancelOrderById = (orderId) => {
+  for (const order of orders) {
+    if (order.id === orderId) {
+      order.status = 'CANCELLED';
+      return [{
+        id: order.id,
+        message: 'order cancelled',
+      }];
     }
   }
-  return users;
-};
-
-const removeOrderByUser = (userId, orderId) => {
-  const allOrders = getOrderByUserId(userId);
-  const allOrdersById = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  if (!allOrdersById) {
-    return null;
-  }
-  return allOrders.filter(order => order.id !== orderId);
-};
-const changePresentLocationByAdminById = (orderId, presentLocation) => {
-  const allOrders = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  allOrders.presentLocation = presentLocation;
-  return allOrders;
+  return [];
 };
 export {
-  getAllOrdersByAdmin,
   getAllOrders,
   getOrderByUserId,
   getOrderById,
-  addNewOrderByUser,
-  cancelOrderByUser,
-  cancelOrderByAdminById,
-  getAllUsers,
-  removeOrderByUser,
-  changePresentLocationByAdminById,
+  addNewOrder,
+  cancelOrderById,
 };

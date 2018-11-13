@@ -24,7 +24,7 @@
 					
 				
 			<nav>
-					<li><a href ="#">Logout</a></li>
+					<li><a href ="signin.html">Logout</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -41,7 +41,7 @@
 			<div class ="create_form">
 			<div class ="form__wrapper">
 				<h1>Create a Delivery Order</h1>
-				<form id ="distance_form">
+				<form id ="distance_form" action="javascript:void(0);">
 					<label>Your Pick up Location: </label>
 					<input id ="from_places" class="myInputs" placeholder="Enter Your Pick up location" name ="pickup">
 					<input id ="origin" type ="hidden" name ="origin" required >
@@ -50,7 +50,7 @@
 					<input id ="to_places" class ="myInputs" placeholder ="Enter your destination" name ="delivery">
 					<input type ="hidden" name ="destination" id ="destination"required>
 					<br>
-					<button type ="submit" class ="myButton">Create Parcel Delivery</button>
+					<button type ="submit" class ="myButton"><a href ="detail.html">Create Parcel Delivery</a></button>
 
 
 

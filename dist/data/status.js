@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var status = {
-  ONTRANSIT: 'ONTRANSIT',
+  TRANSITING: 'TRANSITING',
   DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED'
+  PLACED: 'PLACED'
 };
 
 exports.default = status;

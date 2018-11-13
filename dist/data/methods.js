@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.changePresentLocationByAdminById = exports.removeOrderByUser = exports.getAllUsers = exports.cancelOrderByAdminById = exports.cancelOrderByUser = exports.addNewOrderByUser = exports.getOrderById = exports.getOrderByUserId = exports.getAllOrders = exports.getAllOrdersByAdmin = undefined;
+exports.cancelOrderById = exports.addNewOrder = exports.getOrderById = exports.getOrderByUserId = exports.getAllOrders = undefined;
 
 var _orders = require('./orders');
 
@@ -17,106 +17,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var getAllOrdersByAdmin = function getAllOrdersByAdmin() {
+var getAllOrders = function getAllOrders() {
   return _orders2.default;
 };
-
-var getAllOrders = function getAllOrders() {
+var getOrderByUserId = function getOrderByUserId(userId) {
   var allOrders = [];
-  for (var key in _orders2.default) {
-    if ({}.hasOwnProperty.call(_orders2.default, key)) {
-      var _arr = [].concat(_toConsumableArray(_orders2.default[key]));
+  var allTheOrders = [].concat(_toConsumableArray(_orders2.default));
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
 
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var order = _arr[_i];
+  try {
+    for (var _iterator = allTheOrders[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var order = _step.value;
+
+      if (order.placedBy === userId) {
         allOrders.push(order);
       }
     }
-  }
-  return allOrders;
-};
-var getOrderByUserId = function getOrderByUserId(userId) {
-  var allOrders = void 0;
-  for (var key in _orders2.default) {
-    if ({}.hasOwnProperty.call(_orders2.default, key)) {
-      if (key === userId) {
-        allOrders = [].concat(_toConsumableArray(_orders2.default[key]));
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
       }
     }
   }
+
   return allOrders;
 };
 var getOrderById = function getOrderById(orderId) {
-  var allOrders = void 0;
-  for (var key in _orders2.default) {
-    if ({}.hasOwnProperty.call(_orders2.default, key)) {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = _orders2.default[key][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var order = _step.value;
-
-          if (order.id === orderId) {
-            allOrders = order;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-  }
-  return allOrders;
-};
-var addNewOrderByUser = function addNewOrderByUser(userId, order) {
-  var pickUpLocation = order.pickUpLocation,
-      destination = order.destination;
-
-  var allOrders = getOrderByUserId(userId);
-  if (!allOrders) {
-    return null;
-  }
-  var index = allOrders.length + 1;
-  var newOrder = {
-    id: userId + index,
-    pickUpLocation: pickUpLocation,
-    destination: destination,
-    status: _status2.default.ONTRANSIT,
-    orderDate: new Date()
-  };
-  return [].concat(_toConsumableArray(allOrders), [newOrder]);
-};
-var cancelOrderByUser = function cancelOrderByUser(userId, orderId) {
-  var allOrders = getOrderByUserId(userId);
-  var allOrdersById = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  if (!allOrdersById) {
-    return null;
-  }
+  var allOrders = [];
   var _iteratorNormalCompletion2 = true;
   var _didIteratorError2 = false;
   var _iteratorError2 = undefined;
 
   try {
-    for (var _iterator2 = allOrders[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+    for (var _iterator2 = _orders2.default[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
       var order = _step2.value;
 
       if (order.id === orderId) {
-        order.status = _status2.default.CANCELLED;
+        allOrders.push(order);
       }
     }
   } catch (err) {
@@ -136,54 +83,68 @@ var cancelOrderByUser = function cancelOrderByUser(userId, orderId) {
 
   return allOrders;
 };
+var addNewOrder = function addNewOrder(order) {
+  var placedBy = order.placedBy,
+      weight = order.weight,
+      weightMetric = order.weightMetric,
+      from = order.from,
+      to = order.to;
 
-var cancelOrderByAdminById = function cancelOrderByAdminById(orderId) {
-  var allOrders = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  allOrders.status = _status2.default.CANCELLED;
-  return allOrders;
+  var lastIndex = getAllOrders.length;
+  var newOrder = {
+    id: lastIndex + 1,
+    from: from,
+    placedBy: placedBy,
+    weight: weight,
+    weightMetric: weightMetric,
+    sentOn: new Date().toLocaleString(),
+    deliveredOn: '',
+    to: to,
+    status: _status2.default.PLACED,
+    currentLocation: ''
+  };
+  _orders2.default.push(newOrder);
+  return [{
+    id: lastIndex + 1,
+    message: 'order created'
+  }];
 };
+var cancelOrderById = function cancelOrderById(orderId) {
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
 
-var getAllUsers = function getAllUsers() {
-  var users = [];
-  for (var key in _orders2.default) {
-    if ({}.hasOwnProperty.call(_orders2.default, key)) {
-      users.push(key);
+  try {
+    for (var _iterator3 = _orders2.default[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var order = _step3.value;
+
+      if (order.id === orderId) {
+        order.status = 'CANCELLED';
+        return [{
+          id: order.id,
+          message: 'order cancelled'
+        }];
+      }
+    }
+  } catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+        _iterator3.return();
+      }
+    } finally {
+      if (_didIteratorError3) {
+        throw _iteratorError3;
+      }
     }
   }
-  return users;
-};
 
-var removeOrderByUser = function removeOrderByUser(userId, orderId) {
-  var allOrders = getOrderByUserId(userId);
-  var allOrdersById = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  if (!allOrdersById) {
-    return null;
-  }
-  return allOrders.filter(function (order) {
-    return order.id !== orderId;
-  });
+  return [];
 };
-var changePresentLocationByAdminById = function changePresentLocationByAdminById(orderId, presentLocation) {
-  var allOrders = getOrderById(orderId);
-  if (!allOrders) {
-    return null;
-  }
-  allOrders.presentLocation = presentLocation;
-  return allOrders;
-};
-exports.getAllOrdersByAdmin = getAllOrdersByAdmin;
 exports.getAllOrders = getAllOrders;
 exports.getOrderByUserId = getOrderByUserId;
 exports.getOrderById = getOrderById;
-exports.addNewOrderByUser = addNewOrderByUser;
-exports.cancelOrderByUser = cancelOrderByUser;
-exports.cancelOrderByAdminById = cancelOrderByAdminById;
-exports.getAllUsers = getAllUsers;
-exports.removeOrderByUser = removeOrderByUser;
-exports.changePresentLocationByAdminById = changePresentLocationByAdminById;
+exports.addNewOrder = addNewOrder;
+exports.cancelOrderById = cancelOrderById;
