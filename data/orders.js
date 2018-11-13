@@ -23,7 +23,7 @@ const orders = [
     from: '24 Ogbomosho road, Ibadan',
     to: '10 Obaro way, Ilupeju Lagos',
     status: status.DELIVERED,
-    currentLocation: new Date().toLocaleString(),
+    currentLocation: '',
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const orders = [
     from: '45 Abraham Adesanya Estate Ajah Lagos',
     to: '22 Olorundare close, Iyana Apaja, Lagos',
     status: status.DELIVERED,
-    currentLocation: new Date().toLocaleString(),
+    currentLocation: '',
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ const orders = [
     from: '22 Joseph Street Idumota Lagos',
     to: '44 Akinola estate, Olokonla Lagos',
     status: status.TRANSITING,
-    currentLocation: new Date().toLocaleString(),
+    currentLocation: '',
   },
   {
     id: 5,
@@ -59,7 +59,7 @@ const orders = [
     from: '104A Doherty lane, Lekki, Lagos',
     to: 'B324A Banana Island Ikoyi, Lagos',
     status: status.PLACED,
-    currentLocation: new Date().toLocaleString(),
+    currentLocation: '',
   },
 ];
 
