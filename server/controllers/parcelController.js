@@ -7,7 +7,11 @@ class ParcelController {
       data: database,
     });
   }
-
+  static getHomePage(req, res) {
+    res.send({
+      message: 'Welcome to Send It Home Page'
+    });
+  }
   static getParcelsByUserId(req, res) {
     const { userId } = req.params;
     const message = database.filter(parcel => parcel.placedBy === +userId);
