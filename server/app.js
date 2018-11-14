@@ -6,9 +6,6 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.get('/', (req, res) => {
-  res.redirect('/api/v1');
-});
 app.use('/api/v1', api);
 
 app.listen(PORT, () => {

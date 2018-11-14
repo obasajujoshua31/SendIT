@@ -4,11 +4,9 @@
   "description": "A Parcel delivery application",
   "main": "app.js",
   "scripts": {
-    "test": "rimraf .nyc_output/ && rimraf .coverage/ && nyc mocha --require babel-register",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./coverage,./node_modules,./Procfile,./README.md,./.babelrc,./test,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && node dist/app.js",
-    "coverage": "nyc report --reporter=text-lcov|coveralls",
-    "show": "nyc report"
+    "test": "nyc mocha server/test --require babel-register",
+    "start": "nodemon server/app.js --exec babel-node",
+    "coverage": "nyc report --reporter=text-lcov|coveralls"
   },
   "engines": {
     "node": "10.x"
@@ -47,6 +45,7 @@
     "mocha": "^3.5.3",
     "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
+    "sinon": "^7.1.1",
     "supertest": "^3.3.0"
   }
 }

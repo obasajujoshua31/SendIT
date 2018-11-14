@@ -32,7 +32,11 @@ Npm run test
 
 ## Running the code on your local machine
 1. npm start 
+<<<<<<< HEAD
 it will build the project into dist and Node dist/app.js will create a server and it will listen at port 5200
+=======
+it will open server to listen from port 5200
+>>>>>>> ch-create-controller-161925289
 
 ## BUIlt With
 1. Express - The node Framework used
@@ -40,11 +44,14 @@ it will build the project into dist and Node dist/app.js will create a server an
 
 ## Authors 
 Obasaju Joshua
+<<<<<<< HEAD
 
 ## Acknowledgement 
 Samson - my LFA at Andela Bootcamp cycle 38
 Abdul - my friend providing help
 Team mates at andela-samson slack channer
+=======
+>>>>>>> ch-create-controller-161925289
 
 
    
