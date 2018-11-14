@@ -10,7 +10,6 @@ describe('API end point Tests.', () => {
         .get('/api/v1/parcels')
         .end((err, res) => {
           assert.isDefined(res.body);
-          assert.equal(res.body.status, '200');
           assert.equal(res.statusCode, '200');
           assert.isArray(res.body.data);
           assert.equal(res.body.data.length, '5');
@@ -24,7 +23,6 @@ describe('API end point Tests.', () => {
         .get('/api/v1/users/11/parcels')
         .end((err, res) => {
           assert.isDefined(res.body);
-          assert.equal(res.body.status, '200');
           assert.isArray(res.body.data);
           assert.equal(res.body.data.length, '2');
           assert.equal(res.statusCode, '200');
@@ -36,7 +34,6 @@ describe('API end point Tests.', () => {
         .get('/api/v1/users/12/parcels')
         .end((err, res) => {
           assert.isDefined(res.body);
-          assert.equal(res.body.status, '200');
           assert.equal(res.body.data.length, '1');
           assert.isDefined(res.body.data);
           done();
@@ -48,7 +45,6 @@ describe('API end point Tests.', () => {
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.equal(res.body.error, 'The User has no Parcels');
-          assert.equal(res.body.status, '404');
           done();
         });
     });
@@ -59,7 +55,7 @@ describe('API end point Tests.', () => {
       request(app)
         .get('/api/v1/parcels/1')
         .end((err, res) => {
-          assert.equal(res.body.status, '200');
+          assert.equal(res.statusCode, '200');
           assert.isDefined(res.body.data);
           assert.isArray(res.body.data);
           assert.equal(res.body.data.length, '1');
@@ -70,7 +66,6 @@ describe('API end point Tests.', () => {
       request(app)
         .get('/api/v1/parcels/2')
         .end((err, res) => {
-          assert.equal(res.body.status, '200');
           assert.isDefined(res.body.data);
           assert.isArray(res.body.data);
           assert.equal(res.body.data.length, '1');
@@ -83,7 +78,6 @@ describe('API end point Tests.', () => {
         .end((err, res) => {
           assert.equal(res.body.error, 'The Parcel cannot be found');
           assert.equal(res.statusCode, '404');
-          assert.equal(res.body.status, '404');
           done();
         });
     });
@@ -94,7 +88,7 @@ describe('API end point Tests.', () => {
         .post('/api/v1/parcels')
         .send(testorder.testOrder)
         .end((err, res) => {
-          assert.equal(res.body.status, '201');
+          assert.equal(res.statusCode, '201');
           assert.equal(res.body.message, 'order created');
           done();
         });
@@ -114,7 +108,7 @@ describe('API end point Tests.', () => {
       request(app)
         .put('/api/v1/parcels/1/cancel')
         .end((err, res) => {
-          assert.equal(res.body.status, '200');
+          assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
           assert.equal(res.body.message, 'order cancelled');
           done();

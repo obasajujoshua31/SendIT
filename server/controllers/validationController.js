@@ -11,14 +11,14 @@ export default [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-     return res.status(400).json({
-        status: 400,
+      return res.status(400).json({
+        success: false,
         error: 'Some credentials are blank',
         errors: errors.array(),
       });
     }
-    res.status(201).json({
-      status: 201,
+    return res.status(201).json({
+      success: true,
       message: 'order created',
     });
   },

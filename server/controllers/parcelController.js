@@ -2,8 +2,8 @@ import database from './database';
 
 class ParcelController {
   static getAllParcels(req, res) {
-    res.status(200).json({
-      status: 200,
+    return res.status(200).json({
+      success: true,
       data: database,
     });
   }
@@ -13,12 +13,12 @@ class ParcelController {
     const message = database.filter(parcel => parcel.placedBy === +userId);
     if (message.length === 0) {
       return res.status(404).json({
-        status: 404,
+        success: false,
         error: 'The User has no Parcels',
       });
     }
-    return res.json({
-      status: 200,
+    return res.status(200).json({
+      success: true,
       data: message,
     });
   }
@@ -28,12 +28,12 @@ class ParcelController {
     const message = database.filter(parcel => parcel.id === +parcelId);
     if (message.length === 0) {
       return res.status(404).json({
-        status: 404,
+        success: false,
         error: 'The Parcel cannot be found',
       });
     }
     return res.status(200).json({
-      status: 200,
+      success: true,
       data: message,
     });
   }
@@ -43,12 +43,12 @@ class ParcelController {
     const message = database.filter(parcel => parcel.id === +parcelId);
     if (message.length === 0) {
       return res.status(404).json({
-        status: 404,
+        success: false,
         error: 'Cannot find the Order',
       });
     }
     return res.status(200).json({
-      status: 200,
+      success: true,
       message: 'order cancelled',
     });
   }
