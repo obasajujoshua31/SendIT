@@ -7,7 +7,7 @@ describe('API end point Tests.', () => {
   describe('#Get /', () => {
     it('Should return data with an array length of 5 and status of 200', (done) => {
       request(app)
-        .get('/api/v1')
+        .get('/api/v1/parcels')
         .end((err, res) => {
           assert.isDefined(res.body);
           assert.equal(res.body.status, '200');

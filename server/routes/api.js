@@ -3,7 +3,6 @@ import ParcelController from '../controllers/parcelController';
 import ValidationController from '../controllers/validationController';
 
 const router = express.Router();
-router.get('/', ParcelController.getHomePage);
 router.get('/parcels', ParcelController.getAllParcels);
 router.get('/users/:userId/parcels', ParcelController.getParcelsByUserId);
 router.get('/parcels/:parcelId', ParcelController.getParcelsByParcelId);
