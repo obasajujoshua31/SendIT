@@ -22,8 +22,7 @@ header {
 background-color: #330000;
 color: #FFFFFF;
 padding-top: 30px;
-min-height: 40px;
-border-bottom: #0000E6 3px solid;
+min-height: 30px;
 }
 header a{
 	color: #FFFFFF;
@@ -82,7 +81,8 @@ footer{
 	margin-bottom: 0;
 	color: #FFFFFF;
 	background-color: #330000;
-	text-align: center;
+  text-align: center;
+  min-height: 20px;
 }
 #company label{
 	color: black;
