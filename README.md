@@ -14,13 +14,14 @@ What things you need to install the software and how to install them
 
 1. A stable Node Software
 2. A preferred Text editor of your choice
+3. A Web Browser
 
 ## Installing 
 Carry out this on command line
 1. npm clone https://github.com/obasajujoshua31/SendIT
 2. cd SendIT
 3. npm install
-4. open the project with your preferrred Code Editor
+4. open the project with your preferred Code Editor
 
 ## Running the test
 1. npm run test - to run test
@@ -28,30 +29,19 @@ Carry out this on command line
 
 Npm run test
 1. Test the routes from api.test.js
-2. test the controllers from controllers.test.js
 
 ## Running the code on your local machine
 1. npm start 
-<<<<<<< HEAD
-it will build the project into dist and Node dist/app.js will create a server and it will listen at port 5200
-=======
+
 it will open server to listen from port 5200
->>>>>>> ch-create-controller-161925289
+
 
 ## BUIlt With
-1. Express - The node Framework used
+1. Express - The nodejs web application Framework used
 2. Mocha - the framework used to generate test
 
 ## Authors 
 Obasaju Joshua
-<<<<<<< HEAD
-
-## Acknowledgement 
-Samson - my LFA at Andela Bootcamp cycle 38
-Abdul - my friend providing help
-Team mates at andela-samson slack channer
-=======
->>>>>>> ch-create-controller-161925289
 
 
-   
+
