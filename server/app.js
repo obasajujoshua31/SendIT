@@ -1,14 +1,16 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import { Client } from 'pg';
 import api from './routes/api';
 
-const PORT = process.env.PORT || 5200;
+dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1', api);
 
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT} `);
+app.listen(process.env.PORT, () => {
+  console.log(`Server started at port ${process.env.PORT} `);
 });
 export default app;
