@@ -20,7 +20,9 @@
     "mocha/no-exclusive-tests": "error",
     "no-console": "off",
     "object-curly-newline": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "operator-linebreak": "off",
+    "comma-dangle": "off"
   },
   "plugins": ["mocha"]
 }
