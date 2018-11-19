@@ -32,7 +32,7 @@ class User {
   static findOne(email, callback) {
     const client = new Client();
     client.connect();
-    const sql = 'SELECT email, password, username FROM users WHERE email = $1';
+    const sql = 'SELECT email, password, user_id FROM users WHERE email = $1';
     const params = [email];
     return client
       .query(sql, params)
