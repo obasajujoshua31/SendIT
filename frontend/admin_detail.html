@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name ="viewport" content ="width = device-width">
+	<meta name ="description" content ="Affordable courier service">
+	<meta name ="keywords" content ="courier service, parcel delivery">
+	<meta name ="author" content="Obasaju Joshua">
+	<link rel ="stylesheet" href ="./css/style.css">
+
+	<title> SendIT | Refno: | Detail</title>
+</head>
+<body>
+	<header>
+		<div class ="container">
+			<div id ="brand-logo">
+				<h1>SendIT</h1>
+			</div>
+			<ul>
+					
+				
+			<nav>
+					<li><a href ="admin.html">Admin Logout</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<section id ="dashboard">
+		<div class ="dashboard-container">
+			<div class ="navBar">
+				<ul>
+  				<li><a href="admin_dashboard.html">Go back to Admin Dashboard</a></li>
+				</ul>
+
+			</div>
+			<div class ="create_form">
+			<div class ="form__wrapper">
+				<h1>Order</h1>
+				<span class ="reference">Order ref no: </span><a id ="cancelOrder"href ="#">Cancel this order</a>
+				<form id ="distance_form"><br>
+					<label>Client Preferred pick up point: </label>
+					<input class="myInputs" disabled name ="pickup">
+					<br>
+					<label>Client preferred Destination: </label>
+					<input  class ="myInputs"  disabled name ="delivery">
+					<label>Change Present Location: </label>
+					<input class ="myInputs" name ="presentLocation" placeholder ="Change Parcel Present Location">
+					<label>Update Status: </label>
+					<input type ="radio" name ="status" value ="cancelled"> Cancel
+					<input type ="radio" name ="status" value ="ontransit" checked> On Transit
+					<input type ="radio" name "status" value ="delivered">Delivered
+					<button type ="submit" class ="myButton">Update</button>
+
+				</form>
+			</div>			
+		</div>
+
+		</div>
+	</section>
+	<footer>
+		<p>SendIT Inc, Copyright &copy; 2018</p>
+	</footer>
+</body>
+</html>
