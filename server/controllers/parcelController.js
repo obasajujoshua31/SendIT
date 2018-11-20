@@ -3,12 +3,6 @@ import Parcel from '../models/parcel';
 class ParcelController {
   static getAllParcels(req, res) {
     Parcel.findAll(results => {
-      if (results.length === 0) {
-        return res.status(404).json({
-          success: false,
-          error: 'Parcels not found',
-        });
-      }
       return res.status(200).json({
         success: true,
         data: results,
@@ -57,12 +51,6 @@ class ParcelController {
       status: 'PLACED',
     };
     Parcel.save(newParcel, results => {
-      if (results.length === 0) {
-        return res.status(500).json({
-          success: false,
-          error: 'Server Error',
-        });
-      }
       return res.status(201).json({
         success: true,
         data: results,
@@ -95,6 +83,24 @@ class ParcelController {
       if (results.length === 0) {
         return res.status(404).json({
           success: true,
+          error: 'Parcel not found',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        data: results,
+      });
+    });
+  }
+
+  static changeParcelPresentLocationByAdminById(req, res) {
+    const { parcelId } = req.params;
+    const { presentLocation } = req.body;
+
+    Parcel.findByIdAndChangeLocation(+parcelId, presentLocation, results => {
+      if (results.length === 0) {
+        return res.status(404).json({
+          success: false,
           error: 'Parcel not found',
         });
       }
