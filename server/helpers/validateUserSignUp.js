@@ -7,9 +7,6 @@ export default [
   check('lastName')
     .isLength({ min: 1 })
     .withMessage('Last name cannot be blank'),
-  check('username')
-    .isLength({ min: 1 })
-    .withMessage('Username cannot be blank'),
   check('email')
     .isLength({ min: 1 })
     .withMessage('Email cannot be blank'),

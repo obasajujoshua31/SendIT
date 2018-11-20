@@ -4,7 +4,7 @@ import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class AuthController {
   static signUpUser(req, res) {
-    const { firstName, lastName, username, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     User.findOne(email, results => {
       if (results.length > 0) {
@@ -13,26 +13,20 @@ class AuthController {
           error: 'Email is already used',
         });
       }
-    });
-    const newUser = {
-      firstName,
-      lastName,
-      username,
-      email,
-      password: Crypt.encrypt(password),
-      isAdmin: false,
-    };
-    User.save(newUser, theuser => {
-      if (theuser.length === 0) {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error',
+
+      const newUser = {
+        firstName,
+        lastName,
+        email,
+        password: Crypt.encrypt(password),
+        isAdmin: false,
+      };
+      User.save(newUser, theuser => {
+        return res.status(201).json({
+          success: true,
+          data: theuser,
+          message: 'user signed Up successfully',
         });
-      }
-      return res.status(201).json({
-        success: true,
-        data: theuser,
-        message: 'user signed Up successfully',
       });
     });
   }
@@ -41,7 +35,7 @@ class AuthController {
     const { email, password } = req.body;
     User.findOne(email, userDoc => {
       if (userDoc.length === 0) {
-        res.status(400).json({
+        res.status(404).json({
           success: false,
           error: 'User has no account',
         });

@@ -115,6 +115,17 @@ class Parcel {
         console.log(err);
       });
   }
+
+  static remove() {
+    const client = new Client();
+    client.connect();
+    const sql = 'DELETE FROM parcels WHERE placed_by = $1';
+    const params = [23];
+    return client
+      .query(sql, params)
+      .then(() => {})
+      .catch(err => console.log(err));
+  }
 }
 
 export default Parcel;
