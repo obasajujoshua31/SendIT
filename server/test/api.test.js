@@ -87,7 +87,6 @@ describe('API end point Tests.', () => {
         });
     });
   });
-
   describe('# TEst for Get Parcel by Parcel Id', () => {
     it('Should return an array length of 1 for parcelID of 1', done => {
       request(app)
