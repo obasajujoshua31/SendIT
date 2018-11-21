@@ -4,23 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const pool = new Pool();
 
-const createUserTable = async callback => {
-  const client = await pool.connect();
-
-  try {
-    const sql =
-      'CREATE TABLE users(user_id serial PRIMARY KEY, email VARCHAR (255) NOT NULL, password VARCHAR (255) NOT NULL,  first_name VARCHAR (255) NOT NULL, last_name VARCHAR (255) NOT NULL, is_admin BOOLEAN NOT NULL, registered_on DATE);';
-    const results = await client.query(sql);
-    console.log(results.rowCount);
-  } catch (e) {
-    console.log(e.stack);
-  } finally {
-    client.release();
-  }
-  callback();
-};
-
-const addDataToUser1 = async callback => {
+const addDataToUser1 = async => {
   const client = await pool.connect();
   try {
     const sql =
@@ -34,10 +18,9 @@ const addDataToUser1 = async callback => {
   } finally {
     client.release();
   }
-  callback();
 };
 
-const addDataToUser2 = async callback => {
+const addDataToUser2 = async => {
   const client = await pool.connect();
   try {
     const sql =
@@ -51,11 +34,21 @@ const addDataToUser2 = async callback => {
   } finally {
     client.release();
   }
-  callback();
 };
 
-createUserTable(() => {
-  addDataToUser1(() => {
-    addDataToUser2(() => {});
-  });
-});
+(async () => {
+  const client = await pool.connect();
+
+  try {
+    const sql =
+      'CREATE TABLE users(user_id serial PRIMARY KEY, email VARCHAR (255) NOT NULL, password VARCHAR (255) NOT NULL,  first_name VARCHAR (255) NOT NULL, last_name VARCHAR (255) NOT NULL, is_admin BOOLEAN NOT NULL, registered_on DATE);';
+    const results = await client.query(sql);
+    console.log(results.rowCount);
+  } catch (e) {
+    console.log(e.stack);
+  } finally {
+    client.release();
+  }
+  addDataToUser1();
+  addDataToUser2();
+})();
