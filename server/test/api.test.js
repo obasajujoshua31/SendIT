@@ -3,16 +3,21 @@ import request from 'supertest';
 import app from '../app';
 import testorder from './testorders.test';
 import Parcel from '../models/parcel';
+import database from '../database';
 
 describe('API end point Tests.', () => {
   before(async () => {
-    await Parcel.remove();
+    await Parcel.remove(results => {
+      console.log(results.rows);
+    });
   });
   after(async () => {
-    await Parcel.remove();
+    await Parcel.remove(results => {
+      console.log(results);
+    });
   });
   describe('#Get /', () => {
-    it('Should return data with an array length of 6 and status of 200 for an authorized user', done => {
+    it('Should return data with an array length of 3 and status of 200 for an authorized user', done => {
       request(app)
         .get('/api/v1/parcels')
         .set({ Authorization: process.env.jwttoken })
@@ -20,45 +25,45 @@ describe('API end point Tests.', () => {
           assert.isDefined(res.body);
           assert.equal(res.statusCode, '200');
           assert.isArray(res.body.data);
-          assert.equal(res.body.data.length, '6');
+          assert.equal(res.body.data.length, '3');
           done();
         });
     });
-    it('Should return as status code of 403 for an unauthorized user', done => {
+    it('Should return as status code of 401 for an unauthorized user', done => {
       request(app)
         .get('/api/v1/parcels')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
-    it('Should return as status code of 403 for an user with a fake or expired token', done => {
+    it('Should return as status code of 401 for an user with a fake or expired token', done => {
       request(app)
         .get('/api/v1/parcels')
         .set({ Authorization: 'Bearer oikffrjufjfurjhrhfkloj' })
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
   });
 
   describe('#Get Parcels by a Particular User', () => {
-    it('Should return data with an array length of 2 for user 4', done => {
+    it('Should return data with an array length of 1 for user 4', done => {
       request(app)
         .get('/api/v1/users/4/parcels')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.isDefined(res.body);
           assert.isArray(res.body.data);
-          assert.equal(res.body.data.length, '2');
+          assert.equal(res.body.data.length, '1');
           assert.equal(res.statusCode, '200');
           done();
         });
     });
-    it('Should return an array length of 1 for user 6', done => {
+    it('Should return an array length of 1 for user 3', done => {
       request(app)
-        .get('/api/v1/users/6/parcels')
+        .get('/api/v1/users/3/parcels')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.isDefined(res.body);
@@ -77,34 +82,22 @@ describe('API end point Tests.', () => {
           done();
         });
     });
-    it('Should return a status code of 403 for an unauthorized user', done => {
+    it('Should return a status code of 401 for an unauthorized user', done => {
       request(app)
         .get('/api/v1/users/6/parcels')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
   });
-
   describe('# TEst for Get Parcel by Parcel Id', () => {
-    it('Should return an array length of 1 for parcelID of 4', done => {
+    it('Should return an array length of 1 for parcelID of 1', done => {
       request(app)
-        .get('/api/v1/parcels/4')
+        .get('/api/v1/parcels/2')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
-          assert.isDefined(res.body.data);
-          assert.isArray(res.body.data);
-          assert.equal(res.body.data.length, '1');
-          done();
-        });
-    });
-    it('Should an array length of 1 for parcel ID 3', done => {
-      request(app)
-        .get('/api/v1/parcels/3')
-        .set({ Authorization: process.env.jwttoken })
-        .end((err, res) => {
           assert.isDefined(res.body.data);
           assert.isArray(res.body.data);
           assert.equal(res.body.data.length, '1');
@@ -121,11 +114,11 @@ describe('API end point Tests.', () => {
           done();
         });
     });
-    it('Should return a status code of 403 for an unauthorized user', done => {
+    it('Should return a status code of 401 for an unauthorized user', done => {
       request(app)
-        .get('/api/v1/parcels/3')
+        .get('/api/v1/parcels/1')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
@@ -152,12 +145,12 @@ describe('API end point Tests.', () => {
           done();
         });
     });
-    it('Should return a status of 403 for an unauthorized user', done => {
+    it('Should return a status of 401 for an unauthorized user', done => {
       request(app)
         .post('/api/v1/parcels')
         .send(testorder.testOrder)
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
@@ -165,7 +158,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to cancel an a parcel Order', () => {
     it('Should return a message order cancelled to the id', done => {
       request(app)
-        .put('/api/v1/parcels/4/cancel')
+        .put('/api/v1/parcels/1/cancel')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
@@ -187,7 +180,7 @@ describe('API end point Tests.', () => {
       request(app)
         .put('/api/v1/parcels/4/cancel')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
@@ -195,7 +188,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to update Parcel', () => {
     it('Should return the parcel order updated', done => {
       request(app)
-        .put('/api/v1/parcels/4/update')
+        .put('/api/v1/parcels/1/update')
         .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -215,15 +208,15 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for an unauthorized user', done => {
       request(app)
-        .put('/api/v1/parcels/4/update')
+        .put('/api/v1/parcels/1/update')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
     it('Should return an error message for incorrect parcel', done => {
       request(app)
-        .put('/api/v1/parcels/12/update')
+        .put('/api/v1/parcels/89/update')
         .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -235,7 +228,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to change Present Location by Admin', () => {
     it('Should return Present Location changed for a valid Admin', done => {
       request(app)
-        .put('/api/v1/parcels/4/changeLocation')
+        .put('/api/v1/parcels/1/changeLocation')
         .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -246,7 +239,7 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for empty field', done => {
       request(app)
-        .put('/api/v1/parcels/4/changeLocation')
+        .put('/api/v1/parcels/1/changeLocation')
         .set({ Authorization: process.env.jwtadmin })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
@@ -255,15 +248,15 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for an unauthorized Admin', done => {
       request(app)
-        .put('/api/v1/parcels/4/changeLocation')
+        .put('/api/v1/parcels/1/changeLocation')
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
     it('Should return an error message for incorrect parcel', done => {
       request(app)
-        .put('/api/v1/parcels/12/changeLocation')
+        .put('/api/v1/parcels/89/changeLocation')
         .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -273,21 +266,21 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for a user that is not an Admin', done => {
       request(app)
-        .put('/api/v1/parcels/4/changeLocation')
+        .put('/api/v1/parcels/1/changeLocation')
         .set({ Authorization: process.env.jwttoken })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });
-    it('Should return as status code of 403 for an user with a fake or expired token', done => {
+    it('Should return as status code of 401 for an user with a fake or expired token', done => {
       request(app)
         .get('/api/v1/parcels/4/changeLocation')
         .send({ presentLocation: '22, Lagos-Ibadan Expressway' })
         .set({ Authorization: 'Bearer oikffrjufjfurjhrhfkloj' })
         .end((err, res) => {
-          assert.equal(res.statusCode, '403');
+          assert.equal(res.statusCode, '401');
           done();
         });
     });

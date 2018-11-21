@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nyc mocha server/test --require babel-register",
     "start": "nodemon server/app.js --exec babel-node",
-    "coverage": "nyc report --reporter=text-lcov|coveralls"
+    "coverage": "nyc report --reporter=text-lcov|coveralls",
+    "createdb": "babel-node server/createdb.js && babel-node server/createuserdb.js"
   },
   "engines": {
     "node": "10.x"

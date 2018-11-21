@@ -9,7 +9,7 @@ class JwtAuthenticate {
   static jwtVerifyToken(req, res, next) {
     const bearerHeader = req.headers.authorization;
     if (typeof bearerHeader === 'undefined') {
-      return res.status(403).json({
+      return res.status(401).json({
         success: false,
         error: 'You are not authorized',
       });
@@ -17,7 +17,7 @@ class JwtAuthenticate {
     const bearer = bearerHeader.split(' ');
     jwt.verify(bearer[1], process.env.jwtcode, err => {
       if (err) {
-        return res.status(403).json({
+        return res.status(401).json({
           success: false,
           error: 'You are not authorized',
         });
@@ -29,22 +29,23 @@ class JwtAuthenticate {
   static isAdmin(req, res, next) {
     const bearerHeader = req.headers.authorization;
     if (typeof bearerHeader === 'undefined') {
-      return res.status(403).json({
+      return res.status(401).json({
         success: false,
         error: 'You are not authorized',
       });
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.jwtcode, (err, authData) => {
+    jwt.verify(bearer[1], process.env.jwtcode, (err, bearerDetails) => {
       if (err) {
-        return res.status(403).json({
+        return res.status(401).json({
           success: false,
           error: 'You are not authorized',
         });
       }
-      User.findById(authData.userId, userDoc => {
-        if (userDoc[0].is_admin === false) {
-          return res.status(403).json({
+      User.findById(bearerDetails.userId, foundUserDetails => {
+        console.log('user details', foundUserDetails);
+        if (foundUserDetails[0].is_admin === false) {
+          return res.status(401).json({
             success: false,
             error: 'Only Admin have access',
           });

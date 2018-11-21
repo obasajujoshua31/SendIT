@@ -1,6 +1,6 @@
 import { check, validationResult } from 'express-validator/check';
 
-export default [
+const parcelValidator = [
   check('placedBy')
     .isLength({ min: 1 })
     .withMessage('Placeby cannot be empty'),
@@ -30,3 +30,67 @@ export default [
     return next();
   },
 ];
+const updatePresentLocationValidator = [
+  check('presentLocation')
+    .isLength({ min: 1 })
+    .withMessage('New destination cannot be blank'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        error: errors.array(),
+      });
+    }
+    return next();
+  },
+];
+const updateFormValidator = [
+  check('destination')
+    .isLength({ min: 1 })
+    .withMessage('Your new destination cannot be blank'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        error: errors.array(),
+      });
+    }
+    return next();
+  },
+];
+const signUpFormValidator = [
+  check('firstName')
+    .isLength({ min: 1 })
+    .withMessage('First Name cannot be blank'),
+  check('lastName')
+    .isLength({ min: 1 })
+    .withMessage('Last name cannot be blank'),
+  check('email')
+    .isLength({ min: 1 })
+    .withMessage('Email cannot be blank'),
+  check('password')
+    .isLength({ min: 1 })
+    .withMessage('Password is required'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        error: errors.array(),
+      });
+    }
+    return next();
+  },
+];
+
+export default {
+  parcelValidator,
+  updatePresentLocationValidator,
+  updateFormValidator,
+  signUpFormValidator,
+};
