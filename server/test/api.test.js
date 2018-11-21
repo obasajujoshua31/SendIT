@@ -3,7 +3,6 @@ import request from 'supertest';
 import app from '../app';
 import testorder from './testorders.test';
 import Parcel from '../models/parcel';
-import database from '../database';
 
 describe('API end point Tests.', () => {
   before(async () => {
