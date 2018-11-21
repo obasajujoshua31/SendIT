@@ -15,7 +15,7 @@ class JwtAuthenticate {
       });
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.jwtcode, err => {
+    jwt.verify(bearer[1], 'supersecret', err => {
       if (err) {
         return res.status(403).json({
           success: false,
@@ -35,7 +35,7 @@ class JwtAuthenticate {
       });
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.jwtcode, (err, authData) => {
+    jwt.verify(bearer[1], 'supersecret', (err, authData) => {
       if (err) {
         return res.status(403).json({
           success: false,
