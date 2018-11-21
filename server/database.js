@@ -44,7 +44,7 @@ const user2 = [
   true,
 ];
 const jwttoken =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTU0MjY1ODQ4M30.xu0fADENv1Pg39pNNYmEkQsfv81bFoloYNhohCwma_8';
+  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTU0Mjc2MjQ1M30.jKIrXUSlLrqISZKmQFW2sQy3p9Jk5QwV2dHdGn8evy4';
 const jwtadmin =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImlhdCI6MTU0MjcxNjA0OX0.O_LXoffOy3kOQhylJR6Hz_vviVgtW4iuLrgY2fp-Qf8';
+  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImlhdCI6MTU0Mjc2MjU2NH0.7tHlk-5lOELNOV1XiTBqIm5J9PrL8PdxHgFUfhT0Jz4';
 export default { parcel1, parcel2, parcel3, user1, user2, jwttoken, jwtadmin };
