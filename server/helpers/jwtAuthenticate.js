@@ -3,7 +3,7 @@ import User from '../models/user';
 
 class JwtAuthenticate {
   static jwtEncode(userId) {
-    return jwt.sign({ userId }, process.env.jwtcode);
+    return jwt.sign({ userId }, 'supersecret');
   }
 
   static jwtVerifyToken(req, res, next) {
