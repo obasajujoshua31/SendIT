@@ -46,7 +46,8 @@ describe('Authentication end point Tests.', () => {
         .post('/auth/signin')
         .send({
           email: 'obasajujoshua31@gmail.com',
-          password: process.env.password,
+          password:
+            '$2a$10$k2ShzIozS3H795I1/fHNCOflvzcgDDqTS1.LTChlhZ1YMDO9/ta6G',
         })
         .end((err, res) => {
           assert.isDefined(res.body);
