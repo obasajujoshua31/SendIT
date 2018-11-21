@@ -2,20 +2,24 @@ import { assert } from 'chai';
 import request from 'supertest';
 import app from '../app';
 import User from '../models/user';
-import newuser from './newuser.test';
+import newUser from './newuser.test';
 
 describe('Authentication end point Tests.', () => {
   before(async () => {
-    await User.remove();
+    await User.remove(results => {
+      console.log(results);
+    });
   });
   after(async () => {
-    await User.remove();
+    await User.remove(results => {
+      console.log(results);
+    });
   });
   describe('#  Signup', () => {
     it('Should return the data of the new user', done => {
       request(app)
         .post('/auth/signup')
-        .send(newuser.newUser)
+        .send(newUser.newUser)
         .end((err, res) => {
           assert.isDefined(res.body);
           assert.equal(res.statusCode, '201');
@@ -33,7 +37,7 @@ describe('Authentication end point Tests.', () => {
     it('Should return as status code of 400 for an existing user', done => {
       request(app)
         .post('/auth/signup')
-        .send(newuser.invalidUser)
+        .send(newUser.invalidUser)
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -46,8 +50,7 @@ describe('Authentication end point Tests.', () => {
         .post('/auth/signin')
         .send({
           email: 'obasajujoshua31@gmail.com',
-          password:
-            '$2a$10$k2ShzIozS3H795I1/fHNCOflvzcgDDqTS1.LTChlhZ1YMDO9/ta6G',
+          password: process.env.password,
         })
         .end((err, res) => {
           assert.isDefined(res.body);

@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import database from './database';
-
+import dotenv from 'dotenv';
+dotenv.config();
 const pool = new Pool();
 
 const createParcelTable = async callback => {

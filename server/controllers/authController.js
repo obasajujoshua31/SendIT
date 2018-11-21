@@ -21,10 +21,10 @@ class AuthController {
         password: Crypt.encrypt(password),
         isAdmin: false,
       };
-      User.save(newUser, theuser => {
+      User.save(newUser, theNewRegisteredUser => {
         return res.status(201).json({
           success: true,
-          data: theuser,
+          data: theNewRegisteredUser,
           message: 'user signed Up successfully',
         });
       });
@@ -33,16 +33,16 @@ class AuthController {
 
   static signInUser(req, res) {
     const { email, password } = req.body;
-    User.findOne(email, userDoc => {
-      if (userDoc.length === 0) {
+    User.findOne(email, foundUser => {
+      if (foundUser.length === 0) {
         res.status(404).json({
           success: false,
           error: 'User has no account',
         });
-      } else if (Crypt.isMatchDbPassword(password, userDoc[0].password)) {
+      } else if (Crypt.isMatchDbPassword(password, foundUser[0].password)) {
         res.status(200).json({
           success: true,
-          token: JwtAuthenticate.jwtEncode(userDoc[0].user_id),
+          token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
         });
       } else {
         res.status(400).json({
