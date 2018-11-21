@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "nyc mocha server/test --require babel-register",
-    "start": "nodemon server/app.js --exec babel-node",
+    "start": " npm run createdb && nodemon server/app.js --exec babel-node",
     "coverage": "nyc report --reporter=text-lcov|coveralls",
+    "serve": "nodemon server/app.js --exec babel-node",
     "createdb": "babel-node server/createdb.js && babel-node server/createuserdb.js"
   },
   "engines": {
