@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const pool = new Pool();
 
-const addDataToUser1 = async => {
+const addDataToUser1 = async () => {
   const client = await pool.connect();
   try {
     const sql =
@@ -20,7 +20,7 @@ const addDataToUser1 = async => {
   }
 };
 
-const addDataToUser2 = async => {
+const addDataToUser2 = async () => {
   const client = await pool.connect();
   try {
     const sql =
