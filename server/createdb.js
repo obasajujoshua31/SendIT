@@ -8,7 +8,7 @@ const createParcelTable = async callback => {
 
   try {
     const sql =
-      'CREATE TABLE parcels(parcel_id serial PRIMARY KEY, destination VARCHAR (255) NOT NULL, pick_up_location VARCHAR (255) NOT NULL, placed_by integer NOT NULL, sent_on DATE NOT NULL, weight_metric VARCHAR (255) NOT NULL, weight VARCHAR (255) NOT NULL, status VARCHAR (255) NOT NULL, present_location VARCHAR (255));';
+      'CREATE TABLE parcels(parcel_id serial PRIMARY KEY, destination VARCHAR (255) NOT NULL, pick_up_location VARCHAR (255) NOT NULL, placed_by integer NOT NULL, sent_on DATE NOT NULL, weight_metric VARCHAR (255) NOT NULL, delivered_on DATE, weight VARCHAR (255) NOT NULL, status VARCHAR (255) NOT NULL, present_location VARCHAR (255));';
     const results = await client.query(sql);
     console.log(results.rowCount);
   } catch (e) {
