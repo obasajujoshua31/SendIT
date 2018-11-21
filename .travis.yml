@@ -3,9 +3,6 @@ node_js:
   - 'stable'
 services:
   - postgresql
-addons:
-  jwt:
-    secure: lzB3VPutCSXqI8Q-gM0nmA
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - npm install

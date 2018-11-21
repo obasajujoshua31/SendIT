@@ -71,7 +71,7 @@ describe('API end point Tests.', () => {
     it('Should return a status code of 404 for a user with no parcels', done => {
       request(app)
         .get('/api/v1/users/18/parcels')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: dat.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.equal(res.body.error, 'The User has no Parcels');
@@ -91,7 +91,7 @@ describe('API end point Tests.', () => {
     it('Should return an array length of 1 for parcelID of 1', done => {
       request(app)
         .get('/api/v1/parcels/4')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isDefined(res.body.data);
@@ -103,7 +103,7 @@ describe('API end point Tests.', () => {
     it('Should return a status code of 404 for an invalid parcel ID', done => {
       request(app)
         .get('/api/v1/parcels/9')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.body.error, 'Parcel not found');
           assert.equal(res.statusCode, '404');
@@ -125,7 +125,7 @@ describe('API end point Tests.', () => {
       request(app)
         .post('/api/v1/parcels')
         .send(testorder.testOrder)
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '201');
           assert.equal(res.body.message, 'order created');
@@ -135,7 +135,7 @@ describe('API end point Tests.', () => {
     it('Should return error message with a status of 400 for invalid credentials', done => {
       request(app)
         .post('/api/v1/parcels')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -155,7 +155,7 @@ describe('API end point Tests.', () => {
     it('Should return a message order cancelled to the id', done => {
       request(app)
         .put('/api/v1/parcels/1/cancel')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
@@ -166,7 +166,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect Parcel Id', done => {
       request(app)
         .put('/api/v1/parcels/12/cancel')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           done();
@@ -185,7 +185,7 @@ describe('API end point Tests.', () => {
     it('Should return the parcel order updated', done => {
       request(app)
         .put('/api/v1/parcels/1/update')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
@@ -196,7 +196,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for empty field', done => {
       request(app)
         .put('/api/v1/parcels/12/update')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -213,7 +213,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect parcel', done => {
       request(app)
         .put('/api/v1/parcels/89/update')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
@@ -225,7 +225,7 @@ describe('API end point Tests.', () => {
     it('Should return Present Location changed for a valid Admin', done => {
       request(app)
         .put('/api/v1/parcels/1/changeLocation')
-        .set({ Authorization: database.jwtadmin })
+        .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
@@ -236,7 +236,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for empty field', done => {
       request(app)
         .put('/api/v1/parcels/1/changeLocation')
-        .set({ Authorization: database.jwtadmin })
+        .set({ Authorization: process.env.jwtadmin })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -253,7 +253,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect parcel', done => {
       request(app)
         .put('/api/v1/parcels/89/changeLocation')
-        .set({ Authorization: database.jwtadmin })
+        .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
@@ -263,7 +263,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for a user that is not an Admin', done => {
       request(app)
         .put('/api/v1/parcels/1/changeLocation')
-        .set({ Authorization: database.jwttoken })
+        .set({ Authorization: process.env.jwttoken })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '403');
