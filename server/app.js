@@ -5,7 +5,7 @@ import auth from './routes/auth';
 import JwtAuthenticate from './helpers/jwtAuthenticate';
 
 dotenv.config();
-console.log(process.env.config());
+
 const app = express();
 
 app.use(express.json());
