@@ -8,9 +8,9 @@ const defaultConfig = {
 };
 
 const productionConfig = {
-  URI:
+  DATABASE_URL:
     'postgres://otmxtbbeisxzjv:7773b9bf8c1fc81a944cd4de68899c326c7e826a081d6bf4b366ad9cc6095758@ec2-54-235-133-42.compute-1.amazonaws.com:5432/da1drvtqlctulg',
-  ssl: true,
+  sslmode: require,
 };
 const getConf = () => {
   if (
