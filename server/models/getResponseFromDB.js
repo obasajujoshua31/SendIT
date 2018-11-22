@@ -1,17 +1,10 @@
 import pool from '../config/config';
 
-const getResponseFromDB = (sql, params = null, callback = null) => {
-  pool.connect();
-  return pool
-    .query(sql, params)
-    .then(results => {
-      callback(results.rows);
-      pool.end();
-    })
-    .catch(err => {
-      console.log(err);
-      pool.end();
-    });
+const getResponseFromDB = async (sql, params = null, callback = null) => {
+  const client = await pool.connect();
+  const results = await client.query(sql, params);
+  callback(results);
+  client.end();
 };
 
 export default getResponseFromDB;
