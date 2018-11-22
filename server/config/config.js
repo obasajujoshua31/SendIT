@@ -8,7 +8,7 @@ const defaultConfig = {
 };
 
 const productionConfig = {
-  DATABASE_URL: process.env.PROD_DATABASE_URL,
+  connectionString: process.env.PROD_DATABASE_URL,
 };
 const getConf = () => {
   if (
