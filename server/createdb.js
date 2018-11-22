@@ -1,8 +1,6 @@
-import { Pool } from 'pg';
+import pool from './config/config';
 import database from './database';
-// import dotenv from 'dotenv';
-// dotenv.config();
-const pool = new Pool();
+
 
 const addDataToParcel1 = async () => {
   const client = await pool.connect();
@@ -51,10 +49,9 @@ const addDataToParcel3 = async () => {
 
 (async () => {
   const client = await pool.connect();
-
   try {
     const sql =
-      'CREATE TABLE parcels(parcel_id serial PRIMARY KEY, destination VARCHAR (255) NOT NULL, pick_up_location VARCHAR (255) NOT NULL, placed_by integer NOT NULL, sent_on DATE NOT NULL, weight_metric VARCHAR (255) NOT NULL, delivered_on DATE, weight VARCHAR (255) NOT NULL, status VARCHAR (255) NOT NULL, present_location VARCHAR (255));';
+      'CREATE TABLE IF NOT EXISTS parcels(parcel_id serial PRIMARY KEY, destination VARCHAR (255) NOT NULL, pick_up_location VARCHAR (255) NOT NULL, placed_by integer NOT NULL, sent_on DATE NOT NULL, weight_metric VARCHAR (255) NOT NULL, delivered_on DATE, weight VARCHAR (255) NOT NULL, status VARCHAR (255) NOT NULL, present_location VARCHAR (255));';
     const results = await client.query(sql);
     console.log(results.rowCount);
   } catch (e) {
