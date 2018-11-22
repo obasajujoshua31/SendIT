@@ -3,7 +3,7 @@ import User from '../models/user';
 
 class JwtAuthenticate {
   static jwtEncode(userId) {
-    return jwt.sign({ userId }, process.env.jwtcode);
+    return jwt.sign({ userId }, 'great_is_him');
   }
 
   static jwtVerifyToken(req, res, next) {
@@ -15,7 +15,7 @@ class JwtAuthenticate {
       });
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.jwtcode, err => {
+    jwt.verify(bearer[1], 'great_is_him', err => {
       if (err) {
         return res.status(401).json({
           success: false,
@@ -35,7 +35,7 @@ class JwtAuthenticate {
       });
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.jwtcode, (err, bearerDetails) => {
+    jwt.verify(bearer[1], 'great_is_him', (err, bearerDetails) => {
       if (err) {
         return res.status(401).json({
           success: false,
