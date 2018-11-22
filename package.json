@@ -4,7 +4,7 @@
   "description": "A Parcel delivery application",
   "main": "app.js",
   "scripts": {
-    "test": "nyc mocha server/test --require babel-register",
+    "test": "set NODE_ENV=test&& nyc mocha server/test --require babel-register",
     "start": " npm run createdb && nodemon server/app.js --exec babel-node",
     "coverage": "nyc report --reporter=text-lcov|coveralls",
     "serve": "nodemon server/app.js --exec babel-node",
