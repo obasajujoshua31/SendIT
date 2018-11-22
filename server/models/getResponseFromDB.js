@@ -1,16 +1,16 @@
-import client from '../config/config';
+import pool from '../config/config';
 
 const getResponseFromDB = (sql, params = null, callback = null) => {
-  client.connect();
-  return client
+  pool.connect();
+  return pool
     .query(sql, params)
     .then(results => {
       callback(results.rows);
-      client.end();
+      pool.end();
     })
     .catch(err => {
       console.log(err);
-      client.end();
+      pool.end();
     });
 };
 

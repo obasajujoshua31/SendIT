@@ -1,4 +1,4 @@
-import pg from 'pg';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -22,6 +22,6 @@ const getConf = () => {
     return productionConfig;
   }
 };
-const client = new pg.Client(getConf());
+const pool = new Pool(getConf());
 
-export default client;
+export default pool;
