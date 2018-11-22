@@ -1,6 +1,7 @@
 import pool from './config/config';
 import database from './database';
 
+
 const addDataToUser1 = async () => {
   const client = await pool.connect();
   try {
