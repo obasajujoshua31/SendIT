@@ -1,15 +1,16 @@
-import { Client } from 'pg';
+import client from '../config/config';
 
 const getResponseFromDB = (sql, params = null, callback = null) => {
-  const client = new Client();
   client.connect();
   return client
     .query(sql, params)
     .then(results => {
       callback(results.rows);
+      client.end();
     })
     .catch(err => {
       console.log(err);
+      client.end();
     });
 };
 
