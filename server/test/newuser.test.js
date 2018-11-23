@@ -3,6 +3,7 @@ const newUser = {
   password: '12345678',
   firstName: 'Kenneth',
   lastName: 'Afolabi',
+  isAdmin: false,
 };
 
 const invalidUser = {
@@ -10,6 +11,7 @@ const invalidUser = {
   password: '12345678',
   firstName: 'Olumonkey',
   lastName: 'Adegorilla',
+  isAdmin: false,
 };
 
 export default { newUser, invalidUser };
