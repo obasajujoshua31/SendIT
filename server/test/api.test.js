@@ -183,7 +183,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to update Parcel', () => {
     it('Should return the parcel order updated', done => {
       request(app)
-        .put('/api/v1/parcels/1/destination')
+        .put('/api/v1/parcels/3/destination')
         .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
