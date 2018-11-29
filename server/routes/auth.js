@@ -9,6 +9,6 @@ router.post(
   validator.signUpFormValidator,
   AuthController.signUpUser
 );
-router.post('/signin', AuthController.signInUser);
+router.post('/login', AuthController.signInUser);
 
 export default router;

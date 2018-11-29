@@ -10,8 +10,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/api/v1/auth', auth);
 app.use('/api/v1', JwtAuthenticate.jwtVerifyToken, api);
-app.use('/auth', auth);
+app.all('*', (req, res) => {
+  res.json({
+    success: false,
+    error: 'Page Not Found',
+  });
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at port ${process.env.PORT} `);

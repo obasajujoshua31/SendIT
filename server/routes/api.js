@@ -14,12 +14,18 @@ router.post(
 );
 router.put('/parcels/:parcelId/cancel', ParcelController.cancelParcelOrderById);
 router.put(
-  '/parcels/:parcelId/update',
+  '/parcels/:parcelId/destination',
   validator.updateFormValidator,
   ParcelController.updateParcelOrderById
 );
 router.put(
-  '/parcels/:parcelId/changeLocation',
+  '/parcels/:parcelId/status',
+  JwtAuthenticate.isAdmin,
+  validator.statusFormValidator,
+  ParcelController.changeParcelStatusByAdminById
+);
+router.put(
+  '/parcels/:parcelId/presentLocation',
   validator.updatePresentLocationValidator,
   JwtAuthenticate.isAdmin,
   ParcelController.changeParcelPresentLocationByAdminById

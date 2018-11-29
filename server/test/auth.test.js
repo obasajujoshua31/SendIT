@@ -18,7 +18,7 @@ describe('Authentication end point Tests.', () => {
   describe('#  Signup', () => {
     it('Should return the data of the new user', done => {
       request(app)
-        .post('/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(newUser.newUser)
         .end((err, res) => {
           assert.isDefined(res.body);
@@ -28,7 +28,7 @@ describe('Authentication end point Tests.', () => {
     });
     it('Should return as status code of 400 for an empty field', done => {
       request(app)
-        .post('/auth/signup')
+        .post('/api/v1/auth/signup')
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -36,7 +36,7 @@ describe('Authentication end point Tests.', () => {
     });
     it('Should return as status code of 400 for an existing user', done => {
       request(app)
-        .post('/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(newUser.invalidUser)
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
@@ -47,7 +47,7 @@ describe('Authentication end point Tests.', () => {
   describe('#  Signin', () => {
     it('Should respond with a token for a registered user', done => {
       request(app)
-        .post('/auth/signin')
+        .post('/api/v1/auth/login')
         .send({
           email: 'obasajujoshua31@gmail.com',
           password: process.env.password,
@@ -60,7 +60,7 @@ describe('Authentication end point Tests.', () => {
     });
     it('Should return as status code of 404 for an unregisted user', done => {
       request(app)
-        .post('/auth/signin')
+        .post('/api/v1/auth/login')
         .send({ email: 'me@example.com', password: '34558564' })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
@@ -69,8 +69,11 @@ describe('Authentication end point Tests.', () => {
     });
     it('Should return as status code of 400 for incorrect password', done => {
       request(app)
-        .post('/auth/signin')
-        .send({ email: 'obasajujoshua31@gmail.com', password: 'wrongpassword' })
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'obasajujoshua31@gmail.com',
+          password: 'wrongpassword',
+        })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
