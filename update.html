@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width = device-width">
+	<meta name="description" content="Affordable courier service">
+	<meta name="keywords" content="courier service, parcel delivery">
+	<meta name="author" content="Obasaju Joshua">
+	<link rel="stylesheet" href="./css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyC5Vg1PhNL-BbFmfMcA4CXrlsJww-a1kiY&callback=initMap"
+	 async defer></script>
+<script src="./javascripts/mapController.js"></script>
+<script src="./javascripts/index.js"></script>
+	<title> SendIT | Update this Delivery Order</title>
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<div id="brand-logo">
+				<h1>SendIT</h1>
+			</div>
+			<div class="user__dd">
+				<img class="profile__pic" src="./images/joshua.jpg">
+			</div>
+			<div class="dropdown">
+				<div class="dropdown_content">
+					<ul>
+						<li><a href="dashboard.html">Dashboard</a></li>
+						<li><a href="userprofile.html">Profile</a></li>
+						<li><a href="create_order.html">Create a Parcel Order</a></li>
+						<li><a href="signin.html">Logout</a></li>
+					</ul>
+				</div>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<section class="company">
+		<div class="container__wrapper">
+			<div class="container">
+				<div class ="create_order_container">
+				<div class="form__wrapper">
+					<form id="distance_form">
+						<h3>Update Parcel Delivery Order</h3><br>
+						<label>Parcel Name</label>
+						<input type="text" disabled class="myInputs" placeholder="Your Parcel Name">
+						<label>Weight in Kg</label>
+						<input type="text" disabled class="myInputs" id ="weightInKg" value ="22" placeholder="weight of the parcel">
+						<label>Your Pick up Location </label>
+						<input id="from_places" class="myInputs" placeholder="Enter Your Pick up location" name="pickup">
+						<input id="origin" type="hidden" name="origin" required>
+						<br>
+						<label>Your New Destination </label>
+						<input id="to_places" class="myInputs" placeholder="Enter your destination" name="delivery">
+						<input type="hidden" name="destination" id="destination" required>
+						<label>Estimated distance in Km</label>
+						<input disabled class="myInputs" id="in-kilo">
+						<label>Estimated Costs - <span>(N22/Kg/Km)</span></label>
+						<input disabled class="myInputs" id="estimatedCost">
+						<br>
+						<button type="submit" id="updateMap" class="mySmallButton">View Update</button>
+						<button type="submit" id="createOrder" class="mySmallButton">Confirm Update</button>
+					</form>
+				</div>
+				<div class ="create_order_map" id ="map">
+				</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer>
+		<p>SendIT Inc, Copyright &copy; 2018</p>
+	</footer>
+</body>
+</html>

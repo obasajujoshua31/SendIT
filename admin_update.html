@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width">
+    <meta name="description" content="Affordable courier service">
+    <meta name="keywords" content="courier service, parcel delivery">
+    <meta name="author" content="Obasaju Joshua">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyCgPpK9KI8N5kZfr9MnmGcRLVSXcobB_Kw"
+        async defer></script>
+
+    <title> SendIT | Update this Delivery Order</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div id="brand-logo">
+                <h1>SendIT</h1>
+            </div>
+            <div class="user__dd">
+                <img class="profile__pic" src="./images/joshua.jpg">
+            </div>
+            <div class="dropdown">
+                <div class="dropdown_content">
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="userprofile.html">Profile</a></li>
+                        <li><a href="create_order.html">Create a Parcel Order</a></li>
+                        <li><a href="signin.html">Logout</a></li>
+                    </ul>
+                </div>
+                </ul>
+            </div>
+        </div>
+
+    </header>
+    <section class="company">
+        <div class="container__wrapper">
+            <div class="container">
+
+
+
+
+
+                <div class="form__wrapper">
+                    <form id="distance_form" action="javascript:void(0);">
+                        <h3>Update Parcel Delivery Order</h3>
+                        <label>Parcel Name</label>
+                        <input type="text" disabled class="myInputs" placeholder="Your Parcel Name">
+                        <label>Weight in Kg</label>
+                        <input type="text" disabled class="myInputs" placeholder="weight of the parcel">
+                        <label>Your Pick up Location </label>
+                        <input id="from_places" disabled class="myInputs" placeholder="Enter Your Pick up location" name="pickup">
+                        <input id="origin" type="hidden" name="origin" required>
+                        <br>
+                        <label>Destination </label>
+                        <input id="to_places" disabled class="myInputs" placeholder="Enter your destination" name="delivery">
+                        <input type="hidden" name="destination" id="destination" required>
+                        <label>New Location </label>
+                        <input id="from_places" d class="myInputs" placeholder ="change Present Location" name="presentLocation">
+                        <input id="origin" type="hidden" name="origin" required>
+                        <br>
+                        <button type="submit" class="myButton"><a href="detail.html">Update Parcel Delivery</a></button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>SendIT Inc, Copyright &copy; 2018</p>
+    </footer>
+
+    <script src="./javascripts/index.js"></script>
+
+</body>
+
+</html>
