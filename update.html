@@ -7,11 +7,13 @@
 	<meta name="keywords" content="courier service, parcel delivery">
 	<meta name="author" content="Obasaju Joshua">
 	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyC5Vg1PhNL-BbFmfMcA4CXrlsJww-a1kiY&callback=initMap"
 	 async defer></script>
 <script src="./javascripts/mapController.js"></script>
 <script src="./javascripts/index.js"></script>
+
 	<title> SendIT | Update this Delivery Order</title>
 </head>
 
@@ -41,37 +43,51 @@
 		<div class="container__wrapper">
 			<div class="container">
 				<div class ="create_order_container">
-				<div class="form__wrapper">
-					<form id="distance_form">
-						<h3>Update Parcel Delivery Order</h3><br>
-						<label>Parcel Name</label>
-						<input type="text" disabled class="myInputs" placeholder="Your Parcel Name">
-						<label>Weight in Kg</label>
-						<input type="text" disabled class="myInputs" id ="weightInKg" value ="22" placeholder="weight of the parcel">
-						<label>Your Pick up Location </label>
-						<input id="from_places" class="myInputs" placeholder="Enter Your Pick up location" name="pickup">
-						<input id="origin" type="hidden" name="origin" required>
-						<br>
-						<label>Your New Destination </label>
-						<input id="to_places" class="myInputs" placeholder="Enter your destination" name="delivery">
-						<input type="hidden" name="destination" id="destination" required>
-						<label>Estimated distance in Km</label>
-						<input disabled class="myInputs" id="in-kilo">
-						<label>Estimated Costs - <span>(N22/Kg/Km)</span></label>
-						<input disabled class="myInputs" id="estimatedCost">
-						<br>
-						<button type="submit" id="updateMap" class="mySmallButton">View Update</button>
-						<button type="submit" id="createOrder" class="mySmallButton">Confirm Update</button>
+				<div class="parcel_detail_card">
+					<h3 style="text-align: center; color: black; ">Parcel Details</h3>
+					<hr />
+					<h4>Parcel Information</h4>
+					<label>Parcel Name:</label> <span>A Gold wrist watch</span><br />
+					<label>Weight in Kg: </label> <span>22 Kg</span><br /><br />
+					<h4>Location Information</h4>
+					<label>Pick Up Location:</label> <span>15 Lekki Lagos</span><br />
+					<label>Your Destination: </label>
+					<span>Banana Island Ikoyi Lagos</span><br />
+					<label>Present Location: </label> <span>Victoria Island Lagos</span><br />
+					<label>Status: </label> <span>Placed</span>
+					<input type="checkbox" name="status" checked disabled />
+					<span>Transiting</span>
+					<input type="checkbox" name="status" disabled />
+					<span>Delivered</span>
+					<input type="checkbox" name="status" disabled />
+					<span>Cancelled</span>
+					<input type="checkbox" name="status" disabled /> <br /><br />
+					<h4>Billing Information</h4>
+					<label>Estimated Distance: </label> <span>20km</span><br />
+					<label>Estimated Costs: </label> <span>N25300</span><br /><br />
+					<hr />
+					<form>
+						<h4 style="text-align: center">Update this Parcel Order</h4>
+						<label>Your New Destination</label>
+						<input id="to_places" class="myInputs" name="delivery">
+						<input type="hidden" name="destination" id="destination" required><button class="mySmallButton" id ="viewUpdate">
+							View Update
+						</button>
+						<button class="mySmallButton" id ="submitUpdate">Submit Update</button>
+						<button class="myButton2" type = "submit" id ="cancelUpdateForm">Cancel this order</button>
 					</form>
 				</div>
 				<div class ="create_order_map" id ="map">
 				</div>
 				</div>
+				
 			</div>
+			
 		</div>
 	</section>
 	<footer>
 		<p>SendIT Inc, Copyright &copy; 2018</p>
 	</footer>
+	<script src="./javascripts/updateForm.js"></script>
 </body>
 </html>

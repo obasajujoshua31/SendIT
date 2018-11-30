@@ -325,7 +325,8 @@ h3 {
   cursor: pointer;
 }
 .myButton,
-.mySmallButton {
+.mySmallButton,
+.myButton2 {
   width: 100%;
   background-color: brown;
   color: white;
@@ -347,6 +348,15 @@ h3 {
 .myButton:hover,
 .mySmallButton:hover {
   background-color: red;
+  color: white;
+}
+.myButton2 {
+  background-color: white;
+  color: brown;
+  border: 2px solid brown;
+}
+.myButton2:hover {
+  background-color: brown;
   color: white;
 }
 .myInputs {
@@ -501,14 +511,7 @@ tr:nth-child(even) {
 .reference {
   color: brown;
 }
-.myButton2 {
-  width: 200px;
-  padding-right: 15px;
-  padding-left: 15px;
-  color: white;
-  background-color: brown;
-  font-size: 1.2em;
-}
+
 .admin-form {
   margin-top: 10px;
   float: right;
@@ -540,7 +543,17 @@ tr:nth-child(even) {
   margin-top: 10px;
   padding: 10px;
 }
-
+.parcel_detail_card {
+  margin: auto;
+  margin-top: 5%;
+  width: 600px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid brown;
+  border-radius: 5px;
+  padding: 8px;
+  overflow: scroll;
+}
 #cancelOrder {
   color: brown;
   font-weight: bold;

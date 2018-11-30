@@ -8,11 +8,13 @@
     <meta name="keywords" content="courier service, parcel delivery">
     <meta name="author" content="Obasaju Joshua">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyCgPpK9KI8N5kZfr9MnmGcRLVSXcobB_Kw"
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyC5Vg1PhNL-BbFmfMcA4CXrlsJww-a1kiY&callback=initMap"
         async defer></script>
-
-    <title> SendIT | Update this Delivery Order</title>
+    <script src="./javascripts/mapController.js"></script>
+    <script src="./javascripts/index.js"></script>
+    <title> SendIT | Admin Update </title>
 </head>
 
 <body>
@@ -27,56 +29,65 @@
             <div class="dropdown">
                 <div class="dropdown_content">
                     <ul>
-                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
                         <li><a href="userprofile.html">Profile</a></li>
-                        <li><a href="create_order.html">Create a Parcel Order</a></li>
                         <li><a href="signin.html">Logout</a></li>
                     </ul>
                 </div>
                 </ul>
             </div>
         </div>
-
     </header>
     <section class="company">
         <div class="container__wrapper">
             <div class="container">
-
-
-
-
-
-                <div class="form__wrapper">
-                    <form id="distance_form" action="javascript:void(0);">
-                        <h3>Update Parcel Delivery Order</h3>
-                        <label>Parcel Name</label>
-                        <input type="text" disabled class="myInputs" placeholder="Your Parcel Name">
-                        <label>Weight in Kg</label>
-                        <input type="text" disabled class="myInputs" placeholder="weight of the parcel">
-                        <label>Your Pick up Location </label>
-                        <input id="from_places" disabled class="myInputs" placeholder="Enter Your Pick up location" name="pickup">
-                        <input id="origin" type="hidden" name="origin" required>
-                        <br>
-                        <label>Destination </label>
-                        <input id="to_places" disabled class="myInputs" placeholder="Enter your destination" name="delivery">
-                        <input type="hidden" name="destination" id="destination" required>
-                        <label>New Location </label>
-                        <input id="from_places" d class="myInputs" placeholder ="change Present Location" name="presentLocation">
-                        <input id="origin" type="hidden" name="origin" required>
-                        <br>
-                        <button type="submit" class="myButton"><a href="detail.html">Update Parcel Delivery</a></button>
-
-                    </form>
+                <div class="create_order_container">
+                    <div class="parcel_detail_card">
+                        <h3 style="text-align: center; color: black; ">Parcel Details</h3>
+                        <hr />
+                        <h4>Parcel Information</h4>
+                        <label>Parcel Name:</label> <span>A Gold wrist watch</span><br />
+                        <label>Weight in Kg: </label> <span>22 Kg</span><br /><br />
+                        <h4>Location Information</h4>
+                        <label>Pick Up Location:</label> <span>15 Lekki Lagos</span><br />
+                        <label>Your Destination: </label>
+                        <span>Banana Island Ikoyi Lagos</span><br />
+                        <label>Present Location: </label> <span>Victoria Island Lagos</span><br />
+                        
+                        <form>
+                        <label>Status: </label> <span>Placed</span>
+                        <input type="radio" name="status" value ="placed" checked />
+                        <span>Transiting</span>
+                        <input type="radio" name="status"  value="transiting"/>
+                        <span>Delivered</span>
+                        <input type="radio" name="status" value ="delivered" />
+                        <span>Cancelled</span>
+                        <input type="radio" name="status" value="cancelled" /> <br /><br />
+                        <h4>Billing Information</h4>
+                        <label>Estimated Distance: </label> <span>20km</span><br />
+                        <label>Estimated Costs: </label> <span>N25300</span><br /><br />
+                        <hr />
+                            <h4 style="text-align: center">Update this Parcel Order</h4>
+                            <label>Present Location</label>
+                            <input id="to_new_places" class="myInputs" name="delivery">
+                            <input type="hidden" name="presentLocation" id="newDestination" required><button id= "viewUpdate" class="mySmallButton">
+                                View Update
+                            </button>
+                            <button class="mySmallButton" id ="submitAdminUpdate" type ="submit">Submit Update</button>
+                        </form>
+                    </div>
+                    <div class="create_order_map" id="map">
+                    </div>
                 </div>
+
             </div>
+
         </div>
     </section>
     <footer>
         <p>SendIT Inc, Copyright &copy; 2018</p>
     </footer>
-
-    <script src="./javascripts/index.js"></script>
-
+        <script src="./javascripts/adminForm.js"></script>
 </body>
 
 </html>
