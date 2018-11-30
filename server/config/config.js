@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const defaultConfig = {
-  connectionString: process.env_DEV_DATABASE_URL,
+  connectionString: process.env.DEV_DATABASE_URL,
 };
 
 const productionConfig = {

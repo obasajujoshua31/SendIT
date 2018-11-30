@@ -12,7 +12,7 @@ class ParcelController {
         });
       });
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Unexpected results',
       });
@@ -35,7 +35,7 @@ class ParcelController {
         });
       });
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Unexpected results',
       });

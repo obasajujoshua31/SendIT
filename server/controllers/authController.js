@@ -4,7 +4,7 @@ import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class AuthController {
   static signUpUser(req, res) {
-    const { firstName, lastName, email, password, isAdmin } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     try {
       User.findOne(email, results => {
         if (results.length > 0) {
@@ -18,7 +18,7 @@ class AuthController {
           lastName,
           email,
           password: Crypt.encrypt(password),
-          isAdmin,
+          isAdmin: false,
         };
         User.save(newUser, newRegisteredUser => {
           return res.status(201).json({
@@ -29,7 +29,7 @@ class AuthController {
         });
       });
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Unexpected results',
       });
@@ -41,24 +41,24 @@ class AuthController {
     try {
       User.findOne(email, foundUser => {
         if (foundUser.length === 0) {
-          res.status(404).json({
+          return res.status(404).json({
             success: false,
             error: 'User has no account',
           });
-        } else if (Crypt.isMatchDbPassword(password, foundUser[0].password)) {
-          res.status(200).json({
+        }
+        if (Crypt.isMatchDbPassword(password, foundUser[0].password)) {
+          return res.status(200).json({
             success: true,
             token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
           });
-        } else {
-          res.status(400).json({
-            success: false,
-            error: 'Password incorrect',
-          });
         }
+        return res.status(400).json({
+          success: false,
+          error: 'Password incorrect',
+        });
       });
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Unexpected results',
       });
