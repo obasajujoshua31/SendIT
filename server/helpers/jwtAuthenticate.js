@@ -28,30 +28,16 @@ class JwtAuthenticate {
 
   static isAdmin(req, res, next) {
     const bearerHeader = req.headers.authorization;
-    if (typeof bearerHeader === 'undefined') {
-      return res.status(401).json({
-        success: false,
-        error: 'You are not authorized',
-      });
-    }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], 'great_is_him', (err, bearerDetails) => {
-      if (err) {
+    const bearerDetails = jwt.verify(bearer[1], 'great_is_him');
+    User.findById(bearerDetails.userId, foundUserDetails => {
+      if (foundUserDetails[0].is_admin === false) {
         return res.status(401).json({
           success: false,
-          error: 'You are not authorized',
+          error: 'Only Admin have access',
         });
       }
-      User.findById(bearerDetails.userId, foundUserDetails => {
-        console.log('user details', foundUserDetails);
-        if (foundUserDetails[0].is_admin === false) {
-          return res.status(401).json({
-            success: false,
-            error: 'Only Admin have access',
-          });
-        }
-        return next();
-      });
+      return next();
     });
   }
 }

@@ -48,9 +48,16 @@ class Parcel {
     getResponseFromDB(sql, params, callback);
   }
 
+  static findByIdAndUpdateStatus(parcelId, newStatus, callback) {
+    const sql =
+      'UPDATE parcels SET status = $1 WHERE parcel_id =$2 RETURNING *';
+    const params = [newStatus, parcelId];
+    getResponseFromDB(sql, params, callback);
+  }
+
   static remove(callback) {
-    const sql = 'DELETE FROM parcels WHERE placed_by = $1 RETURNING *';
-    const params = [23];
+    const sql = 'DELETE FROM parcels WHERE pick_up_location = $1 RETURNING *';
+    const params = ['University of Lagos'];
     getResponseFromDB(sql, params, callback);
   }
 }
