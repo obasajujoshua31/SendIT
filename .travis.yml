@@ -3,15 +3,12 @@ node_js:
   - 'stable'
 services:
   - postgresql
-cache:
-  directories:
-    - node_modules
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - npm install
   - npm run createdb
 
 script:
-  - npm test
+  - npm run test:ci
 after_success:
   - npm run coverage
