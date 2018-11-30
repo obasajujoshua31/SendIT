@@ -17,7 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/obasajujoshua31/SendIT"
   },
-
   "author": "Obasaju Joshua",
   "license": "ISC",
   "dependencies": {
@@ -28,7 +27,8 @@
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.22.2",
     "nodemon": "^1.18.4",
-    "pg": "^7.6.1"
+    "pg": "^7.6.1",
+    "event-stream": "3.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
