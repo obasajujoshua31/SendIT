@@ -9,6 +9,6 @@ before_script:
   - npm run createdb
 
 script:
-  - npm run test:ci
+  - npm run test
 after_success:
   - npm run coverage
