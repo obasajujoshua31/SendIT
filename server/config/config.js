@@ -16,9 +16,8 @@ const getConf = () => {
     process.env.NODE_ENV === 'test'
   ) {
     return defaultConfig;
-  } else if (process.env.NODE_ENV === 'production') {
-    return productionConfig;
   }
+  return productionConfig;
 };
 const pool = new Pool(getConf());
 

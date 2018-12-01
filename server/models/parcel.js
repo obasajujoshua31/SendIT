@@ -9,6 +9,7 @@ class Parcel {
   static findById(parcelId, callback) {
     const sql = 'SELECT * FROM parcels WHERE parcel_id = $1';
     const params = [parcelId];
+
     getResponseFromDB(sql, params, callback);
   }
 
@@ -58,6 +59,13 @@ class Parcel {
   static remove(callback) {
     const sql = 'DELETE FROM parcels WHERE pick_up_location = $1 RETURNING *';
     const params = ['University of Lagos'];
+    getResponseFromDB(sql, params, callback);
+  }
+
+  static changeToPlaced(callback) {
+    const sql =
+      'UPDATE parcels SET status = $1 WHERE parcel_id = $2 RETURNING *';
+    const params = ['PLACED', 1];
     getResponseFromDB(sql, params, callback);
   }
 }

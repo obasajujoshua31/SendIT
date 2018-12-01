@@ -3,66 +3,62 @@ import Crypt from '../helpers/crypt';
 import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class AuthController {
-  static signUpUser(req, res) {
+  static signUpUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
-    try {
-      User.findOne(email, results => {
-        if (results.length > 0) {
-          return res.status(400).json({
-            success: false,
-            error: 'Email is already used',
-          });
+    User.findOne(email, (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.length > 0) {
+        const err2 = new Error();
+        err2.statusCode = 400;
+        err2.message = 'Email is not available';
+        return next(err2);
+      }
+      const newUser = {
+        firstName,
+        lastName,
+        email,
+        password: Crypt.encrypt(password),
+        isAdmin: false,
+      };
+      User.save(newUser, (e, newRegisteredUser) => {
+        if (e) {
+          return next(e);
         }
-        const newUser = {
-          firstName,
-          lastName,
-          email,
-          password: Crypt.encrypt(password),
-          isAdmin: false,
-        };
-        User.save(newUser, newRegisteredUser => {
-          return res.status(201).json({
-            success: true,
-            token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
-            message: 'user signed Up successfully',
-          });
+        return res.status(201).json({
+          success: true,
+          token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
+          message: 'user signed Up successfully',
         });
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 
-  static signInUser(req, res) {
+  static signInUser(req, res, next) {
     const { email, password } = req.body;
-    try {
-      User.findOne(email, foundUser => {
-        if (foundUser.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'User has no account',
-          });
-        }
-        if (Crypt.isMatchDbPassword(password, foundUser[0].password)) {
-          return res.status(200).json({
-            success: true,
-            token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
-          });
-        }
-        return res.status(400).json({
-          success: false,
-          error: 'Password incorrect',
-        });
+
+    User.findOne(email, (err, foundUser) => {
+      if (err) {
+        return next(err);
+      }
+      if (foundUser.length === 0) {
+        const err2 = new Error();
+        err2.message = 'Invalid Password or Username';
+        err2.statusCode = 400;
+        return next(err2);
+      }
+      if (!Crypt.isMatchDbPassword(password, foundUser[0].password)) {
+        const err3 = new Error();
+        err3.message = 'Invalid Password or Username';
+        err3.statusCode = 400;
+        return next(err3);
+      }
+      return res.status(200).json({
+        success: true,
+        token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 }
 

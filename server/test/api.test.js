@@ -6,12 +6,22 @@ import Parcel from '../models/parcel';
 
 describe('API end point Tests.', () => {
   before(async () => {
-    await Parcel.remove(results => {
-      console.log(results.rows);
+    await Parcel.remove((err, results) => {
+      console.log(results);
+    });
+  });
+  before(async () => {
+    await Parcel.changeToPlaced((err, results) => {
+      console.log(results);
     });
   });
   after(async () => {
-    await Parcel.remove(results => {
+    await Parcel.remove((err, results) => {
+      console.log(results);
+    });
+  });
+  after(async () => {
+    await Parcel.changeToPlaced((err, results) => {
       console.log(results);
     });
   });
