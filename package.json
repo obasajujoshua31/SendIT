@@ -17,7 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/obasajujoshua31/SendIT"
   },
-
   "author": "Obasaju Joshua",
   "license": "ISC",
   "dependencies": {
