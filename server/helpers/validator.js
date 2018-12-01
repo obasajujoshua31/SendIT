@@ -93,12 +93,6 @@ const signUpFormValidator = [
   check('password')
     .isLength({ min: 5 })
     .withMessage('Password must be minimum 5 characters'),
-  check('isAdmin')
-    .isBoolean()
-    .trim()
-    .escape()
-    .withMessage('Either true or false'),
-
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

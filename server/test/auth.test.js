@@ -6,12 +6,12 @@ import newUser from './newuser.test';
 
 describe('Authentication end point Tests.', () => {
   before(async () => {
-    await User.remove(results => {
+    await User.remove((err, results) => {
       console.log(results);
     });
   });
   after(async () => {
-    await User.remove(results => {
+    await User.remove((err, results) => {
       console.log(results);
     });
   });
@@ -58,12 +58,12 @@ describe('Authentication end point Tests.', () => {
           done();
         });
     });
-    it('Should return as status code of 404 for an unregisted user', done => {
+    it('Should return as status code of 400 for an unregisted user', done => {
       request(app)
         .post('/api/v1/auth/login')
         .send({ email: 'me@example.com', password: '34558564' })
         .end((err, res) => {
-          assert.equal(res.statusCode, '404');
+          assert.equal(res.statusCode, '400');
           done();
         });
     });
