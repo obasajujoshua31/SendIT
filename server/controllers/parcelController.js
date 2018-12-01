@@ -1,68 +1,55 @@
 import jwt from 'jsonwebtoken';
 import Parcel from '../models/parcel';
-import User from '../models/user';
 
 class ParcelController {
-  static getAllParcels(req, res) {
-    try {
-      Parcel.findAll(results => {
-        return res.status(200).json({
-          success: true,
-          data: results,
-        });
+  static getAllParcels(req, res, next) {
+    Parcel.findAll((err, results) => {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).json({
+        success: true,
+        data: results,
       });
-    } catch (e) {
-      res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 
   static getParcelsByUserId(req, res) {
     const { userId } = req.params;
-    try {
-      Parcel.findByUserId(+userId, results => {
-        if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'The User has no Parcels',
-          });
-        }
-        return res.status(200).json({
-          success: true,
-          data: results,
+    Parcel.findByUserId(+userId, (err, results) => {
+      if (err) {
+        return res.status(400).json({ success: false, error: err.stack });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'The User has no Parcels',
         });
+      }
+      return res.status(200).json({
+        success: true,
+        data: results,
       });
-    } catch (e) {
-      res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 
-  static getParcelsByParcelId(req, res) {
+  static getParcelsByParcelId(req, res, next) {
     const { parcelId } = req.params;
-    try {
-      Parcel.findById(+parcelId, results => {
-        if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'Parcel not found',
-          });
-        }
-        return res.status(200).json({ success: true, data: results });
-      });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    Parcel.findById(parcelId, (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'Parcel not found',
+        });
+      }
+      return res.status(200).json({ success: true, data: results });
+    });
   }
 
-  static postNewParcelOrder(req, res) {
+  static postNewParcelOrder(req, res, next) {
     const token = req.headers.authorization;
     const bearer = token.split(' ');
     const userDetails = jwt.verify(bearer[1], 'great_is_him');
@@ -76,31 +63,39 @@ class ParcelController {
       to,
       status: 'PLACED',
     };
-    try {
-      Parcel.save(newParcel, results => {
-        return res.status(201).json({
-          success: true,
-          data: results,
-          message: 'order created',
-        });
+    Parcel.save(newParcel, (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      return res.status(201).json({
+        success: true,
+        data: results,
+        message: 'order created',
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 
-  static cancelParcelOrderById(req, res) {
+  static cancelParcelOrderById(req, res, next) {
     const { parcelId } = req.params;
-    try {
-      Parcel.findByIdAndCancel(+parcelId, results => {
-        if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'Parcel not found',
-          });
+    Parcel.findById(+parcelId, (err, foundParcel) => {
+      if (err) {
+        return next(err);
+      }
+      if (foundParcel.length === 0) {
+        const error = new Error();
+        error.message = 'Parcel not found';
+        return next(error);
+      }
+      if (foundParcel[0].status === 'CANCELLED') {
+        const errMsg = new Error();
+        errMsg.message = 'Your order is already Cancelled';
+        errMsg.statusCode = 400;
+        return next(errMsg);
+      }
+
+      Parcel.findByIdAndCancel(+parcelId, (err2, results) => {
+        if (err2) {
+          return next(err2);
         }
         return res.status(200).json({
           success: true,
@@ -108,105 +103,84 @@ class ParcelController {
           message: 'order cancelled',
         });
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 
-  static updateParcelOrderById(req, res) {
+  static updateParcelOrderById(req, res, next) {
     const { parcelId } = req.params;
     const { destination } = req.body;
-    try {
-      Parcel.findById(+parcelId, foundParcel => {
-        if (foundParcel.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'Your order is not found',
-          });
+    Parcel.findById(+parcelId, (err, foundParcel) => {
+      if (err) {
+        return next(err);
+      }
+      if (foundParcel.length === 0) {
+        const error = new Error();
+        error.message = 'Your order is not found';
+        return next(error);
+      }
+      if (foundParcel[0].status === 'CANCELLED') {
+        const errMsg = new Error();
+        errMsg.message = 'Your order is already Cancelled';
+        errMsg.statusCode = 400;
+        return next(errMsg);
+      }
+      Parcel.findByIdAndUpdate(parcelId, destination, (e, results) => {
+        if (e) {
+          return next(e);
         }
-        if (foundParcel[0].status === 'CANCELLED') {
-          return res.status(400).json({
-            success: false,
-            error: 'Your Order is already Cancelled',
-          });
+        if (results.length === 0) {
+          const err2 = new Error();
+          err2.message = 'Parcel not found';
+          return next(err2);
         }
-        try {
-          Parcel.findByIdAndUpdate(parcelId, destination, results => {
-            if (results.length === 0) {
-              return res.status(404).json({
-                success: true,
-                error: 'Parcel not found',
-              });
-            }
-            return res.status(200).json({
-              success: true,
-              data: results,
-            });
-          });
-        } catch (e) {
-          return res.status(500).json({
-            success: false,
-            error: 'Unexpected results',
-          });
-        }
+        return res.status(200).json({
+          success: true,
+          data: results,
+        });
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected Results ',
-      });
-    }
+    });
   }
 
-  static changeParcelPresentLocationByAdminById(req, res) {
+  static changeParcelPresentLocationByAdminById(req, res, next) {
     const { parcelId } = req.params;
     const { presentLocation } = req.body;
-    try {
-      Parcel.findByIdAndChangeLocation(+parcelId, presentLocation, results => {
+    Parcel.findByIdAndChangeLocation(
+      +parcelId,
+      presentLocation,
+      (err, results) => {
+        if (err) {
+          return next(err);
+        }
         if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'Parcel not found',
-          });
+          const err2 = new Error();
+          err2.message = 'Parcel not found';
+          return next(err2);
         }
         return res.status(200).json({
           success: true,
           data: results,
         });
-      });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+      }
+    );
   }
 
-  static changeParcelStatusByAdminById(req, res) {
+  static changeParcelStatusByAdminById(req, res, next) {
     const { parcelId } = req.params;
     const { status } = req.body;
-    try {
-      Parcel.findByIdAndUpdateStatus(+parcelId, status, results => {
-        if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            error: 'Parcel not found',
-          });
-        }
-        return res.status(200).json({
-          success: true,
-          data: results,
-        });
+    Parcel.findByIdAndUpdateStatus(+parcelId, status, (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.length === 0) {
+        const err2 = new Error();
+        err2.message = 'Parcel not found';
+        return next(err2);
+      }
+      return res.status(200).json({
+        success: true,
+        data: results,
       });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        error: 'Unexpected results',
-      });
-    }
+    });
   }
 }
 

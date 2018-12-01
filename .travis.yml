@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '10.14.1'
+  - 'stable'
 services:
   - postgresql
 before_script:
@@ -9,6 +9,6 @@ before_script:
   - npm run createdb
 
 script:
-  - npm test
+  - npm run test
 after_success:
   - npm run coverage
