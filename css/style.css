@@ -682,9 +682,13 @@ tr:nth-child(even) {
 
   .company .container {
     width: 100%;
+    overflow: scroll;
   }
   .create_order_container {
     flex-direction: column;
+  }
+  .create_order_map {
+    height: 400px;
   }
 
   .profile__details {
