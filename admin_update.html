@@ -24,22 +24,21 @@
                 <h1>SendIT</h1>
             </div>
             <div class="user__dd">
-                <img class="profile__pic" src="./images/joshua.jpg">
+                <img class="profile__pic" id ="profile_dropdown" src="./images/joshua.jpg">
             </div>
-            <div class="dropdown">
+            <div class="dropdown" id ="dropdown">
                 <div class="dropdown_content">
                     <ul>
                         <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
-                        <li><a href="userprofile.html">Profile</a></li>
-                        <li><a href="signin.html">Logout</a></li>
+                        <li><a href="index.html">Logout</a></li>
                     </ul>
                 </div>
                 </ul>
             </div>
         </div>
     </header>
-    <section class="company">
-        <div class="container__wrapper">
+    <section>
+        <div class="sendit-container">
             <div class="container">
                 <div class="create_order_container">
                     <div class="parcel_detail_card">
@@ -88,6 +87,7 @@
         <p>SendIT Inc, Copyright &copy; 2018</p>
     </footer>
         <script src="./javascripts/adminForm.js"></script>
+        <script src ="./javascripts/dropdown.js"></script>
 </body>
 
 </html>

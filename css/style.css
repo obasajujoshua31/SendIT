@@ -79,14 +79,13 @@ header a {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-header .container {
+.header_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 header li {
-  float: left;
   display: inline;
   padding: 0px 10px 10px;
 }
@@ -113,39 +112,115 @@ header .current a {
   color: #ff0000;
   font-weight: bold;
 }
+.sendit-container {
+  min-height: calc(100vh - 80px);
+}
+.testimonials_container {
+  display: flex;
+}
+.testimonials_container h3 {
+  color: black;
+  text-align: center;
+}
 
 .company {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url("../images/sendit3.jpg") no-repeat;
   background-size: cover;
-  min-height: calc(100vh - 87px);
+  /* min-height: calc(100vh - 280px); */
 }
-.container__wrapper {
-  overflow: auto;
+.homepage_container div {
+  padding: 10px;
+}
+.homepage_container {
+  display: flex;
+  margin-top: 30px;
+  align-items: flex-start;
+
+  /* align-items: center; */
+}
+
+#details {
+  flex: 3;
+  text-align: center;
+  line-height: 40px;
+}
+#signin_form {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  border: none;
+  flex: 1;
+}
+#signin_form h2 {
+  margin: 0;
+  color: white;
+  text-align: center;
+}
+#signin_form span {
+  font-size: 1.2em;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   position: relative;
-  min-height: calc(100vh - 87px);
+  padding: 6px 0px;
+  color: white;
+}
+#signin_form #space {
+  width: 20px;
+}
+#signin_form button {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  padding: 8px 12px;
+  background-color: brown;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+#signin_form button:hover {
+  background-color: lightcoral;
+  color: white;
+}
+
+#signin_form #createSignUpForm,
+#signin_form #removeSignUpForm {
+  background-color: lightgray;
+  color: brown;
+}
+#signin_form #createSignUpForm:hover,
+#signin_form #removeSignUpForm:hover {
+  background-color: brown;
+  color: lightgray;
+}
+
+#signin_form input {
+  background-color: inherit;
+  padding: 8px 12px;
+  color: white;
+  font-size: 1.1em;
+  outline: none;
+  border: 1px solid brown;
+  width: 100%;
+}
+#signup_form {
+  display: none;
 }
 
 .company h1 {
-  margin-top: 60px;
   font-size: 2.6em;
-  margin-bottom: 10px;
   color: white;
 }
 
 .company p {
   font-size: 1.2em;
   color: white;
-  position: auto;
+  width: 80%;
+  position: relative;
+  font-family: Alex Brush;
 }
 .company .container {
   width: 90%;
-}
-#details {
-  width: 500px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 50px;
 }
 footer {
   padding: 10px;
@@ -162,40 +237,10 @@ footer {
   color: black;
   font-size: 1.2em;
 }
-
-.form__wrapper {
-  border-radius: 5px;
-  background-color: inherit;
-  padding: 20px;
-  margin: auto;
-  min-height: 280px;
-  margin-top: 60px;
-  width: 400px;
-  text-align: left;
-}
-.form__wrapper h2,
-h3 {
-  text-align: center;
-  font-family: Open Sans;
-  color: white;
-}
-
-.form__wrapper span {
-  color: brown;
-}
-.form__wrapper label {
-  font-size: 1.2em;
-  font-family: Lora;
-  font-weight: bold;
-  color: white;
-}
 #user_table {
   /* width: fit-content; */
   margin: 0;
-  background-color: inherit;
   border: none;
-  margin-top: 50px;
-  height: 100%;
 }
 #user_table table {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
@@ -221,21 +266,32 @@ h3 {
   font-family: "Times New Roman", Times, serif;
   background-color: inherit;
 }
-.usertable_filter select * {
-  padding: 16px 20px;
-  background-color: inherit;
-}
 .create_order_container {
   display: flex;
+  margin-top: 100px;
+}
+.profile_page_container {
+  display: flex;
+}
+/* .profile_page_container div {
+  border: 1px solid black;
+} */
+.profile_container {
+  flex: 1;
+}
+.userprofile_header {
+  margin-top: 10px;
+  color: brown;
+  padding: 15px;
+}
+.userprofile_header h1 {
+  font-size: 1.5em;
 }
 .create_order_map {
-  width: 800px;
-
   /* background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)); */
   border: 2px double brown;
-  margin-left: 20%;
-  margin-top: 10%;
-  background-color: white;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  flex: 2;
 }
 .profile {
   border-radius: 5px;
@@ -347,7 +403,7 @@ h3 {
 
 .myButton:hover,
 .mySmallButton:hover {
-  background-color: red;
+  background-color: lightcoral;
   color: white;
 }
 .myButton2 {
@@ -360,29 +416,42 @@ h3 {
   color: white;
 }
 .myInputs {
-  width: 100%;
+  width: 50%;
   font-size: 1.1em;
-  padding: 8px 14px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 8px 14px 0px;
+  border: none;
+  border-bottom: 1px solid black;
   box-sizing: border-box;
+  outline: none;
+}
+.myInputsGen {
+  border: none;
 }
 .myInputs2 {
   width: 100%;
   font-size: 1.1em;
   padding: 12px 20px;
-  margin: 8px 0px;
   display: inline-block;
   border-bottom: 1px solid black;
   box-sizing: border-box;
 }
-.dashboard .container {
-  width: 90%;
+.input-group {
+  display: flex;
+  flex-direction: column;
 }
-.dashboard .dashboard {
-  min-height: calc(100vh - 100px);
+.input-control {
+  display: flex;
+  align-items: flex-end;
+  padding: 5px;
+}
+.input-control span {
+  color: red;
+}
+.input-control label {
+  flex: 1;
+}
+.input-control .myInputs {
+  flex: 2;
 }
 .dropdown {
   position: fixed;
@@ -392,13 +461,11 @@ h3 {
   z-index: 1500;
   display: none;
 }
-
-.user__dd:hover + .dropdown,
-.dropdown:hover {
-  display: block;
-}
 .user__dd {
   cursor: pointer;
+}
+.user__dd {
+  float: right;
 }
 
 .dropdown_content {
@@ -430,6 +497,7 @@ table {
   margin: auto;
 }
 .dashboard-table {
+  width: 100%;
   height: 100%;
 }
 table,
@@ -517,7 +585,6 @@ tr:nth-child(even) {
   float: right;
 }
 .myInputs2 {
-  width: 200px;
   font-size: 1.1em;
   padding: 8px 10px;
   margin: 8px 0;
@@ -544,15 +611,16 @@ tr:nth-child(even) {
   padding: 10px;
 }
 .parcel_detail_card {
-  margin: auto;
-  margin-top: 5%;
-  width: 600px;
-  height: 500px;
   background-color: white;
   border: 1px solid brown;
   border-radius: 5px;
-  padding: 8px;
-  overflow: scroll;
+  padding: 20px;
+  flex: 2;
+}
+.parcel_detail_card h3 {
+  color: brown;
+  text-align: center;
+  padding: 0px;
 }
 #cancelOrder {
   color: brown;
@@ -564,26 +632,18 @@ tr:nth-child(even) {
   text-decoration: none;
   color: white;
 }
+@media (max-width: 1200px) {
+  .container {
+    width: 90%;
+  }
+  .homepage_container #details {
+    flex: 2;
+  }
+}
 @media (max-width: 800px) {
   .container,
-  .company,
-  .container__wrapper {
+  .company {
     width: 100%;
-  }
-
-  .create_order_container {
-    display: block;
-    position: absolute;
-    margin: auto;
-    position: absolute;
-    width: 70%;
-    left: 15%;
-  }
-  .create_order_map {
-    margin: auto;
-    height: 400px;
-    margin: 0;
-    width: auto;
   }
 }
 
@@ -597,6 +657,12 @@ tr:nth-child(even) {
   .dashboard .container {
     width: 100%;
   }
+  .parcel_detail_card .myInputs {
+    width: 100%;
+  }
+  .homepage_container #details {
+    flex: 1;
+  }
   .profile {
     top: 15%;
     left: 25%;
@@ -608,30 +674,24 @@ tr:nth-child(even) {
   td {
     padding: 1px;
   }
-  .create_order_container {
-    width: 100%;
-    left: 0;
-  }
 }
 @media (max-width: 520px) {
   #details {
-    width: 100%;
+    line-height: 30px;
   }
-  .company h1 {
-    font-size: 1em;
-  }
-  .company p {
-    font-size: 1em;
-    width: 100%;
-  }
+
   .company .container {
     width: 100%;
   }
-  .form__wrapper {
-    width: 80%;
+  .create_order_container {
+    flex-direction: column;
   }
+
   .profile__details {
     bottom: 10%;
+  }
+  .testimonials_container {
+    flex-direction: column;
   }
 
   table {
@@ -655,6 +715,9 @@ tr:nth-child(even) {
     display: block;
     padding: 0px 5px 5px;
   }
+  .homepage_container {
+    flex-direction: column;
+  }
   header #brand-logo h1 {
     padding: 0;
   }
@@ -674,12 +737,7 @@ tr:nth-child(even) {
   #details {
     width: 100%;
   }
-
-  .company h1 {
-    font-size: 1em;
-  }
-  .company p {
-    font-size: 1em;
-    width: 100%;
+  .parcel_detail_card {
+    padding: 5px;
   }
 }

@@ -1,43 +1,104 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name ="viewport" content ="width = device-width">
-	<meta name ="description" content ="Affordable courier service">
-	<meta name ="keywords" content ="courier service, parcel delivery">
-	<meta name ="author" content="Obasaju Joshua">
-	<link rel ="stylesheet" href ="./css/style.css">
-	<title> SendIT | Homepage</title>
-</head>
-<body>
-	<header>
-		<div class ="container">
-			<div id ="brand-logo">
-				<h1>SendIT</h1>
-			</div>
-			<nav>
-				<ul>
-					<li class ="current"><a href ="index.html">Home</a></li>
-					<li><a href ="signup.html">Sign Up</a></li>
-					<li><a href ="signin.html">Sign In</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
-	<section class ="company">
-		<div class ="container__wrapper">
-		<div class ="container">
-			
-			<div id ="details">
-			<h1>SendIT Courier Services</h1>
-			<p>SendIT is a courier service that helps users deliver parcels to different destinations. SendIT provides courier quotes based on weight categories.
-			</p>
-		</div>
-		</div>
-		</div>
-	</section>
-	<footer>
-		<p>SendIT Inc, Copyright &copy; 2018</p>
-	</footer>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width = device-width" />
+    <meta name="description" content="Affordable courier service" />
+    <meta name="keywords" content="courier service, parcel delivery" />
+    <meta name="author" content="Obasaju Joshua" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>SendIT | Homepage</title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header_container">
+          <div id="brand-logo"><h1>SendIT</h1></div>
+        </div>
+      </div>
+    </header>
+    <section>
+		<div class="sendit-container">
+      <div class="company">
+        <div class="container">
+          <div class="homepage_container">
+            <div id="details">
+              <h1>SendIT Courier Services</h1>
+              <p>
+                SendIT is a courier service that helps users deliver parcels to
+                different destinations. SendIT provides courier quotes based on
+                weight categories.
+              </p>
+            </div>
+            <div id="signin_form">
+              <form id="signin_form1">
+                <h2>Sign In</h2>
+                <span>Email </span> <input type="email" />
+                <span>Password </span> <input type="password" />
+                <button type="submit" id="signInButton">Sign in</button
+                ><br /><br />
+                <button type="submit" id="createSignUpForm">
+                  Create account
+                </button>
+              </form>
+
+              <form class="signup_form" id="signup_form">
+                <h2>Sign Up</h2>
+                <span>First Name </span> <input type="text" />
+                <span>Last Name </span><input type="text" /> <span>Email</span
+                ><input type="email" /> <span>Password </span>
+                <input type="password" />
+                <button id="signUpButton" type="submit">Sign Up</button
+                ><br /><br />
+                <button type="submit" id="removeSignUpForm">
+                  Already a User
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <center style ="margin-top: 10px"><h2>Our Testimony speaks for us</h2></center>
+		<hr>
+        <div class="testimonials_container">
+          <div class="testimial">
+            <h3>Prompt Delivery</h3>
+            <hr />
+            <p>
+              I am Kenneth, When I first heard of SendIT Courier Services from a
+              friend, I looked down on it. I just tried it out. I sent a parcel
+              from Port Harcourt on Nov 25th, 2018, and about 5pm on Nov 27th,
+              2018, my parents called me that they have received. Thank you
+              SendIT Courier Services.
+            </p>
+          </div>
+          <div class="testimial">
+            <h3>Prompt Delivery</h3>
+            <hr />
+            <p>
+              I am Kenneth, When I first heard of SendIT Courier Services from a
+              friend, I looked down on it. I just tried it out. I sent a parcel
+              from Port Harcourt on Nov 25th, 2018, and about 5pm on Nov 27th,
+              2018, my parents called me that they have received. Thank you
+              SendIT Courier Services.
+            </p>
+          </div>
+          <div clas="testinial">
+            <h3>Prompt Delivery</h3>
+            <hr />
+            <p>
+              I am Kenneth, When I first heard of SendIT Courier Services from a
+              friend, I looked down on it. I just tried it out. I sent a parcel
+              from Port Harcourt on Nov 25th, 2018, and about 5pm on Nov 27th,
+              2018, my parents called me that they have received. Thank you
+              SendIT Courier Services.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer><p>SendIT Inc, Copyright &copy; 2018</p></footer>
+    <script src="./javascripts/signUp.js"></script>
+  </body>
 </html>
