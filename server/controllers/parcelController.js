@@ -143,31 +143,45 @@ class ParcelController {
 
   static changeParcelPresentLocationByAdminById(req, res, next) {
     const { parcelId } = req.params;
-    const { presentLocation } = req.body;
-    Parcel.findByIdAndChangeLocation(
-      +parcelId,
-      presentLocation,
-      (err, results) => {
-        if (err) {
-          return next(err);
-        }
-        if (results.length === 0) {
-          const err2 = new Error();
-          err2.message = 'Parcel not found';
-          return next(err2);
-        }
-        return res.status(200).json({
-          success: true,
-          data: results,
-        });
+    Parcel.findById(+parcelId, (err, foundParcel) => {
+      if (err) {
+        return next(err);
       }
-    );
+      if (foundParcel.length === 0) {
+        const err4 = new Error();
+        err4.statusCode = 404;
+        err4.message = 'Parcel not found';
+        return next(err4);
+      }
+      if (foundParcel[0].status === 'CANCELLED') {
+        const err1 = new Error();
+        err1.statusCode = 400;
+        err1.message = 'The order is already Cancelled';
+        return next(err1);
+      }
+
+      const { presentLocation } = req.body;
+      Parcel.findByIdAndChangeLocation(
+        +parcelId,
+        presentLocation,
+        (err2, results) => {
+          if (err2) {
+            return next(err2);
+          }
+          return res.status(200).json({
+            success: true,
+            data: results,
+          });
+        }
+      );
+    });
   }
 
   static changeParcelStatusByAdminById(req, res, next) {
     const { parcelId } = req.params;
     const { status } = req.body;
-    Parcel.findByIdAndUpdateStatus(+parcelId, status, (err, results) => {
+    const upperStatus = status.toUpperCase();
+    Parcel.findByIdAndUpdateStatus(+parcelId, upperStatus, (err, results) => {
       if (err) {
         return next(err);
       }

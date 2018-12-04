@@ -26,12 +26,10 @@ const parcelValidator = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      for (const error of errors.array()) {
-        return res.status(400).json({
-          success: false,
-          error: error.msg,
-        });
-      }
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = errors.array();
+      return next(err);
     }
     return next();
   },
@@ -46,10 +44,10 @@ const updatePresentLocationValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: errors.array()[0].msg,
-      });
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = errors.array()[0].msg;
+      return next(err);
     }
     return next();
   },
@@ -64,10 +62,10 @@ const updateFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: errors.array()[0].msg,
-      });
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = errors.array()[0].msg;
+      return next(err);
     }
     return next();
   },
@@ -96,12 +94,10 @@ const signUpFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      for (const error of errors.array()) {
-        return res.status(400).json({
-          success: false,
-          error: error.msg,
-        });
-      }
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = errors.array();
+      return next(err);
     }
     return next();
   },
@@ -109,18 +105,18 @@ const signUpFormValidator = [
 
 const statusFormValidator = [
   check('status')
-    .isLength({ min: 1 })
+    .isIn(['Transiting', 'Delivered'])
     .trim()
     .escape()
-    .withMessage('Status cannot be blank'),
+    .withMessage('Either Transiting or Delivered, No permission to Cancel'),
 
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: errors.array()[0].msg,
-      });
+      const err = new Error();
+      err.statusCode = 400;
+      err.message = errors.array()[0].msg;
+      return next(err);
     }
     return next();
   },

@@ -6,24 +6,16 @@ import Parcel from '../models/parcel';
 
 describe('API end point Tests.', () => {
   before(async () => {
-    await Parcel.remove((err, results) => {
-      console.log(results);
-    });
+    await Parcel.remove((err, results) => {});
   });
-  before(async () => {
-    await Parcel.changeToPlaced((err, results) => {
-      console.log(results);
-    });
+  beforeEach(async () => {
+    await Parcel.changeToPlaced((err, results) => {});
   });
   after(async () => {
-    await Parcel.remove((err, results) => {
-      console.log(results);
-    });
+    await Parcel.remove((err, results) => {});
   });
   after(async () => {
-    await Parcel.changeToPlaced((err, results) => {
-      console.log(results);
-    });
+    await Parcel.changeToPlaced((err, results) => {});
   });
   describe('#Get /', () => {
     it('Should return a status of 200 for an authorized user', done => {
