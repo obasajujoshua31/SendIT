@@ -12,7 +12,11 @@ router.post(
   validator.parcelValidator,
   ParcelController.postNewParcelOrder
 );
-router.put('/parcels/:parcelId/cancel', ParcelController.cancelParcelOrderById);
+router.put(
+  '/parcels/:parcelId/cancel',
+  JwtAuthenticate.isNotAdmin,
+  ParcelController.cancelParcelOrderById
+);
 router.put(
   '/parcels/:parcelId/destination',
   validator.updateFormValidator,

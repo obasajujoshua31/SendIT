@@ -43,5 +43,23 @@ class JwtAuthenticate {
       return next();
     });
   }
+
+  static isNotAdmin(req, res, next) {
+    const bearerHeader = req.headers.authorization;
+    const bearer = bearerHeader.split(' ');
+    const bearerDetails = jwt.verify(bearer[1], process.env.secret_key);
+    User.findById(bearerDetails.userId, (err, foundUserDetails) => {
+      if (err) {
+        return next(err);
+      }
+      if (foundUserDetails[0].is_admin === true) {
+        const err2 = new Error();
+        err2.statusCode = 401;
+        err2.message = 'Admin cannot cancel an order';
+        return next(err2);
+      }
+      return next();
+    });
+  }
 }
 export default JwtAuthenticate;
