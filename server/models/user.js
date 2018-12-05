@@ -35,5 +35,10 @@ class User {
     const params = ['kennethafolabi@gmail.com'];
     getResponseFromDB(sql, params, callback);
   }
+
+  static getAll(callback) {
+    const sql = 'SELECT * FROM users';
+    getResponseFromDB(sql, null, callback);
+  }
 }
 export default User;

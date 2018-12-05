@@ -9,7 +9,6 @@ class Parcel {
   static findById(parcelId, callback) {
     const sql = 'SELECT * FROM parcels WHERE parcel_id = $1';
     const params = [parcelId];
-
     getResponseFromDB(sql, params, callback);
   }
 
@@ -50,9 +49,17 @@ class Parcel {
   }
 
   static findByIdAndUpdateStatus(parcelId, newStatus, callback) {
-    const sql =
-      'UPDATE parcels SET status = $1 WHERE parcel_id =$2 RETURNING *';
-    const params = [newStatus, parcelId];
+    let sql;
+    let params;
+    if (newStatus === 'TRANSITING') {
+      sql = 'UPDATE parcels SET status = $1 WHERE parcel_id =$2 RETURNING *';
+      params = [newStatus, parcelId];
+    } else {
+      const deliveredDate = new Date();
+      sql =
+        'UPDATE parcels SET status = $1, delivered_on = $2 WHERE parcel_id = $3 RETURNING *';
+      params = [newStatus, deliveredDate, parcelId];
+    }
     getResponseFromDB(sql, params, callback);
   }
 

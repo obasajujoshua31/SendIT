@@ -10,5 +10,4 @@ router.post(
   AuthController.signUpUser
 );
 router.post('/login', AuthController.signInUser);
-
 export default router;

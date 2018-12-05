@@ -30,9 +30,16 @@ class JwtAuthenticate {
     const bearerHeader = req.headers.authorization;
     const bearer = bearerHeader.split(' ');
     const bearerDetails = jwt.verify(bearer[1], process.env.secret_key);
+    console.log('bearerdetails', bearerDetails);
     User.findById(bearerDetails.userId, (err, foundUserDetails) => {
       if (err) {
         return next(err);
+      }
+      if (foundUserDetails.length === 0) {
+        const err1 = new Error();
+        err1.statusCode = 404;
+        err1.message = 'User not found';
+        return next(err1);
       }
       if (foundUserDetails[0].is_admin === false) {
         const err2 = new Error();
@@ -51,6 +58,12 @@ class JwtAuthenticate {
     User.findById(bearerDetails.userId, (err, foundUserDetails) => {
       if (err) {
         return next(err);
+      }
+      if (foundUserDetails.length === 0) {
+        const err1 = new Error();
+        err1.statusCode = 404;
+        err1.message = 'User not found';
+        return next(err1);
       }
       if (foundUserDetails[0].is_admin === true) {
         const err2 = new Error();
