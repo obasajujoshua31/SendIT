@@ -36,6 +36,7 @@ class AuthController {
   }
 
   static signInUser(req, res, next) {
+    console.log('request body', req.body);
     const { email, password } = req.body;
 
     User.findOne(email, (err, foundUser) => {
