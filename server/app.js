@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import api from './routes/api';
 import auth from './routes/auth';
 import JwtAuthenticate from './helpers/jwtAuthenticate';
@@ -8,6 +9,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1/auth', auth);
