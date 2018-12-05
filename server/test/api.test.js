@@ -221,7 +221,7 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for incorrect parcel', done => {
       request(app)
-        .put('/api/v1/parcels/89/destination')
+        .put('/api/v1/parcels/99/destination')
         .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -261,7 +261,7 @@ describe('API end point Tests.', () => {
     });
     it('Should return an error message for incorrect parcel', done => {
       request(app)
-        .put('/api/v1/parcels/89/presentLocation')
+        .put('/api/v1/parcels/99/presentLocation')
         .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
