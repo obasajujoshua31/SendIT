@@ -21,7 +21,26 @@ const parcelValidator = [
     .trim()
     .escape()
     .withMessage('Your destination is required'),
-
+  check('parcelName')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('What is your parcel Name?'),
+  check('estimatedDistance')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Estimated Distance is Required'),
+  check('estimatedDuration')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Estimated Duration needs to be computed'),
+  check('estimatedCost')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Estimated cost needs to be computed'),
   (req, res, next) => {
     const errors = validationResult(req);
 

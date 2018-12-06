@@ -32,7 +32,7 @@ class SendEmail {
       from: 'obasajujoshua31@gmail.com',
       subject: options().subjectHeader,
       html: `<div style ="background-color: lightgray; width: 100%; height:50%; padding: 10px">
-                            We are pleased to inform you that the parcel that your parcel with the following particulars<br>
+                            We are pleased to inform you that the parcel with the following particulars<br>
                             <hr>
                             <span style ="font-weight: bold;">weight :</span><span style ="color:green">${parcelWeight}</span><br><hr>
                             <span style ="font-weight: bold;">Pick Up Location :</span><span style ="color:green">${parcelPickup}</span><br><hr>

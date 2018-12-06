@@ -5,13 +5,13 @@ import User from '../models/user';
 
 class ParcelController {
   static getAllParcels(req, res, next) {
-    Parcel.findAll((err, results) => {
+    Parcel.findAll((err, foundParcels) => {
       if (err) {
         return next(err);
       }
       return res.status(200).json({
         success: true,
-        data: results,
+        data: foundParcels,
       });
     });
   }
@@ -37,17 +37,16 @@ class ParcelController {
 
   static getParcelsByParcelId(req, res, next) {
     const { parcelId } = req.params;
-    Parcel.findById(parcelId, (err, results) => {
+    Parcel.findById(parcelId, (err, foundParcels) => {
       if (err) {
         return next(err);
       }
-      if (results.length === 0) {
-        return res.status(404).json({
-          success: false,
-          error: 'Parcel not found',
-        });
+      if (foundParcels.length === 0) {
+        const err1 = new Error();
+        err1.message = 'Parcel not found';
+        return next(err1);
       }
-      return res.status(200).json({ success: true, data: results });
+      return res.status(200).json({ success: true, data: foundParcels });
     });
   }
 
@@ -65,13 +64,13 @@ class ParcelController {
       to,
       status: 'PLACED',
     };
-    Parcel.save(newParcel, (err, results) => {
+    Parcel.save(newParcel, (err, returnedNewParcel) => {
       if (err) {
         return next(err);
       }
       return res.status(201).json({
         success: true,
-        data: results,
+        data: returnedNewParcel,
         message: 'order created',
       });
     });
@@ -95,13 +94,13 @@ class ParcelController {
         return next(errMsg);
       }
 
-      Parcel.findByIdAndCancel(+parcelId, (err2, results) => {
+      Parcel.findByIdAndCancel(+parcelId, (err2, cancelledParcel) => {
         if (err2) {
           return next(err2);
         }
         return res.status(200).json({
           success: true,
-          data: results,
+          data: cancelledParcel,
           message: 'order cancelled',
         });
       });
@@ -178,27 +177,28 @@ class ParcelController {
           return next(err10);
         }
         userEmail = foundUserDetails[0].email;
-      });
-      const { presentLocation } = req.body;
-      Parcel.findByIdAndChangeLocation(
-        +parcelId,
-        presentLocation,
-        (err5, updatedParcels) => {
-          if (err5) {
-            return next(err5);
+
+        const { presentLocation } = req.body;
+        Parcel.findByIdAndChangeLocation(
+          +parcelId,
+          presentLocation,
+          (err5, updatedParcels) => {
+            if (err5) {
+              return next(err5);
+            }
+            SendEmail.sendEmailToUserRegardingStatusUpgrade(
+              userEmail,
+              updatedParcels,
+              null,
+              presentLocation
+            );
+            return res.status(200).json({
+              success: true,
+              data: updatedParcels,
+            });
           }
-          SendEmail.sendEmailToUserRegardingStatusUpgrade(
-            userEmail,
-            updatedParcels,
-            null,
-            presentLocation
-          );
-          return res.status(200).json({
-            success: true,
-            data: updatedParcels,
-          });
-        }
-      );
+        );
+      });
     });
   }
 
@@ -232,26 +232,26 @@ class ParcelController {
           return next(err2);
         }
         userEmail = foundUserDetails[0].email;
-      });
-      Parcel.findByIdAndUpdateStatus(
-        parcelId,
-        status,
-        (error2, updatedParcels) => {
-          if (error2) {
-            return next(error2);
+        Parcel.findByIdAndUpdateStatus(
+          parcelId,
+          status,
+          (error2, updatedParcels) => {
+            if (error2) {
+              return next(error2);
+            }
+            SendEmail.sendEmailToUserRegardingStatusUpgrade(
+              userEmail,
+              updatedParcels,
+              upperStatus,
+              null
+            );
+            res.status(200).json({
+              success: true,
+              data: updatedParcels,
+            });
           }
-          SendEmail.sendEmailToUserRegardingStatusUpgrade(
-            userEmail,
-            updatedParcels,
-            upperStatus,
-            null
-          );
-          res.status(200).json({
-            success: true,
-            data: updatedParcels,
-          });
-        }
-      );
+        );
+      });
     });
   }
 }

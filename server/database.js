@@ -1,7 +1,7 @@
 const parcel1 = [
   '104A Doherty lane, Lekki, Lagos',
   'B324A Banana Island Ikoyi, Lagos',
-  4,
+  1,
   '90',
   'Lb',
   '2018-11-18',
@@ -11,7 +11,7 @@ const parcel1 = [
 const parcel2 = [
   '25 Lekki Lagos',
   '39 Alausa Street, Ikeja',
-  3,
+  2,
   '35',
   'kg',
   '2018-11-18',

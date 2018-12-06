@@ -30,7 +30,6 @@ class JwtAuthenticate {
     const bearerHeader = req.headers.authorization;
     const bearer = bearerHeader.split(' ');
     const bearerDetails = jwt.verify(bearer[1], process.env.secret_key);
-    console.log('bearerdetails', bearerDetails);
     User.findById(bearerDetails.userId, (err, foundUserDetails) => {
       if (err) {
         return next(err);
