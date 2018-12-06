@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Parcel from '../models/parcel';
-import sendMessages from '../emailnotification/emailnotification';
+import SendEmail from '../emailnotification/sendEmail';
 import User from '../models/user';
 
 class ParcelController {
@@ -126,18 +126,18 @@ class ParcelController {
         errMsg.statusCode = 400;
         return next(errMsg);
       }
-      Parcel.findByIdAndUpdate(parcelId, destination, (e, results) => {
+      Parcel.findByIdAndUpdate(parcelId, destination, (e, updatedParcels) => {
         if (e) {
           return next(e);
         }
-        if (results.length === 0) {
+        if (updatedParcels.length === 0) {
           const err2 = new Error();
           err2.message = 'Parcel not found';
           return next(err2);
         }
         return res.status(200).json({
           success: true,
-          data: results,
+          data: updatedParcels,
         });
       });
     });
@@ -172,6 +172,11 @@ class ParcelController {
         if (err4) {
           return next(err4);
         }
+        if (foundUserDetails.length === 0) {
+          const err10 = new Error();
+          err10.message = 'User not found for this parcel';
+          return next(err10);
+        }
         userEmail = foundUserDetails[0].email;
       });
       const { presentLocation } = req.body;
@@ -182,27 +187,12 @@ class ParcelController {
           if (err5) {
             return next(err5);
           }
-          const parcelWeight = updatedParcels[0].weight;
-          const parcelPickup = updatedParcels[0].pick_up_location;
-          const parcelDestination = updatedParcels[0].destination;
-          const parcelSentOn = updatedParcels[0].sent_on;
-          const parcelSentOnFormatted = parcelSentOn.toLocaleString();
-          const msg = {
-            to: userEmail,
-            from: 'obasajujoshua31@gmail.com',
-            subject: 'Your Parcel at SendIT Courier Services Present Location',
-            html: `<div style ="background-color: lightgray; width: 100%; height:50%; padding: 10px">
-                            We are pleased to inform you that the parcel that your parcel with the following particulars<br>
-                            <hr>
-                            <span style ="font-weight: bold;">weight :</span><span style ="color:green">${parcelWeight}</span><br><hr>
-                            <span style ="font-weight: bold;">Pick Up Location :</span><span style ="color:green">${parcelPickup}</span><br><hr>
-                            <span style ="font-weight: bold;">Destination :</span><span style ="color:green">${parcelDestination}</span><br><hr>
-                            <span style ="font-weight: bold;">Date Sent :</span><span style ="color:green">${parcelSentOnFormatted}</span><br>
-                            present Location is now 
-                            ${presentLocation}</div>`,
-          };
-          sendMessages(msg);
-
+          SendEmail.sendEmailToUserRegardingStatusUpgrade(
+            userEmail,
+            updatedParcels,
+            null,
+            presentLocation
+          );
           return res.status(200).json({
             success: true,
             data: updatedParcels,
@@ -250,26 +240,12 @@ class ParcelController {
           if (error2) {
             return next(error2);
           }
-          const parcelWeight = updatedParcels[0].weight;
-          const parcelPickup = updatedParcels[0].pick_up_location;
-          const parcelDestination = updatedParcels[0].destination;
-          const parcelSentOn = updatedParcels[0].sent_on;
-          const parcelSentOnFormatted = parcelSentOn.toLocaleString();
-          const msg = {
-            to: userEmail,
-            from: 'obasajujoshua31@gmail.com',
-            subject: 'Your Parcel at SendIT Courier Services Update',
-            html: `<div style ="background-color: lightgray; width: 100%; height:50%; padding: 10px">
-                            We are pleased to inform you that the parcel that your parcel with the following particulars<br>
-                            <hr>
-                            <span style ="font-weight: bold;">weight :</span><span style ="color:green">${parcelWeight}</span><br><hr>
-                            <span style ="font-weight: bold;">Pick Up Location :</span><span style ="color:green">${parcelPickup}</span><br><hr>
-                            <span style ="font-weight: bold;">Destination :</span><span style ="color:green">${parcelDestination}</span><br><hr>
-                            <span style ="font-weight: bold;">Date Sent :</span><span style ="color:green">${parcelSentOnFormatted}</span><br>
-                            is successfully updated to
-                            ${upperStatus}</div>`,
-          };
-          sendMessages(msg);
+          SendEmail.sendEmailToUserRegardingStatusUpgrade(
+            userEmail,
+            updatedParcels,
+            upperStatus,
+            null
+          );
           res.status(200).json({
             success: true,
             data: updatedParcels,

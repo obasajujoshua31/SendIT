@@ -5,10 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "set NODE_ENV=test&& nyc mocha server/test --require babel-register",
-    "start": " npm run createdb && nodemon server/app.js --exec babel-node",
+    "start": " npm run alterdb && nodemon server/app.js --exec babel-node",
     "coverage": "nyc report --reporter=text-lcov|coveralls",
     "serve": "nodemon server/app.js --exec babel-node",
-    "createdb": "babel-node server/createdb.js && babel-node server/createuserdb.js"
+    "createdb": "babel-node server/createdb.js && babel-node server/createuserdb.js",
+    "alterdb": "babel-node server/alterTable.js"
   },
   "engines": {
     "node": "10.x"
