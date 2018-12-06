@@ -49,9 +49,9 @@ describe('API end point Tests.', () => {
   });
 
   describe('#Get Parcels by a Particular User', () => {
-    it('Should return data with an array for user 4', done => {
+    it('Should return data with an array for user 1', done => {
       request(app)
-        .get('/api/v1/users/4/parcels')
+        .get('/api/v1/users/1/parcels')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.isDefined(res.body);
@@ -60,9 +60,9 @@ describe('API end point Tests.', () => {
           done();
         });
     });
-    it('Should return an array for user 3', done => {
+    it('Should return an array for user 2', done => {
       request(app)
-        .get('/api/v1/users/3/parcels')
+        .get('/api/v1/users/2/parcels')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
           assert.isDefined(res.body);
