@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
+// import bodyParser from 'body-parser';
 import cors from 'cors';
+
 import api from './routes/api';
 import auth from './routes/auth';
 import JwtAuthenticate from './helpers/jwtAuthenticate';
