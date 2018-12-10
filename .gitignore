@@ -3,6 +3,4 @@ node_modules
 dist
 .env
 coverage
-"sendgrid.env" 
-"export SENDGRID_API_KEY='YOUR_API_KEY'" echo "sendgrid.env" source ./sendgrid.env
-"export SENDGRID_API_KEY='YOUR_API_KEY'" echo "sendgrid.env" source ./sendgrid.env
+sendgrid.env

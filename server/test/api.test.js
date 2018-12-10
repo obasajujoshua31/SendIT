@@ -225,7 +225,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to change Present Location by Admin', () => {
     it('Should return Present Location changed for a valid Admin', done => {
       request(app)
-        .put('/api/v1/parcels/3/presentLocation')
+        .put('/api/v1/parcels/1/presentLocation')
         .set({ Authorization: process.env.jwtadmin })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
