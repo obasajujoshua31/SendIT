@@ -2,7 +2,7 @@ import getResponseFromDB from './getResponseFromDB';
 
 class Parcel {
   static findAll(callback) {
-    const sql = 'SELECT * FROM parcels';
+    const sql = 'SELECT * FROM parcels ORDER BY parcel_id DESC ';
     getResponseFromDB(sql, null, callback);
   }
 
@@ -19,11 +19,34 @@ class Parcel {
   }
 
   static save(parcel, callback) {
-    const { from, to, placedBy, weight, weightMetric, status } = parcel;
-    const sentOn = new Date();
+    const {
+      from,
+      to,
+      placedBy,
+      weight,
+      weightMetric,
+      status,
+      estimatedCost,
+      estimatedDistance,
+      estimatedDuration,
+      parcelName,
+    } = parcel;
+    const sentOn = new Date().toLocaleString();
     const sql =
-      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status ) VALUES ($1, $2, $3,$4, $5, $6, $7) RETURNING *';
-    const params = [from, to, placedBy, weight, weightMetric, sentOn, status];
+      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status, parcel_cost, parcel_estimated_distance, parcel_estimated_duration, parcel_name ) VALUES ($1, $2, $3,$4, $5, $6, $7, $8, $9, $10, $11) RETURNING *';
+    const params = [
+      from,
+      to,
+      placedBy,
+      weight,
+      weightMetric,
+      sentOn,
+      status,
+      estimatedCost,
+      estimatedDistance,
+      estimatedDuration,
+      parcelName,
+    ];
     getResponseFromDB(sql, params, callback);
   }
 
@@ -41,10 +64,22 @@ class Parcel {
     getResponseFromDB(sql, params, callback);
   }
 
-  static findByIdAndUpdate(parcelId, newDestination, callback) {
+  static findByIdAndUpdate(parcelId, parcelUpdateDetails, callback) {
+    const {
+      destination,
+      estimatedCost,
+      estimatedDistance,
+      estimatedDuration,
+    } = parcelUpdateDetails;
     const sql =
-      'UPDATE parcels SET destination = $1 WHERE parcel_id = $2 RETURNING *';
-    const params = [newDestination, parcelId];
+      'UPDATE parcels SET destination = $1, parcel_cost = $2, parcel_estimated_distance = $3, parcel_estimated_duration = $4 WHERE parcel_id = $5 RETURNING *';
+    const params = [
+      destination,
+      estimatedCost,
+      estimatedDistance,
+      estimatedDuration,
+      parcelId,
+    ];
     getResponseFromDB(sql, params, callback);
   }
 
