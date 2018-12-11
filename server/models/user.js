@@ -18,7 +18,8 @@ class User {
   }
 
   static findOne(email, callback) {
-    const sql = 'SELECT email, password, user_id FROM users WHERE email = $1';
+    const sql =
+      'SELECT email, password, first_name, user_id FROM users WHERE email = $1';
     const params = [email];
     getResponseFromDB(sql, params, callback);
   }
@@ -39,6 +40,12 @@ class User {
   static getAll(callback) {
     const sql = 'SELECT * FROM users';
     getResponseFromDB(sql, null, callback);
+  }
+
+  static findOneAndUpdate(email, password, callback) {
+    const sql = 'UPDATE users SET password = $1 WHERE email = $2 RETURNING *';
+    const params = [password, email];
+    getResponseFromDB(sql, params, callback);
   }
 }
 export default User;

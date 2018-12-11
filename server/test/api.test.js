@@ -21,7 +21,7 @@ describe('API end point Tests.', () => {
     it('Should return a status of 200 for an authorized user', done => {
       request(app)
         .get('/api/v1/parcels')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: process.env.jwtadmin })
         .end((err, res) => {
           assert.isDefined(res.body);
           assert.equal(res.statusCode, '200');
