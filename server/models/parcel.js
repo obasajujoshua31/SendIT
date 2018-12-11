@@ -26,14 +26,11 @@ class Parcel {
       weight,
       weightMetric,
       status,
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
       parcelName,
     } = parcel;
     const sentOn = new Date().toLocaleString();
     const sql =
-      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status, parcel_cost, parcel_estimated_distance, parcel_estimated_duration, parcel_name ) VALUES ($1, $2, $3,$4, $5, $6, $7, $8, $9, $10, $11) RETURNING *';
+      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status, parcel_name ) VALUES ($1, $2, $3,$4, $5, $6, $7, $8) RETURNING *';
     const params = [
       from,
       to,
@@ -42,9 +39,6 @@ class Parcel {
       weightMetric,
       sentOn,
       status,
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
       parcelName,
     ];
     getResponseFromDB(sql, params, callback);
@@ -64,22 +58,10 @@ class Parcel {
     getResponseFromDB(sql, params, callback);
   }
 
-  static findByIdAndUpdate(parcelId, parcelUpdateDetails, callback) {
-    const {
-      destination,
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
-    } = parcelUpdateDetails;
+  static findByIdAndUpdate(parcelId, destination, callback) {
     const sql =
-      'UPDATE parcels SET destination = $1, parcel_cost = $2, parcel_estimated_distance = $3, parcel_estimated_duration = $4 WHERE parcel_id = $5 RETURNING *';
-    const params = [
-      destination,
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
-      parcelId,
-    ];
+      'UPDATE parcels SET destination = $1 WHERE parcel_id = $2 RETURNING *';
+    const params = [destination, parcelId];
     getResponseFromDB(sql, params, callback);
   }
 
@@ -90,10 +72,10 @@ class Parcel {
       sql = 'UPDATE parcels SET status = $1 WHERE parcel_id =$2 RETURNING *';
       params = [newStatus, parcelId];
     } else {
-      const deliveredDate = new Date();
+      const deliveredOn = new Date();
       sql =
         'UPDATE parcels SET status = $1, delivered_on = $2 WHERE parcel_id = $3 RETURNING *';
-      params = [newStatus, deliveredDate, parcelId];
+      params = [newStatus, deliveredOn, parcelId];
     }
     getResponseFromDB(sql, params, callback);
   }
