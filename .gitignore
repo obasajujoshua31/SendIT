@@ -1,5 +1,5 @@
 node_modules
-.nyc-output
+.nyc_output
 dist
 .env
 coverage

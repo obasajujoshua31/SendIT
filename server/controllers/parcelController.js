@@ -16,21 +16,20 @@ class ParcelController {
     });
   }
 
-  static getParcelsByUserId(req, res) {
+  static getParcelsByUserId(req, res, next) {
     const { userId } = req.params;
-    Parcel.findByUserId(+userId, (err, results) => {
+    Parcel.findByUserId(+userId, (err, foundUserParcels) => {
       if (err) {
-        return res.status(400).json({ success: false, error: err.stack });
+        return next(err);
       }
-      if (results.length === 0) {
-        return res.status(404).json({
-          success: false,
-          error: 'The User has no Parcels',
-        });
+      if (foundUserParcels.length === 0) {
+        const err1 = new Error();
+        err1.message = 'The User has no Parcels';
+        return next(err1);
       }
       return res.status(200).json({
         success: true,
-        data: results,
+        data: foundUserParcels,
       });
     });
   }

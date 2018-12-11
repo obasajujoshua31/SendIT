@@ -1,4 +1,4 @@
-import { check, validationResult } from 'express-validator/check';
+import { check, body, validationResult } from 'express-validator/check';
 
 const parcelValidator = [
   check('weight')
@@ -109,6 +109,7 @@ const signUpFormValidator = [
     .withMessage('Email is not valid'),
   check('password')
     .isLength({ min: 5 })
+    .trim()
     .withMessage('Password must be minimum 5 characters'),
   (req, res, next) => {
     const errors = validationResult(req);
@@ -140,6 +141,52 @@ const statusFormValidator = [
     return next();
   },
 ];
+const accountVerificationFormValidator = [
+  check('email')
+    .isEmail()
+    .trim()
+    .escape()
+    .withMessage('Email is not Valid'),
+  check('firstName')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('First name is required'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const err = new Error();
+      err.message = errors.array();
+      err.statusCode = 400;
+      return next(err);
+    }
+
+    return next();
+  },
+];
+const changePasswordVerificationFormValidator = [
+  check('password')
+    .isLength({ min: 5 })
+    .trim()
+    .escape()
+    .withMessage('Password must be minimum 5 characters'),
+  check('passwordConfirmation')
+    .isLength({ min: 5 })
+    .trim()
+    .escape()
+    .withMessage('Password must  be minimum 5 characters'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const err = new Error();
+      err.message = errors.array();
+      err.statusCode = 400;
+      return next(err);
+    }
+    return next();
+  },
+];
 
 export default {
   parcelValidator,
@@ -147,4 +194,6 @@ export default {
   updateFormValidator,
   signUpFormValidator,
   statusFormValidator,
+  accountVerificationFormValidator,
+  changePasswordVerificationFormValidator,
 };
