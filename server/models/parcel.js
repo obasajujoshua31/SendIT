@@ -28,9 +28,9 @@ class Parcel {
       status,
       parcelName,
     } = parcel;
-    const sentOn = new Date().toLocaleString();
+    const sentOn = new Date();
     const sql =
-      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status, parcel_name ) VALUES ($1, $2, $3,$4, $5, $6, $7, $8) RETURNING *';
+      'INSERT INTO parcels (pick_up_location, destination, placed_by, weight, weight_metric, sent_on, status, parcel_name ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
     const params = [
       from,
       to,
