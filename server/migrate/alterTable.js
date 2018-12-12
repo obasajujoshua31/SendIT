@@ -4,7 +4,7 @@ import pool from '../config/config';
   const client = await pool.connect();
   try {
     const sql =
-      'ALTER TABLE parcels ADD COLUMN IF NOT EXISTS parcel_name VARCHAR(255), DROP COLUMN IF EXISTS parcel_cost, DROP COLUMN IF EXISTS parcel_duration, DROP COLUMN IF EXISTS parcel_estimated_distance, DROP COLUMN IF EXISTS parcel_estimated_duration;';
+      'ALTER TABLE parcels DROP COLUMN IF EXISTS parcel_cost, DROP COLUMN IF EXISTS parcel_duration, DROP COLUMN IF EXISTS parcel_estimated_distance, DROP COLUMN IF EXISTS parcel_estimated_duration;';
     const results = await client.query(sql);
     console.log(results.rowCount);
   } catch (e) {
