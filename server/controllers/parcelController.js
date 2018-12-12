@@ -54,16 +54,7 @@ class ParcelController {
     const bearer = token.split(' ');
     const userDetails = jwt.verify(bearer[1], process.env.secret_key);
     const placedBy = userDetails.userId;
-    const {
-      weight,
-      weightMetric,
-      from,
-      to,
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
-      parcelName,
-    } = req.body;
+    const { weight, weightMetric, from, to, parcelName } = req.body;
     const newParcel = {
       placedBy,
       weight,
@@ -71,9 +62,6 @@ class ParcelController {
       from,
       to,
       status: 'PLACED',
-      estimatedCost,
-      estimatedDistance,
-      estimatedDuration,
       parcelName,
     };
     Parcel.save(newParcel, (err, returnedNewParcel) => {
@@ -136,7 +124,8 @@ class ParcelController {
         errMsg.statusCode = 400;
         return next(errMsg);
       }
-      Parcel.findByIdAndUpdate(parcelId, req.body, (e, updatedParcels) => {
+      const { destination } = req.body;
+      Parcel.findByIdAndUpdate(parcelId, destination, (e, updatedParcels) => {
         if (e) {
           return next(e);
         }

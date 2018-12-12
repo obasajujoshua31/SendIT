@@ -6,6 +6,7 @@ const parcel1 = [
   'Lb',
   '2018-11-18',
   'TRANSITING',
+  'Iphone',
 ];
 
 const parcel2 = [
@@ -16,6 +17,7 @@ const parcel2 = [
   'kg',
   '2018-11-18',
   'CANCELLED',
+  'Nokia',
 ];
 
 const parcel3 = [
@@ -26,6 +28,7 @@ const parcel3 = [
   'Kg',
   '2018-11-18',
   'PLACED',
+  'WristWatch',
 ];
 
 const user1 = [
