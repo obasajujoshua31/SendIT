@@ -13,7 +13,7 @@ html {
 }
 /* Global */
 .container {
-  width: 80%;
+  width: 90%;
   margin: auto;
   overflow: hidden;
   min-height: 100%;
@@ -127,7 +127,7 @@ header .current a {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url("../images/sendit3.jpg") no-repeat;
   background-size: cover;
-  /* min-height: calc(100vh - 280px); */
+  min-height: calc(100vh - 80px);
 }
 .homepage_container div {
   padding: 10px;
@@ -213,11 +213,12 @@ header .current a {
 }
 
 .company p {
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: white;
   width: 80%;
   position: relative;
   font-family: Alex Brush;
+  line-height: 50px;
 }
 .company .container {
   width: 90%;
@@ -269,6 +270,31 @@ footer {
 .create_order_container {
   display: flex;
   margin-top: 100px;
+}
+#closeButton,
+#closeButton2,
+#closeButton3 {
+  color: brown;
+  float: right;
+  cursor: pointer;
+}
+.create_parcel_form {
+  flex: 1;
+}
+#create_form,
+#update_form,
+#admin_update_form {
+  display: none;
+}
+.view_parcel,
+.admin_view_parcel {
+  cursor: pointer;
+  color: brown;
+}
+.create_parcel_container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .profile_page_container {
   display: flex;
@@ -396,7 +422,6 @@ footer {
   font-family: KoHo;
 }
 .mySmallButton {
-  width: 45%;
   padding: 8px 14px;
   font-size: 14px;
 }
@@ -499,6 +524,7 @@ table {
 .dashboard-table {
   width: 100%;
   height: 100%;
+  flex: 1;
 }
 table,
 th,
@@ -611,11 +637,10 @@ tr:nth-child(even) {
   padding: 10px;
 }
 .parcel_detail_card {
-  background-color: white;
-  border: 1px solid brown;
-  border-radius: 5px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  /* border: 1px solid brown; */
   padding: 20px;
-  flex: 2;
+  flex: 1;
 }
 .parcel_detail_card h3 {
   color: brown;
@@ -675,7 +700,7 @@ tr:nth-child(even) {
     padding: 1px;
   }
 }
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   #details {
     line-height: 30px;
   }
@@ -684,8 +709,14 @@ tr:nth-child(even) {
     width: 100%;
     overflow: scroll;
   }
-  .create_order_container {
+  .create_parcel_container {
     flex-direction: column;
+  }
+  .parcel_detail_card {
+    order: 1;
+  }
+  .dashboard-table {
+    order: 2;
   }
   .create_order_map {
     height: 400px;
@@ -693,9 +724,6 @@ tr:nth-child(even) {
 
   .profile__details {
     bottom: 10%;
-  }
-  .testimonials_container {
-    flex-direction: column;
   }
 
   table {
