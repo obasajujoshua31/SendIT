@@ -1,8 +1,3 @@
-const viewUpdate = document.getElementById("viewUpdate");
-viewUpdate.addEventListener("click", event => {
-  event.preventDefault();
-  alert("The View update was clicked");
-});
 const submitAdminUpdate = document.getElementById("submitAdminUpdate");
 submitAdminUpdate.addEventListener("click", event => {
   event.preventDefault();
@@ -13,3 +8,21 @@ submitAdminUpdate.addEventListener("click", event => {
   alert(toNewPlaces);
   alert(value);
 });
+const adminUpdateForm = document.getElementById("admin_update_form");
+const showAdminUpdateForm = () => {
+  adminUpdateForm.style.display = "block";
+};
+
+const adminViewParcelButtonList = document.getElementsByClassName(
+  "admin_view_parcel"
+);
+for (let i = 0; i < adminViewParcelButtonList.length; i++) {
+  adminViewParcelButtonList[i].addEventListener("click", showAdminUpdateForm);
+}
+const closeAdminUpdateForm = () => {
+  adminUpdateForm.style.display = "none";
+};
+
+document
+  .getElementById("closeButton3")
+  .addEventListener("click", closeAdminUpdateForm);

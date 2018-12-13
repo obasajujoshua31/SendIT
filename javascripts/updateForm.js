@@ -1,11 +1,23 @@
-const submitUpdate = document.getElementById("submitUpdate");
-submitUpdate.addEventListener("click", event => {
-  event.preventDefault();
-  confirm("Are you sure you want to Update the form");
-});
+const updateForm = document.getElementById("update_form");
+const showUpdateForm = () => {
+  updateForm.style.display = "block";
+};
+const showUpdateFormList = document.getElementsByClassName("view_parcel");
 
-const cancelUpdateForm = document.getElementById("cancelUpdateForm");
-cancelUpdateForm.addEventListener("click", event => {
+for (let i = 0; i < showUpdateFormList.length; i++) {
+  showUpdateFormList[i].addEventListener("click", showUpdateForm);
+}
+
+const closeUpdateForm = () => {
+  updateForm.style.display = "none";
+};
+document
+  .getElementById("closeButton2")
+  .addEventListener("click", closeUpdateForm);
+const submitUpdate = event => {
   event.preventDefault();
-  confirm("Are you sure you want to cancel this order");
-});
+  alert("this submit button was clicked");
+};
+document
+  .getElementById("submitUpdateButton")
+  .addEventListener("click", submitUpdate);
