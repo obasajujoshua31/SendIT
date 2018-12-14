@@ -61,7 +61,7 @@ signInButton.addEventListener("click", event => {
         document.getElementById("server_response_login").innerHTML =
           "Invalid Email or Password";
       } else {
-        window.localStorage.setItem("sendItToken", res.token);
+        window.localStorage.setItem("sendItToken", "Bearer " + res.token);
         window.location = "./dashboard.html";
       }
     })
@@ -104,7 +104,7 @@ signUpButton.addEventListener("click", event => {
             res.error;
         }
       } else {
-        window.localStorage.setItem("sendItToken", res.token);
+        window.localStorage.setItem("sendItToken", "Bearer " + res.token);
         window.location = "./dashboard.html";
       }
     })
@@ -176,6 +176,7 @@ newPasswordCreationButton.addEventListener("click", event => {
           "server_response_create_new_password"
         ).innerHTML = res.error;
       } else {
+        window.localStorage.setItem("sendItToken", "Bearer " + res.token);
         window.location = "./dashboard.html";
       }
     })
