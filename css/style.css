@@ -206,7 +206,22 @@ header .current a {
 #signup_form {
   display: none;
 }
-
+#forgot_password {
+  color: lightgrey;
+}
+#forgot_password_form,
+#new_password_creation_form {
+  display: none;
+}
+#server_response_login,
+#server_response_signup,
+#server_response_forgot_password,
+#server_response_create_new_password {
+  color: red;
+  text-align: center;
+  text-decoration: underline;
+  padding: 0;
+}
 .company h1 {
   font-size: 2.6em;
   color: white;
@@ -590,7 +605,7 @@ tr:nth-child(even) {
 }
 
 .create_form {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
   background-size: cover;
 }
 
