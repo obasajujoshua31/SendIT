@@ -1,5 +1,6 @@
 import User from '../models/user';
 import Crypt from '../helpers/crypt';
+import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class UserController {
   static getAllUsers(req, res, next) {
@@ -58,6 +59,7 @@ class UserController {
           success: true,
           data: updatedUserRecord,
           message: 'Password changed successfully',
+          token: JwtAuthenticate.jwtEncode(updatedUserRecord[0].user_id),
         });
       }
     );
