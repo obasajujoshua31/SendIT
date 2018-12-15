@@ -30,6 +30,7 @@ class AuthController {
           success: true,
           token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
           message: 'user signed Up successfully',
+          userObject: newRegisteredUser,
         });
       });
     });
@@ -57,6 +58,7 @@ class AuthController {
       return res.status(200).json({
         success: true,
         token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
+        userObject: foundUser,
       });
     });
   }
