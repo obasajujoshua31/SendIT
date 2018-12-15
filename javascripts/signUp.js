@@ -146,6 +146,9 @@ forgotPasswordSubmitButton.addEventListener("click", event => {
       } else {
         newPasswordCreationForm.style.display = "block";
         forgotPasswordForm.style.display = "none";
+        document.getElementById(
+          "server_response_create_new_password"
+        ).innerHTML = "Accout Verified Successfully";
       }
     })
     .catch(error => console.log(error));
@@ -176,8 +179,10 @@ newPasswordCreationButton.addEventListener("click", event => {
           "server_response_create_new_password"
         ).innerHTML = res.error;
       } else {
-        window.localStorage.setItem("sendItToken", "Bearer " + res.token);
-        window.location = "./dashboard.html";
+        newPasswordCreationForm.style.display = "none";
+        signInFormElement.style.display = "block";
+        document.getElementById("server_response_login").innerHTML =
+          "Password Changed Successfully";
       }
     })
     .catch(err => console.log(err));
