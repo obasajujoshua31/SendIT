@@ -125,7 +125,7 @@ header .current a {
 
 .company {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("../images/sendit3.jpg") no-repeat;
+    url('../images/sendit3.jpg') no-repeat;
   background-size: cover;
   min-height: calc(100vh - 80px);
 }
@@ -157,8 +157,8 @@ header .current a {
 }
 #signin_form span {
   font-size: 1.2em;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
   position: relative;
   padding: 6px 0px;
   color: white;
@@ -167,8 +167,8 @@ header .current a {
   width: 20px;
 }
 #signin_form button {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
   padding: 8px 12px;
   background-color: brown;
   color: white;
@@ -216,11 +216,15 @@ header .current a {
 #server_response_login,
 #server_response_signup,
 #server_response_forgot_password,
-#server_response_create_new_password {
+#server_response_create_new_password,
+#server_response_login_success {
   color: red;
   text-align: center;
   text-decoration: underline;
   padding: 0;
+}
+#server_response_login_success {
+  color: green;
 }
 .company h1 {
   font-size: 2.6em;
@@ -279,7 +283,7 @@ footer {
 .usertable_filter {
   padding: 16px 20px;
   font-size: 1.1em;
-  font-family: "Times New Roman", Times, serif;
+  font-family: 'Times New Roman', Times, serif;
   background-color: inherit;
 }
 .create_order_container {
