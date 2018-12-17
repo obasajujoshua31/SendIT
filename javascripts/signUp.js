@@ -63,6 +63,10 @@ signInButton.addEventListener('click', event => {
       } else {
         window.localStorage.setItem('sendItToken', `Bearer ${res.token}`);
         window.localStorage.setItem('sendItUserId', res.userObject[0].user_id);
+        window.localStorage.setItem(
+          'sendItUserName',
+          `${res.userObject[0].last_name}, ${res.userObject[0].first_name}`
+        );
         window.location = './dashboard.html';
       }
     })
@@ -107,6 +111,10 @@ signUpButton.addEventListener('click', event => {
       } else {
         window.localStorage.setItem('sendItToken', `Bearer ${res.token}`);
         window.localStorage.setItem('sendItUserId', res.userObject[0].user_id);
+        window.localStorage.setItem(
+          'sendItUserName',
+          `${res.userObject[0].last_name}, ${res.userObject[0].first_name}`
+        );
         window.location = './dashboard.html';
       }
     })
@@ -146,11 +154,18 @@ forgotPasswordSubmitButton.addEventListener('click', event => {
             res.error;
         }
       } else {
+        const newEmailElement = `
+          
+          <input type ="hidden" id ="new_password_creation_email" value = ${email}>
+        `;
         newPasswordCreationForm.style.display = 'block';
         forgotPasswordForm.style.display = 'none';
         document.getElementById(
           'server_response_create_new_password_success'
         ).innerHTML = 'Accout Verified Successfully';
+        document.getElementById(
+          'server_response_create_new_password_success_element'
+        ).innerHTML = newEmailElement;
       }
     })
     .catch(error => console.log(error));
@@ -162,6 +177,7 @@ newPasswordCreationButton.addEventListener('click', event => {
   const passwordConfirmation = document.getElementById(
     'user_new_confirmation_password'
   ).value;
+  const email = document.getElementById('new_password_creation_email').value;
 
   fetch('https://obasajujoshua31.herokuapp.com/api/v1/account/recovery', {
     method: 'PUT',
@@ -170,6 +186,7 @@ newPasswordCreationButton.addEventListener('click', event => {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
+      email,
       password,
       passwordConfirmation,
     }),

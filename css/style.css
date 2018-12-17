@@ -217,14 +217,20 @@ header .current a {
 #server_response_signup,
 #server_response_forgot_password,
 #server_response_create_new_password,
-#server_response_login_success {
+#server_response_login_success,
+#server_response_update_form_error,
+#server_response_create_parcel {
   color: red;
   text-align: center;
   text-decoration: underline;
   padding: 0;
+  font-size: 16px;
 }
-#server_response_login_success {
+#server_response_login_success,
+#parcel_status_success {
   color: green;
+  line-height: 15px;
+  text-align: left;
 }
 .company h1 {
   font-size: 2.6em;
