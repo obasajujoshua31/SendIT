@@ -11,6 +11,7 @@ window.document.addEventListener('click', e => {
 const logOutUser = event => {
   event.preventDefault();
   window.localStorage.removeItem('sendItToken');
+  window.localStorage.setItem('userSignInStatus', false);
   window.location = './index.html';
 };
 
