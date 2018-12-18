@@ -18,8 +18,7 @@ class User {
   }
 
   static findOne(email, callback) {
-    const sql =
-      'SELECT email, password, first_name, last_name, user_id FROM users WHERE email = $1';
+    const sql = 'SELECT * FROM users WHERE email = $1';
     const params = [email];
     getResponseFromDB(sql, params, callback);
   }
