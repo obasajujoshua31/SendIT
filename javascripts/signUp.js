@@ -214,14 +214,14 @@ const userSignInStatus = window.localStorage.getItem('userSignInStatus');
 const isAdminLoggedIn = window.localStorage.getItem('isAdminLoggedIn');
 
 const loadHomePage = () => {
-  if (userSignInStatus === false || !userSignInStatus) {
+  if (userSignInStatus === 'false' || !userSignInStatus) {
     document.getElementById('server_response_login').innerHTML =
       'You are not Logged in';
-  } else if (userSignInStatus === true) {
+  } else if (userSignInStatus === 'true') {
     window.location = './dashboard.html';
-  } else if (isAdminLoggedIn === true || !isAdminLoggedIn) {
+  } else if (isAdminLoggedIn === 'true' || !isAdminLoggedIn) {
     window.location = './admin_dashboard.html';
-  } else if (isAdminLoggedIn === false) {
+  } else if (isAdminLoggedIn === 'false') {
     document.getElementById('server_response_login').innerHTML =
       'You are not Logged in';
   }
