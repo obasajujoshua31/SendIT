@@ -67,8 +67,11 @@ signInButton.addEventListener('click', event => {
           'sendItUserName',
           `${res.userObject[0].last_name}, ${res.userObject[0].first_name}`
         );
-        console.log(res.userObject[0]);
-        window.location = './dashboard.html';
+        if (res.userObject[0].is_admin === false) {
+          window.location = './dashboard.html';
+        } else {
+          window.location = './admin_dashboard.html';
+        }
       }
     })
     .catch(e => console.log(e));
