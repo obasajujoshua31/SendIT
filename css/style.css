@@ -219,7 +219,9 @@ header .current a {
 #server_response_create_new_password,
 #server_response_login_success,
 #server_response_update_form_error,
-#server_response_create_parcel {
+#server_response_create_parcel,
+#server_response_admin_update,
+#server_response_admin_update_success {
   color: red;
   text-align: center;
   text-decoration: underline;
@@ -227,7 +229,8 @@ header .current a {
   font-size: 16px;
 }
 #server_response_login_success,
-#parcel_status_success {
+#parcel_status_success,
+#server_response_admin_update_success {
   color: green;
   line-height: 15px;
   text-align: left;

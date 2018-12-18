@@ -25,7 +25,7 @@
 			<div class="dropdown" id="dropdown">
 				<div class="dropdown_content">
 					<ul>
-						<li><a href="index.html">Logout</a></li>
+						<li><a href = "#" class ="logout_user">Logout</a></li>
 					</ul>
 					</ul>
 				</div>
@@ -68,7 +68,8 @@
 					<div class="parcel_detail_card" id ="admin_update_form">
 						<i id="closeButton3" class="fa fa-close"></i>
 						<h3 style="text-align: center; color: black; ">Parcel Details</h3>
-						
+						<p id ="server_response_admin_update"></p>
+						<p id ="server_response_admin_update_success"></p>
 						<hr />
 						<h4>Parcel Information</h4>
 						<label>Parcel Name:</label> <span id ="parcel_name"></span><br />
@@ -81,13 +82,13 @@
 					
 						<form>
 							<label>Status: </label> <span>Placed</span>
-							<input type="radio" id ="status_placed" name="status"  value="placed" />
+							<input type="radio" id ="status_placed" name="status" disabled value="PLACED" />
 							<span>Transiting</span>
-							<input type="radio" id ="status_transiting" name="status" value="transiting" />
+							<input type="radio" id ="status_transiting" name="status" value ="TRANSITING" />
 							<span>Delivered</span>
-							<input type="radio" id = "status_delivered" name="status" value="delivered" />
+							<input type="radio" id = "status_delivered" name="status" value="DELIVERED" />
 							<span>Cancelled</span>
-							<input type="radio" id = "status_cancelled" name="status" value="cancelled" disabled /> <br /><br />
+							<input type="radio" id = "status_cancelled" name="status" value="CANCELLED" disabled /> <br /><br />
 							
 							<hr />
 							<h4 style="text-align: center">Update this Parcel Order</h4>

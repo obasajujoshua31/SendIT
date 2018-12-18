@@ -188,10 +188,10 @@ const loadDashboard = () => {
     .then(res => {
       if (res.success === false) {
         if (res.error === 'You are not authorized') {
+          window.localStorage.setItem('userSignInStatus', false);
           window.location = './index.html';
-          document.getElementById('server_response_login').innerHTML =
-            'You are not Logged in!';
         } else {
+          window.localStorage.setItem('userSignInStatus', true);
           document.getElementById(
             'user_greeting'
           ).innerHTML = `Welcome ${userName}`;
@@ -201,6 +201,7 @@ const loadDashboard = () => {
         }
       } else {
         // console.log(Object.values(res.data[0]));
+        window.localStorage.setItem('userSignInStatus', true);
         document.getElementById(
           'user_greeting'
         ).innerHTML = `Welcome ${userName}`;
@@ -214,14 +215,14 @@ const loadDashboard = () => {
             sent_on,
             status,
           } = data;
-
+          const formattedSentOn = new Date(sent_on).toLocaleString();
           addRowToDashboardTable([
             parcel_id,
             pick_up_location,
             destination,
             weight,
             weight_metric,
-            sent_on,
+            formattedSentOn,
             status,
           ]);
         });

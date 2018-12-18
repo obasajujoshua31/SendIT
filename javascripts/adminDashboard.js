@@ -1,6 +1,7 @@
 const token = window.localStorage.getItem('sendItToken');
 const userName = window.localStorage.getItem('sendItUserName');
 let parcelId;
+let initialStatus;
 
 const updateForm = document.getElementById('admin_update_form');
 const showUpdateForm = iconLink => {
@@ -27,13 +28,13 @@ const showUpdateForm = iconLink => {
         res.data[0].destination;
       document.getElementById('present_location').innerHTML =
         res.data[0].present_location;
+      initialStatus = res.data[0].status;
       switch (res.data[0].status) {
         case 'PLACED':
           document.getElementById('status_placed').checked = true;
           document.getElementById('status_cancelled').checked = false;
           document.getElementById('status_delivered').checked = false;
           document.getElementById('status_transiting').checked = false;
-          document.getElementById('status_delivered').checked = false;
           document.getElementById('your_new_location').disabled = false;
           document.getElementById('submitUpdateButton').hidden = false;
 
@@ -43,7 +44,6 @@ const showUpdateForm = iconLink => {
           document.getElementById('status_delivered').checked = false;
           document.getElementById('status_cancelled').checked = false;
           document.getElementById('status_placed').checked = false;
-          document.getElementById('status_delivered').checked = false;
           document.getElementById('submitUpdateButton').hidden = false;
           document.getElementById('your_new_location').disabled = false;
 
@@ -53,7 +53,6 @@ const showUpdateForm = iconLink => {
           document.getElementById('status_cancelled').checked = false;
           document.getElementById('status_placed').checked = false;
           document.getElementById('status_transiting').checked = false;
-          document.getElementById('status_delivered').checked = false;
           document.getElementById('submitUpdateButton').hidden = false;
           document.getElementById('your_new_location').disabled = true;
           document.getElementById('submitUpdateButton').hidden = true;
@@ -74,7 +73,6 @@ const showUpdateForm = iconLink => {
     })
     .catch(err => console.log(err));
 };
-
 
 const addRowToDashboardTable = parcelData => {
   const tableRef = document.getElementById('myAdminDashboardTable');
@@ -111,8 +109,10 @@ const loadAdminDashboard = () => {
     .then(res => {
       if (res.success === false) {
         if (res.error === 'You are not authorized') {
+          window.localStorage.setItem('isAdminLoggedIn', false);
           window.location = './index.html';
         } else {
+          window.localStorage.setItem('isAdminLoggedIn', true);
           document.getElementById(
             'user_greeting'
           ).innerHTML = `Welcome ${userName} As Admin`;
@@ -122,6 +122,7 @@ const loadAdminDashboard = () => {
         }
       } else {
         // console.log(Object.values(res.data[0]));
+        window.localStorage.setItem('isAdminLoggedIn', true);
         document.getElementById(
           'user_greeting'
         ).innerHTML = `Welcome ${userName} As Admin`;
@@ -135,6 +136,7 @@ const loadAdminDashboard = () => {
             sent_on,
             status,
           } = data;
+          const formattedSentOn = new Date(sent_on).toLocaleString();
 
           addRowToDashboardTable([
             parcel_id,
@@ -142,7 +144,7 @@ const loadAdminDashboard = () => {
             destination,
             weight,
             weight_metric,
-            sent_on,
+            formattedSentOn,
             status,
           ]);
         });
@@ -153,4 +155,147 @@ const loadAdminDashboard = () => {
 document.getElementById('closeButton3').addEventListener('click', () => {
   updateForm.style.display = 'none';
 });
+let statusUpdate, presentLocationUpdate;
+document
+  .getElementById('submitUpdateButton')
+  .addEventListener('click', event => {
+    event.preventDefault();
+    (async () => {
+      const presentLocation = document.getElementById('your_new_location')
+        .value;
+      let valueOfStatus = document.querySelector('input[name="status"]:checked')
+        .value;
+
+      if (!presentLocation && valueOfStatus === initialStatus) {
+      } else if (presentLocation && valueOfStatus === initialStatus) {
+        fetch(
+          `https://obasajujoshua31.herokuapp.com/api/v1/parcels/${parcelId}/presentLocation`,
+          {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+              'content-type': 'application/json',
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              presentLocation,
+            }),
+          }
+        )
+          .then(res => res.json())
+          .then(res => {
+            if (res.success === false) {
+              document.getElementById(
+                'server_response_admin_update'
+              ).innerHTML = res.error;
+            } else {
+              document.getElementById(
+                'server_response_admin_update_success'
+              ).innerHTML = 'Parcel Present Location updated Successfully';
+              window.location = './admin_dashboard.html';
+            }
+          })
+          .catch(error => console.log(error));
+      } else if (!presentLocation && valueOfStatus !== initialStatus) {
+        if (valueOfStatus === 'TRANSITING') {
+          valueOfStatus = 'Transiting';
+        } else {
+          valueOfStatus = 'Delivered';
+        }
+        fetch(
+          `https://obasajujoshua31.herokuapp.com/api/v1/parcels/${parcelId}/status`,
+          {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+              'content-type': 'application/json',
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              status: valueOfStatus,
+            }),
+          }
+        )
+          .then(res => res.json())
+          .then(res => {
+            if (res.success === false) {
+              document.getElementById(
+                'server_response_admin_update'
+              ).innerHTML = res.error;
+            } else {
+              document.getElementById(
+                'server_response_admin_update_success'
+              ).innerHTML = 'Parcel Status updated Successfully';
+              window.location = './admin_dashboard.html';
+            }
+          })
+
+          .catch(error => console.log(error));
+      } else if (presentLocation && valueOfStatus !== initialStatus) {
+        if (valueOfStatus === 'TRANSITING') {
+          valueOfStatus = 'Transiting';
+        } else {
+          valueOfStatus = 'Delivered';
+        }
+        try {
+          [statusUpdate, presentLocationUpdate] = await Promise.all([
+            fetch(
+              `https://obasajujoshua31.herokuapp.com/api/v1/parcels/${parcelId}/status`,
+              {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'content-type': 'application/json',
+                  Authorization: token,
+                },
+                body: JSON.stringify({
+                  status: valueOfStatus,
+                }),
+              }
+            ).then(res => res.json()),
+            fetch(
+              `https://obasajujoshua31.herokuapp.com/api/v1/parcels/${parcelId}/presentLocation`,
+              {
+                method: 'PUT',
+                mode: 'cors',
+                headers: {
+                  'content-type': 'application/json',
+                  Authorization: token,
+                },
+                body: JSON.stringify({
+                  presentLocation,
+                }),
+              }
+            ).then(res => res.json()),
+          ]);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          if (
+            statusUpdate.success === false &&
+            presentLocationUpdate.success === false
+          ) {
+            document.getElementById(
+              'server_response_admin_update'
+            ).innerHTML = `${statusUpdate.error} and ${
+              presentLocationUpdate.error
+            }`;
+          } else if (
+            statusUpdate.success === false ||
+            presentLocationUpdate.success === false
+          ) {
+            document.getElementById('server_response_admin_update').innerHTML =
+              statusUpdate.success === false
+                ? statusUpdate.error
+                : presentLocationUpdate.error;
+          } else {
+            document.getElementById(
+              'server_response_admin_update_success'
+            ).innerHTML = 'The Parcel was successfully Updated';
+            window.location = './admin_dashboard.html';
+          }
+        }
+      }
+    })();
+  });
 window.addEventListener('load', loadAdminDashboard);
