@@ -67,6 +67,7 @@ signInButton.addEventListener('click', event => {
           'sendItUserName',
           `${res.userObject[0].last_name}, ${res.userObject[0].first_name}`
         );
+        console.log(res.userObject[0]);
         window.location = './dashboard.html';
       }
     })
