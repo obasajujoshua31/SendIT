@@ -1,4 +1,6 @@
 const token = window.localStorage.getItem('sendItToken');
+const userId = window.localStorage.getItem('sendItUserId');
+const userName = window.localStorage.getItem('sendItUserName');
 let parcelId;
 const cancelParcelOrder = event => {
   event.preventDefault();
@@ -63,19 +65,45 @@ const showUpdateForm = iconLink => {
         res.data[0].present_location;
       switch (res.data[0].status) {
         case 'PLACED':
-          document.getElementById('status_placed').checked = 'true';
+          document.getElementById('status_placed').checked = true;
+          document.getElementById('status_cancelled').checked = false;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('status_transiting').checked = false;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('your_new_destination').disabled = false;
+          document.getElementById('submitUpdateButton').hidden = false;
+          document.getElementById('cancelParcel').hidden = false;
           break;
         case 'TRANSITING':
-          document.getElementById('status_transiting').checked = 'true';
+          document.getElementById('status_transiting').checked = true;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('status_cancelled').checked = false;
+          document.getElementById('status_placed').checked = false;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('your_new_destination').disabled = false;
+          document.getElementById('submitUpdateButton').hidden = false;
+          document.getElementById('cancelParcel').hidden = false;
           break;
         case 'DELIVERED':
-          document.getElementById('status_delivered').checked = 'true';
+          document.getElementById('status_delivered').checked = true;
+          document.getElementById('status_cancelled').checked = false;
+          document.getElementById('status_placed').checked = false;
+          document.getElementById('status_transiting').checked = false;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('your_new_destination').disabled = false;
+          document.getElementById('submitUpdateButton').hidden = false;
+          document.getElementById('cancelParcel').hidden = false;
+          break;
+        case 'CANCELLED':
+          document.getElementById('status_cancelled').checked = true;
+          document.getElementById('status_placed').checked = false;
+          document.getElementById('status_transiting').checked = false;
+          document.getElementById('status_delivered').checked = false;
+          document.getElementById('your_new_destination').disabled = true;
+          document.getElementById('submitUpdateButton').hidden = true;
+          document.getElementById('cancelParcel').hidden = true;
           break;
         default:
-          document.getElementById('status_cancelled').checked = 'true';
-          document.getElementById('your_new_destination').disabled = 'true';
-          document.getElementById('submitUpdateButton').hidden = 'true';
-          document.getElementById('cancelParcel').hidden = 'true';
           break;
       }
     })
@@ -145,9 +173,6 @@ const addRowToDashboardTable = parcelData => {
 };
 
 const loadDashboard = () => {
-  const userId = window.localStorage.getItem('sendItUserId');
-  const userName = window.localStorage.getItem('sendItUserName');
-
   fetch(
     `https://obasajujoshua31.herokuapp.com/api/v1/users/${userId}/parcels`,
     {
@@ -161,14 +186,25 @@ const loadDashboard = () => {
   )
     .then(res => res.json())
     .then(res => {
-      document.getElementById(
-        'user_greeting'
-      ).innerHTML = `Welcome ${userName}`;
       if (res.success === false) {
-        document.getElementById('parcel_status').innerHTML =
-          'You have no Parcels';
+        if (res.error === 'You are not authorized') {
+          window.localStorage.setItem('userSignInStatus', false);
+          window.location = './index.html';
+        } else {
+          window.localStorage.setItem('userSignInStatus', true);
+          document.getElementById(
+            'user_greeting'
+          ).innerHTML = `Welcome ${userName}`;
+
+          document.getElementById('parcel_status').innerHTML =
+            'You have no Parcels';
+        }
       } else {
         // console.log(Object.values(res.data[0]));
+        window.localStorage.setItem('userSignInStatus', true);
+        document.getElementById(
+          'user_greeting'
+        ).innerHTML = `Welcome ${userName}`;
         res.data.forEach(data => {
           const {
             parcel_id,
@@ -179,14 +215,14 @@ const loadDashboard = () => {
             sent_on,
             status,
           } = data;
-
+          const formattedSentOn = new Date(sent_on).toLocaleString();
           addRowToDashboardTable([
             parcel_id,
             pick_up_location,
             destination,
             weight,
             weight_metric,
-            sent_on,
+            formattedSentOn,
             status,
           ]);
         });

@@ -67,7 +67,11 @@ signInButton.addEventListener('click', event => {
           'sendItUserName',
           `${res.userObject[0].last_name}, ${res.userObject[0].first_name}`
         );
-        window.location = './dashboard.html';
+        if (res.userObject[0].is_admin === false) {
+          window.location = './dashboard.html';
+        } else {
+          window.location = './admin_dashboard.html';
+        }
       }
     })
     .catch(e => console.log(e));
@@ -206,3 +210,21 @@ newPasswordCreationButton.addEventListener('click', event => {
     })
     .catch(err => console.log(err));
 });
+const userSignInStatus = window.localStorage.getItem('userSignInStatus');
+const isAdminLoggedIn = window.localStorage.getItem('isAdminLoggedIn');
+
+const loadHomePage = () => {
+  if (userSignInStatus === false || !userSignInStatus) {
+    document.getElementById('server_response_login').innerHTML =
+      'You are not Logged in';
+  } else if (userSignInStatus === true) {
+    window.location = './dashboard.html';
+  } else if (isAdminLoggedIn === true || !isAdminLoggedIn) {
+    window.location = './admin_dashboard.html';
+  } else if (isAdminLoggedIn === false) {
+    document.getElementById('server_response_login').innerHTML =
+      'You are not Logged in';
+  }
+};
+
+window.addEventListener('load', loadHomePage);
