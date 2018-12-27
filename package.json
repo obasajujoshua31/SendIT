@@ -32,7 +32,8 @@
     "mailgun-js": "^0.22.0",
     "nodemon": "^1.18.4",
     "pg": "^7.6.1",
-    "sendgrid": "^5.2.3"
+    "sendgrid": "^5.2.3",
+    "swagger-ui-express": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
