@@ -1,0 +1,672 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a SendIT Courier Services Documentation",
+    "version": "1.0.0",
+    "title": "SendIT Courier Services",
+    "contact": {
+      "email": "joshua.obasaju@andela.com"
+    }
+  },
+  "host": "obasajujoshua31.herokuapp.com",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "parcel",
+      "description": "Everything about your Parcel Order"
+    },
+    {
+      "name": "user",
+      "description": "Operations about Users"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/parcels": {
+      "post": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "create a parcel Order",
+        "description": "",
+        "operationId": "postNewParcelOrder",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "new parcel",
+            "description": "Post New Parcel ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Credentials"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "get all parcels",
+        "description": "Used by Admin to get all parcel orders",
+        "operationId": "getAllParcels",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          },
+          "404": {
+            "description": "No Parcel available in the application"
+          }
+        }
+      }
+    },
+    "/parcels/{parcelId}": {
+      "get": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Find parcel by ID",
+        "description": "Returns a single parcel",
+        "operationId": "getParcelsById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "parcelId",
+            "in": "path",
+            "description": "ID of pet to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "You are not authorized"
+          },
+          "404": {
+            "description": "Parcel not found"
+          }
+        }
+      }
+    },
+    "/users/{userId}/parcels": {
+      "get": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Get all Parcels by a user",
+        "description": "Returns all parcels by a user",
+        "operationId": "getParcelsByUserId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of pet to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          },
+          "401": {
+            "description": "You are not authorized"
+          },
+          "404": {
+            "description": "User has no parcels"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "get all Users",
+        "description": "",
+        "operationId": "getAllUsers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "401": {
+            "description": "You are not authorized"
+          },
+          "404": {
+            "description": "No users found"
+          }
+        }
+      }
+    },
+    "/parcels/{parcelId}/cancel": {
+      "put": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Cancel a parcel order that is not yet delivered",
+        "description": "",
+        "operationId": "CancelParcelOrderById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "parcelId",
+            "in": "path",
+            "description": "ID of Parcel to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "You are not authorized"
+          },
+          "404": {
+            "description": "Parcel is not found"
+          }
+        }
+      }
+    },
+    "/parcels/{parcelId}/destination": {
+      "put": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Cancel a parcel order that is not yet delivered",
+        "description": "",
+        "operationId": "updateParcelOrderById",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "parcelId",
+            "in": "path",
+            "description": "ID of Parcel to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "destination",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "destination": {
+                  "type": "string",
+                  "description": "The new destination"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "You are not authorized"
+          },
+          "404": {
+            "description": "Parcel is not found"
+          }
+        }
+      }
+    },
+    "/parcels/{parcelId}/presentLocation": {
+      "put": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Change the Present Location of a Parcel By Admin",
+        "description": "",
+        "operationId": "changePresentLocationByAdminById",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "parcelId",
+            "in": "path",
+            "description": "ID of Parcel to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "presentLocation",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "presentLocation": {
+                  "type": "string",
+                  "description": "Present Location"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/parcels/{parcelId}/status": {
+      "put": {
+        "tags": [
+          "parcel"
+        ],
+        "summary": "Change the Present Status of a Parcel By Admin",
+        "description": "",
+        "operationId": "changeStatusByAdminById",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "parcelId",
+            "in": "path",
+            "description": "ID of Parcel to update Status",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "The Status of the parcel by the Admin",
+            "required": true,
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "The status of the parcel"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create an account for a new user",
+        "description": "",
+        "operationId": "signUpUser",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "newUser",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/newUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "Already Used Credentials"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "signInUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/account/recovery": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Post user details for verification",
+        "description": "",
+        "operationId": "postUserDetailsForVerification",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "forgotUser",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/verifyUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account successfully verified"
+          },
+          "400": {
+            "description": "Account verification failed"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Change User Password",
+        "description": "",
+        "operationId": "changeUserPassword",
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "changeUserPassword",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/changeUserPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account successfully verified"
+          },
+          "400": {
+            "description": "Account verification failed"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "email of the user"
+        },
+        "password": {
+          "type": "string",
+          "description": "password of the user"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "verifyUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "email of the user"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the user"
+        }
+      }
+    },
+    "changeUserPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "the email of the user"
+        },
+        "password": {
+          "type": "string",
+          "description": "the password of the user"
+        },
+        "passwordConfirmation": {
+          "type": "string",
+          "description": "password confirmation for the user"
+        }
+      }
+    },
+    "newUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Parcel": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "pick_up_location": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "present_location": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "number"
+        },
+        "weightMetric": {
+          "type": "string",
+          "enum": [
+            "Kg",
+            "g"
+          ]
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

@@ -1,4 +1,4 @@
-import { check, body, validationResult } from 'express-validator/check';
+import { check, validationResult } from 'express-validator/check';
 
 const parcelValidator = [
   check('weight')
@@ -151,6 +151,12 @@ const accountVerificationFormValidator = [
   },
 ];
 const changePasswordVerificationFormValidator = [
+  check('email')
+    .isEmail()
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Email cannot be blank'),
   check('password')
     .isLength({ min: 5 })
     .trim()
