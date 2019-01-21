@@ -1,7 +1,7 @@
 import getResponseFromDB from './getResponseFromDB';
 
 class User {
-  static save(user, callback) {
+  static async save(user) {
     const { firstName, lastName, email, password, isAdmin } = user;
     const registeredOn = new Date();
     const sql =
@@ -14,37 +14,61 @@ class User {
       isAdmin,
       registeredOn,
     ];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
 
-  static findOne(email, callback) {
+  static async findOne(email) {
     const sql = 'SELECT * FROM users WHERE email = $1';
     const params = [email];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
 
-  static findById(id, callback) {
+  static async findById(id) {
     const sql =
       'SELECT email, password, user_id, is_admin FROM users WHERE user_id = $1';
     const params = [id];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
 
-  static remove(callback) {
+  static async remove() {
     const sql = 'DELETE FROM users WHERE email = $1 RETURNING *';
     const params = ['kennethafolabi@gmail.com'];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params, callback);
+    } catch (e) {
+      throw e;
+    }
   }
 
-  static getAll(callback) {
+  static async getAll() {
     const sql = 'SELECT * FROM users';
-    getResponseFromDB(sql, null, callback);
+    try {
+      return await getResponseFromDB(sql, null);
+    } catch (e) {
+      throw e;
+    }
   }
 
-  static findOneAndUpdate(email, password, callback) {
+  static async findOneAndUpdate(email, password) {
     const sql = 'UPDATE users SET password = $1 WHERE email = $2 RETURNING *';
     const params = [password, email];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
 }
 export default User;

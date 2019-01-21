@@ -1,16 +1,11 @@
 import pool from '../config/config';
 
-const getResponseFromDB = async (sql, params = null, callback = null) => {
-  let error, response;
+const getResponseFromDB = async (sql, params = null) => {
   try {
-    return await pool.query(sql, params).then(results => {
-      response = results.rows;
-    });
+    const response = await pool.query(sql, params);
+    return response.rows;
   } catch (e) {
-    error = new Error(e);
-  } finally {
-    callback(error, response);
+    throw e;
   }
 };
-
 export default getResponseFromDB;

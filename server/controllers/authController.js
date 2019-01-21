@@ -3,13 +3,11 @@ import Crypt from '../helpers/crypt';
 import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class AuthController {
-  static signUpUser(req, res, next) {
+  static async signUpUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
-    User.findOne(email, (err, results) => {
-      if (err) {
-        return next(err);
-      }
-      if (results.length > 0) {
+    try {
+      const foundUser = await User.findOne(email);
+      if (foundUser.length > 0) {
         const err2 = new Error();
         err2.statusCode = 400;
         err2.message = 'Email is not available';
@@ -22,33 +20,29 @@ class AuthController {
         password: Crypt.encrypt(password),
         isAdmin: false,
       };
-      User.save(newUser, (e, newRegisteredUser) => {
-        if (e) {
-          return next(e);
-        }
-        return res.status(201).json({
-          success: true,
-          token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
-          message: 'user signed Up successfully',
-          userObject: newRegisteredUser,
-        });
+      const newRegisteredUser = await User.save(newUser);
+      return res.status(201).json({
+        success: true,
+        token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
+        message: 'user signed Up successfully',
+        userObject: newRegisteredUser,
       });
-    });
+    } catch (e) {
+      return next(e);
+    }
   }
 
-  static signInUser(req, res, next) {
+  static async signInUser(req, res, next) {
     const { email, password } = req.body;
-
-    User.findOne(email, (err, foundUser) => {
-      if (err) {
-        return next(err);
-      }
+    try {
+      const foundUser = await User.findOne(email);
       if (foundUser.length === 0) {
         const err2 = new Error();
         err2.message = 'Invalid Password or Username';
         err2.statusCode = 400;
         return next(err2);
       }
+
       if (!Crypt.isMatchDbPassword(password, foundUser[0].password)) {
         const err3 = new Error();
         err3.message = 'Invalid Password or Username';
@@ -60,7 +54,9 @@ class AuthController {
         token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
         userObject: foundUser,
       });
-    });
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 
