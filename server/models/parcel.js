@@ -1,24 +1,56 @@
 import getResponseFromDB from './getResponseFromDB';
 
 class Parcel {
-  static findAll(callback) {
+  /**
+   * @param  {String} sql
+   * @param  {Array} null
+   * @return  {Array} parcels
+   */
+  static async findAll() {
     const sql = 'SELECT * FROM parcels ORDER BY parcel_id DESC ';
-    getResponseFromDB(sql, null, callback);
+    try {
+      return await getResponseFromDB(sql, null);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static findById(parcelId, callback) {
+  /**
+   * @param  {Number} parcelId
+   * @param  {String} { sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async findById(parcelId) {
     const sql = 'SELECT * FROM parcels WHERE parcel_id = $1';
     const params = [parcelId];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static findByUserId(userId, callback) {
+  /**
+   * @param  {Number} userId
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async findByUserId(userId) {
     const sql = 'SELECT * FROM parcels WHERE placed_by = $1';
     const params = [userId];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static save(parcel, callback) {
+  /**
+   * @param  {Object} parcel
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async save(parcel) {
     const {
       from,
       to,
@@ -41,31 +73,71 @@ class Parcel {
       status,
       parcelName,
     ];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static findByIdAndCancel(parcelId, callback) {
+  /**
+   * @param  {Number} parcelId
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async findByIdAndCancel(parcelId) {
     const sql =
       'UPDATE parcels SET status = $1 WHERE parcel_id = $2 RETURNING *';
     const params = ['CANCELLED', parcelId];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static findByIdAndChangeLocation(parcelId, location, callback) {
+  /**
+   * @param  {Number} parcelId
+   * @param  {String} location
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async findByIdAndChangeLocation(parcelId, location) {
     const sql =
       'UPDATE parcels SET present_location = $1 WHERE parcel_id = $2 RETURNING *';
     const params = [location, parcelId];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static findByIdAndUpdate(parcelId, destination, callback) {
+  /**
+   * @param  {Number} parcelId
+   * @param  {String} sql
+   * @param  {String} destination
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async findByIdAndUpdate(parcelId, destination) {
     const sql =
       'UPDATE parcels SET destination = $1 WHERE parcel_id = $2 RETURNING *';
     const params = [destination, parcelId];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
+  /**
+   * @param  {Number} parcelId
+   * @param  {String} sql
+   * @param {String} newStatus
+   * @param  {Array} params
+   * @return  {Array}
+   */
 
-  static findByIdAndUpdateStatus(parcelId, newStatus, callback) {
+  static async findByIdAndUpdateStatus(parcelId, newStatus) {
     let sql;
     let params;
     if (newStatus === 'TRANSITING') {
@@ -77,20 +149,41 @@ class Parcel {
         'UPDATE parcels SET status = $1, delivered_on = $2 WHERE parcel_id = $3 RETURNING *';
       params = [newStatus, deliveredOn, parcelId];
     }
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
-
-  static remove(callback) {
+  /**
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
+  static async remove() {
     const sql = 'DELETE FROM parcels WHERE pick_up_location = $1 RETURNING *';
     const params = ['University of Lagos'];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
+  /**
+   * @param  {String} sql
+   * @param  {Array} params
+   * @return  {Array}
+   */
 
-  static changeToPlaced(callback) {
+  static async changeToPlaced() {
     const sql =
       'UPDATE parcels SET status = $1 WHERE parcel_id = $2 RETURNING *';
     const params = ['PLACED', 1];
-    getResponseFromDB(sql, params, callback);
+    try {
+      return await getResponseFromDB(sql, params);
+    } catch (e) {
+      throw e;
+    }
   }
 }
 

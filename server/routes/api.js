@@ -5,7 +5,7 @@ import validator from '../helpers/validator';
 import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 const router = express.Router();
-router.get('/parcels', JwtAuthenticate.isAdmin, ParcelController.getAllParcels);
+router.get('/parcels', ParcelController.getAllParcels);
 router.get('/users', JwtAuthenticate.isAdmin, UserController.getAllUsers);
 router.get('/users/:userId/parcels', ParcelController.getParcelsByUserId);
 router.get('/parcels/:parcelId', ParcelController.getParcelsByParcelId);
@@ -14,11 +14,7 @@ router.post(
   validator.parcelValidator,
   ParcelController.postNewParcelOrder
 );
-router.put(
-  '/parcels/:parcelId/cancel',
-  JwtAuthenticate.isNotAdmin,
-  ParcelController.cancelParcelOrderById
-);
+router.put('/parcels/:parcelId/cancel', ParcelController.cancelParcelOrderById);
 router.put(
   '/parcels/:parcelId/destination',
   validator.updateFormValidator,

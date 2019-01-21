@@ -3,32 +3,26 @@ import Crypt from '../helpers/crypt';
 import JwtAuthenticate from '../helpers/jwtAuthenticate';
 
 class UserController {
-  static getAllUsers(req, res, next) {
-    User.getAll((err, foundUsers) => {
-      if (err) {
-        return next(err);
-      }
-      return res.status(200).json({
-        success: true,
-        data: foundUsers,
-      });
-    });
+  static async getAllUsers(req, res, next) {
+    try {
+      const foundUsers = await User.getAll();
+      return res.status(200).json({ success: true, data: foundUsers });
+    } catch (e) {
+      return next(e);
+    }
   }
 
-  static postUserDetailsForVerification(req, res, next) {
+  static async postUserDetailsForVerification(req, res, next) {
     const { email, firstName } = req.body;
-    User.findOne(email, (err, foundUserDetails) => {
-      if (err) {
-        return next(err);
-      }
+    try {
+      const foundUserDetails = await User.findOne(email);
       if (foundUserDetails.length === 0) {
         const err1 = new Error();
         err1.message = 'There is a problem verifying your account';
         return next(err1);
       }
-      if (
-        foundUserDetails[0].first_name.toUpperCase() !== firstName.toUpperCase()
-      ) {
+      const userDetails = await User.findOne(email);
+      if (userDetails[0].first_name.toUpperCase() !== firstName.toUpperCase()) {
         const err2 = new Error();
         err2.message = 'User Account Confirmation failed';
         return next(err2);
@@ -37,10 +31,12 @@ class UserController {
         success: true,
         message: 'User Account successfully verified',
       });
-    });
+    } catch (e) {
+      return next(e);
+    }
   }
 
-  static changeUserPassword(req, res, next) {
+  static async changeUserPassword(req, res, next) {
     const { email, password, passwordConfirmation } = req.body;
     if (password.toUpperCase() !== passwordConfirmation.toUpperCase()) {
       const err = new Error();
@@ -48,21 +44,21 @@ class UserController {
       err.statusCode = 400;
       return next(err);
     }
-    User.findOneAndUpdate(
-      email,
-      Crypt.encrypt(password),
-      (err1, updatedUserRecord) => {
-        if (err1) {
-          return next(err1);
-        }
-        return res.status(200).json({
-          success: true,
-          data: updatedUserRecord,
-          message: 'Password changed successfully',
-          token: JwtAuthenticate.jwtEncode(updatedUserRecord[0].user_id),
-        });
-      }
-    );
+    try {
+      const updatedUserRecord = await User.findOneAndUpdate(
+        email,
+        Crypt.encrypt(password)
+      );
+
+      return res.status(200).json({
+        success: true,
+        data: updatedUserRecord,
+        message: 'Password changed successfully',
+        token: JwtAuthenticate.jwtEncode(updatedUserRecord[0].user_id),
+      });
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 
