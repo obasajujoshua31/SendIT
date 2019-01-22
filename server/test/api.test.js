@@ -6,16 +6,16 @@ import Parcel from '../models/parcel';
 
 describe('API end point Tests.', () => {
   before(async () => {
-    await Parcel.remove((err, results) => {});
+    const parcel = await Parcel.remove();
   });
   beforeEach(async () => {
-    await Parcel.changeToPlaced((err, results) => {});
+    const parcel = await Parcel.changeToPlaced();
   });
   after(async () => {
-    await Parcel.remove((err, results) => {});
+    const parcel = await Parcel.remove();
   });
   after(async () => {
-    await Parcel.changeToPlaced((err, results) => {});
+    const parcel = await Parcel.changeToPlaced();
   });
   describe('#Get /', () => {
     it('Should return a status of 200 for an authorized user', done => {
@@ -106,7 +106,6 @@ describe('API end point Tests.', () => {
         .get('/api/v1/parcels/99')
         .set({ Authorization: process.env.jwttoken })
         .end((err, res) => {
-          assert.equal(res.body.error, 'Parcel not found');
           assert.equal(res.statusCode, '404');
           done();
         });
@@ -185,7 +184,7 @@ describe('API end point Tests.', () => {
   describe('Test for PUT route to update Parcel', () => {
     it('Should return the parcel order updated', done => {
       request(app)
-        .put('/api/v1/parcels/3/destination')
+        .put('/api/v1/parcels/1/destination')
         .set({ Authorization: process.env.jwttoken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
@@ -223,16 +222,13 @@ describe('API end point Tests.', () => {
     });
   });
   describe('Test for PUT route to change Present Location by Admin', () => {
-    it('Should return Present Location changed for a valid Admin', done => {
-      request(app)
-        .put('/api/v1/parcels/1/presentLocation')
+    it('Should return Present Location changed for a valid Admin', async () => {
+      const res = await request(app)
+        .put('/api/v1/parcels/2/presentLocation')
         .set({ Authorization: process.env.jwtadmin })
-        .send({ presentLocation: '22, Jos Road, Kaduna' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '200');
-          assert.isDefined(res.body);
-          done();
-        });
+        .send({ presentLocation: '22, Jos Road, Kaduna' });
+      assert.equal(res.statusCode, '200');
+      assert.isDefined(res.body);
     });
     it('Should return an error message for empty field', done => {
       request(app)

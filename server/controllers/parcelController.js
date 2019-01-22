@@ -144,17 +144,14 @@ class ParcelController {
         err1.message = 'Parcel not found';
         return next(err1);
       }
-      if (foundParcel[0].status === 'CANCELLED') {
+      if (
+        foundParcel[0].status === 'CANCELLED' ||
+        foundParcel[0].status === 'DELIVERED'
+      ) {
         const err2 = new Error();
         err2.statusCode = 400;
-        err2.message = 'The order is already Cancelled';
+        err2.message = 'The order cannot be Updated';
         return next(err2);
-      }
-      if (foundParcel[0].status === 'DELIVERED') {
-        const err3 = new Error();
-        err3.statusCode = 400;
-        err3.message = 'The order is already Delivered';
-        return next(err3);
       }
       const foundUserDetails = await User.findById(foundParcel[0].placed_by);
       if (foundUserDetails.length === 0) {
@@ -165,13 +162,14 @@ class ParcelController {
       userEmail = foundUserDetails[0].email;
       const updatedParcels = await Parcel.findByIdAndChangeLocation(
         req.params.parcelId,
-        req.params.presentLocation
+        req.body.presentLocation
       );
+
       SendEmail.sendEmailToUserRegardingStatusUpgrade(
         userEmail,
         updatedParcels,
         null,
-        presentLocation
+        req.body.presentLocation
       );
       return res.status(200).json({
         success: true,
