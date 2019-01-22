@@ -2,8 +2,7 @@ import getResponseFromDB from './getResponseFromDB';
 
 class Parcel {
   /**
-   * @param  {String} sql
-   * @param  {Array} null
+   * @param  {null}
    * @return  {Array} parcels
    */
   static async findAll() {
@@ -16,9 +15,7 @@ class Parcel {
   }
   /**
    * @param  {Number} parcelId
-   * @param  {String} { sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array} findById
    */
   static async findById(parcelId) {
     const sql = 'SELECT * FROM parcels WHERE parcel_id = $1';
@@ -31,8 +28,6 @@ class Parcel {
   }
   /**
    * @param  {Number} userId
-   * @param  {String} sql
-   * @param  {Array} params
    * @return  {Array}
    */
   static async findByUserId(userId) {
@@ -46,9 +41,7 @@ class Parcel {
   }
   /**
    * @param  {Object} parcel
-   * @param  {String} sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array} save
    */
   static async save(parcel) {
     const {
@@ -81,9 +74,7 @@ class Parcel {
   }
   /**
    * @param  {Number} parcelId
-   * @param  {String} sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array} findByIdAndCancel
    */
   static async findByIdAndCancel(parcelId) {
     const sql =
@@ -98,14 +89,13 @@ class Parcel {
   /**
    * @param  {Number} parcelId
    * @param  {String} location
-   * @param  {String} sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array}  findByIdAndChangeLocation
    */
   static async findByIdAndChangeLocation(parcelId, location) {
     const sql =
       'UPDATE parcels SET present_location = $1 WHERE parcel_id = $2 RETURNING *';
     const params = [location, parcelId];
+    console.log(params);
     try {
       return await getResponseFromDB(sql, params);
     } catch (e) {
@@ -114,10 +104,8 @@ class Parcel {
   }
   /**
    * @param  {Number} parcelId
-   * @param  {String} sql
    * @param  {String} destination
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array} findByIdAndUpdate
    */
   static async findByIdAndUpdate(parcelId, destination) {
     const sql =
@@ -131,10 +119,8 @@ class Parcel {
   }
   /**
    * @param  {Number} parcelId
-   * @param  {String} sql
    * @param {String} newStatus
-   * @param  {Array} params
-   * @return  {Array}
+   * @return  {Array} findByIdAndUpdateStatus
    */
 
   static async findByIdAndUpdateStatus(parcelId, newStatus) {
@@ -156,9 +142,8 @@ class Parcel {
     }
   }
   /**
-   * @param  {String} sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @param  {null}
+   * @return  {Array} remove
    */
   static async remove() {
     const sql = 'DELETE FROM parcels WHERE pick_up_location = $1 RETURNING *';
@@ -170,9 +155,8 @@ class Parcel {
     }
   }
   /**
-   * @param  {String} sql
-   * @param  {Array} params
-   * @return  {Array}
+   * @param  {null}
+   * @return  {Array} changeToPlaced
    */
 
   static async changeToPlaced() {
