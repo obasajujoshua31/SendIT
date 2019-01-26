@@ -6,14 +6,10 @@ import newUser from './newuser.test';
 
 describe('Authentication end point Tests.', () => {
   before(async () => {
-    await User.remove((err, results) => {
-      console.log(results);
-    });
+    const user = await User.remove();
   });
   after(async () => {
-    await User.remove((err, results) => {
-      console.log(results);
-    });
+   const user =  await User.remove()
   });
   describe('#  Signup', () => {
     it('Should return the data of the new user', done => {

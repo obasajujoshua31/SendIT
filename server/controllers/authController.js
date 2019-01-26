@@ -1,17 +1,15 @@
 import User from '../models/user';
 import Crypt from '../helpers/crypt';
 import JwtAuthenticate from '../helpers/jwtAuthenticate';
-
+import handleError from '../helpers/errorHandler';
+import { sendAuthResponse } from '../helpers/response';
 class AuthController {
   static async signUpUser(req, res, next) {
     const { firstName, lastName, email, password } = req.body;
     try {
       const foundUser = await User.findOne(email);
       if (foundUser.length > 0) {
-        const err2 = new Error();
-        err2.statusCode = 400;
-        err2.message = 'Email is not available';
-        return next(err2);
+        return handleError('Email is not available', 400, next);
       }
       const newUser = {
         firstName,
@@ -21,39 +19,85 @@ class AuthController {
         isAdmin: false,
       };
       const newRegisteredUser = await User.save(newUser);
-      return res.status(201).json({
-        success: true,
-        token: JwtAuthenticate.jwtEncode(newRegisteredUser[0].user_id),
-        message: 'user signed Up successfully',
-        userObject: newRegisteredUser,
-      });
+      const { userId, dbPassword } = newRegisteredUser[0];
+      const user = {
+        firstName,
+        lastName,
+        email,
+        password: dbPassword,
+        userId,
+        isAdmin: false
+      }
+      return sendAuthResponse(
+        JwtAuthenticate.jwtEncode(user),
+        'user signed up successfully',
+        201,
+        res
+      );
     } catch (e) {
       return next(e);
     }
   }
 
   static async signInUser(req, res, next) {
-    const { email, password } = req.body;
+    try {
+      const foundUser = await User.findOne(req.body.email);
+      if (foundUser.length === 0) {
+        return handleError('Invalid Password or Username', 400, next);
+      }
+      if (!Crypt.isMatchDbPassword(req.body.password, foundUser[0].password)) {
+        return handleError('Invalid Password or Username', 400, next);
+      }
+      const { user_id, email, first_name, last_name, is_admin } = foundUser[0];
+      const user = {
+        userId: user_id,
+        email,
+        firstName: first_name,
+        lastName: last_name,
+        isAdmin: is_admin,
+      };
+      return sendAuthResponse(
+        JwtAuthenticate.jwtEncode(user),
+        'User signed in successfully',
+        200,
+        res
+      );
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  static async signUpUserByAdmin(req, res, next) {
+    const { email, password, firstName, lastName, isAdmin } = req.body;
     try {
       const foundUser = await User.findOne(email);
-      if (foundUser.length === 0) {
-        const err2 = new Error();
-        err2.message = 'Invalid Password or Username';
-        err2.statusCode = 400;
-        return next(err2);
+      if (foundUser.length > 0) {
+        return handleError('Email is not available', 400, next);
       }
-
-      if (!Crypt.isMatchDbPassword(password, foundUser[0].password)) {
-        const err3 = new Error();
-        err3.message = 'Invalid Password or Username';
-        err3.statusCode = 400;
-        return next(err3);
+      const newUser = {
+        firstName,
+        lastName,
+        email,
+        password: Crypt.encrypt(password),
+        isAdmin,
+      };
+      const newRegisteredUser = await User.save(newUser);
+      const { userId } = newRegisteredUser[0];
+      const dbPassword = newRegisteredUser[0].password;
+      const user = {
+        firstName,
+        lastName,
+        email,
+        password: dbPassword,
+        userId,
+        isAdmin
       }
-      return res.status(200).json({
-        success: true,
-        token: JwtAuthenticate.jwtEncode(foundUser[0].user_id),
-        userObject: foundUser,
-      });
+      return sendAuthResponse(
+        JwtAuthenticate.jwtEncode(user),
+        'user signed up successfully',
+        201,
+        res
+      );
     } catch (e) {
       return next(e);
     }
