@@ -1,79 +1,66 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import handleError from './errorHandler';
 
 class JwtAuthenticate {
-  static jwtEncode(userId) {
-    return jwt.sign({ userId }, process.env.secret_key);
+  /**
+   * @param  {Object} user
+   * @return  {String} jwtEncode
+   */
+  static jwtEncode(user) {
+    return jwt.sign(user, process.env.secret_key);
   }
-
+  /**
+   * @param  {ServerRequest} req
+   * @param  {ServerResponse} res
+   * @param  {ServerResponse} next
+   * @return {Security} jwtVerifyToken
+   */
   static jwtVerifyToken(req, res, next) {
     const bearerHeader = req.headers.authorization;
     if (typeof bearerHeader === 'undefined') {
-      const err = new Error();
-      err.statusCode = 401;
-      err.message = 'You are not authorized';
-      return next(err);
+      return handleError('You are not authorized', 401, next);
     }
     const bearer = bearerHeader.split(' ');
-    jwt.verify(bearer[1], process.env.secret_key, err => {
+    jwt.verify(bearer[1], process.env.secret_key, (err, user) => {
       if (err) {
-        const err2 = new Error();
-        err2.statusCode = 401;
-        err2.message = 'You are not authorized';
-        return next(err2);
+        return handleError('You are not authorized', 401, next);
       }
+      req.user = user;
       return next();
     });
   }
+  /**
+  * @param  {ServerRequest} req
+   * @param  {ServerResponse} res
+   * @param  {ServerResponse} next
+   * @return {Boolean} isAdmin
 
+   */
   static async isAdmin(req, res, next) {
     const bearerHeader = req.headers.authorization;
     const bearer = bearerHeader.split(' ');
     const bearerDetails = jwt.verify(bearer[1], process.env.secret_key);
-    try {
-      const foundUserDetails = await User.findById(bearerDetails.userId);
-      if (foundUserDetails.length === 0) {
-        const err1 = new Error();
-        err1.statusCode = 404;
-        err1.message = 'User not found';
-        return next(err1);
-      }
-
-      if (foundUserDetails[0].is_admin === false) {
-        const err2 = new Error();
-        err2.statusCode = 401;
-        err2.message = 'Only Admin have access';
-        return next(err2);
-      }
-      next();
-    } catch (e) {
-      return next(e);
+    if (bearerDetails.isAdmin === false) {
+      return handleError('Only Admin have access', 401, next);
     }
+    return next();
   }
+  /**
+  * @param  {ServerRequest} req
+   * @param  {ServerResponse} res
+   * @param  {ServerResponse} next
+   * @return {Boolean} isNotAdmin
 
+   */
   static async isNotAdmin(req, res, next) {
     const bearerHeader = req.headers.authorization;
     const bearer = bearerHeader.split(' ');
     const bearerDetails = jwt.verify(bearer[1], process.env.secret_key);
-    try {
-      const foundUserDetails = await User.findById(bearerDetails.userId);
-      if (foundUserDetails.length === 0) {
-        const err1 = new Error();
-        err1.statusCode = 404;
-        err1.message = 'User not found';
-        return next(err1);
-      }
-
-      if (foundUserDetails[0].is_admin === true) {
-        const err2 = new Error();
-        err2.statusCode = 401;
-        err2.message = 'Admin have no access';
-        return next(err2);
-      }
-      return next();
-    } catch (e) {
-      return next(e);
+    if (bearerDetails.isAdmin === true) {
+      return handleError('Admin have no access', 401, next);
     }
+    return next();
   }
 }
 export default JwtAuthenticate;

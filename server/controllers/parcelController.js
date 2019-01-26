@@ -1,16 +1,13 @@
-import jwt from 'jsonwebtoken';
 import Parcel from '../models/parcel';
 import SendEmail from '../emailnotification/sendEmail';
-import User from '../models/user';
+import handleError from '../helpers/errorHandler';
+import sendResponse from '../helpers/response';
 
 class ParcelController {
   static async getAllParcels(req, res, next) {
     try {
       const allParcels = await Parcel.findAll();
-      return res.status(200).json({
-        success: true,
-        data: allParcels,
-      });
+      return sendResponse(allParcels, 'Order retrieved successfully', 200, res);
     } catch (e) {
       return next(e);
     }
@@ -20,14 +17,14 @@ class ParcelController {
     try {
       const foundParcel = await Parcel.findByUserId(req.params.userId);
       if (foundParcel.length === 0) {
-        const error = new Error();
-        error.message = 'The User has no Parcels';
-        return next(error);
+        return handleError('The User has no Parcels', null, next);
       }
-      return res.status(200).json({
-        success: true,
-        data: foundParcel,
-      });
+      return sendResponse(
+        foundParcel,
+        'Order retrieved successfully',
+        200,
+        res
+      );
     } catch (e) {
       return next(e);
     }
@@ -37,24 +34,21 @@ class ParcelController {
     try {
       const foundParcels = await Parcel.findById(req.params.parcelId);
       if (foundParcels.length === 0) {
-        const error = new Error();
-        error.message = 'The parcel Order cannot be found';
-        return next(error);
+        return handleError('The parcel Order cannot be found', null, next);
       }
-      return res.status(200).json({
-        success: true,
-        data: foundParcels,
-      });
+      return sendResponse(
+        foundParcels,
+        'Order retrieved successfully',
+        200,
+        res
+      );
     } catch (e) {
       return next(e);
     }
   }
 
   static async postNewParcelOrder(req, res, next) {
-    const token = req.headers.authorization;
-    const bearer = token.split(' ');
-    const userDetails = jwt.verify(bearer[1], process.env.secret_key);
-    const placedBy = userDetails.userId;
+    const placedBy = req.user.userId;
     const { weight, weightMetric, from, to, parcelName } = req.body;
     const newParcel = {
       placedBy,
@@ -68,11 +62,7 @@ class ParcelController {
 
     try {
       const returnedNewParcel = await Parcel.save(newParcel);
-      return res.status(201).json({
-        success: true,
-        data: returnedNewParcel,
-        message: 'order created',
-      });
+      return sendResponse(returnedNewParcel, 'order created', 201, res);
     } catch (e) {
       return next(e);
     }
@@ -82,84 +72,61 @@ class ParcelController {
     try {
       const foundParcel = await Parcel.findById(req.params.parcelId);
       if (foundParcel.length === 0) {
-        const error = new Error();
-        error.message = 'Parcel not found';
-        return next(error);
+        return handleError('Parcel not found', null, next);
       }
       if (foundParcel[0].status === 'CANCELLED') {
-        const errMsg = new Error();
-        errMsg.message = 'Your order is already Cancelled';
-        errMsg.statusCode = 400;
-        return next(errMsg);
+        return handleError('Your order is already Cancelled', 400, next);
       }
 
       const cancelledParcel = await Parcel.findByIdAndCancel(
         req.params.parcelId
       );
-      return res.status(200).json({
-        success: true,
-        data: cancelledParcel,
-        message: 'order cancelled',
-      });
+      return sendResponse(cancelledParcel, 'order cancelled', 200, res);
     } catch (e) {
       return next(e);
     }
   }
 
   static async updateParcelOrderById(req, res, next) {
+    const { parcelId } = req.params;
+    const { destination } = req.body;
     try {
       const foundParcel = await Parcel.findById(req.params.parcelId);
 
       if (foundParcel.length === 0) {
-        const error = new Error();
-        error.message = 'Your order is not found';
-        return next(error);
+        return handleError('Your order is not found', null, next);
       }
       if (foundParcel[0].status === 'CANCELLED') {
-        const errMsg = new Error();
-        errMsg.message = 'Your order is already Cancelled';
-        errMsg.statusCode = 400;
-        return next(errMsg);
+        return handleError('Your order is already Cancelled', 400, next);
       }
       const updatedParcels = await Parcel.findByIdAndUpdate(
-        req.params.parcelId,
-        req.body.destination
+        parcelId,
+        destination
       );
-      return res.status(200).json({
-        success: true,
-        data: updatedParcels,
-      });
+      return sendResponse(
+        updatedParcels,
+        'Order updated successfully',
+        200,
+        res
+      );
     } catch (e) {
       return next(e);
     }
   }
 
   static async changeParcelPresentLocationByAdminById(req, res, next) {
-    let userEmail;
+    const userEmail = req.user.email;
     try {
       const foundParcel = await Parcel.findById(req.params.parcelId);
       if (foundParcel.length === 0) {
-        const err1 = new Error();
-        err1.statusCode = 404;
-        err1.message = 'Parcel not found';
-        return next(err1);
+        return handleError('Parcel not found', 404, next);
       }
       if (
         foundParcel[0].status === 'CANCELLED' ||
         foundParcel[0].status === 'DELIVERED'
       ) {
-        const err2 = new Error();
-        err2.statusCode = 400;
-        err2.message = 'The order cannot be Updated';
-        return next(err2);
+        return handleError('The order cannot be Updated', 400, next);
       }
-      const foundUserDetails = await User.findById(foundParcel[0].placed_by);
-      if (foundUserDetails.length === 0) {
-        const err10 = new Error();
-        err10.message = 'User not found for this parcel';
-        return next(err10);
-      }
-      userEmail = foundUserDetails[0].email;
       const updatedParcels = await Parcel.findByIdAndChangeLocation(
         req.params.parcelId,
         req.body.presentLocation
@@ -171,19 +138,21 @@ class ParcelController {
         null,
         req.body.presentLocation
       );
-      return res.status(200).json({
-        success: true,
-        data: updatedParcels,
-      });
+      return sendResponse(
+        updatedParcels,
+        'Order retrieved successfully',
+        200,
+        res
+      );
     } catch (e) {
       return next(e);
     }
   }
 
   static async changeParcelStatusByAdminById(req, res, next) {
+    const userEmail = req.user.email;
     const { parcelId } = req.params;
     let { status } = req.body;
-    let userEmail;
     const upperStatus = status.toUpperCase();
     if (upperStatus === 'DELIVERED') {
       status = 'DELIVERED';
@@ -193,18 +162,8 @@ class ParcelController {
     try {
       const foundParcels = await Parcel.findById(parcelId);
       if (foundParcels.length === 0) {
-        const err1 = new Error();
-        err1.statusCode = 400;
-        err1.message = 'Parcel is not found';
+        return handleError('Parcel is not found', 400, next);
       }
-      const foundUserDetails = await User.findById(foundParcels[0].placed_by);
-      if (foundUserDetails.length === 0) {
-        const err2 = new Error();
-        err2.statusCode = 400;
-        err2.message = 'User cannot not be found for this parcel';
-        return next(err2);
-      }
-      userEmail = foundUserDetails[0].email;
       const updatedParcels = await Parcel.findByIdAndUpdateStatus(
         parcelId,
         status
@@ -215,10 +174,12 @@ class ParcelController {
         upperStatus,
         null
       );
-      res.status(200).json({
-        success: true,
-        data: updatedParcels,
-      });
+      return sendResponse(
+        updatedParcels,
+        'Order retrieved successfully',
+        200,
+        res
+      );
     } catch (e) {
       return next(e);
     }

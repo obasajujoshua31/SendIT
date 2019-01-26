@@ -1,4 +1,5 @@
 import { check, validationResult } from 'express-validator/check';
+import handleError from './errorHandler';
 
 const parcelValidator = [
   check('weight')
@@ -30,10 +31,7 @@ const parcelValidator = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.statusCode = 400;
-      err.message = errors.array();
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -48,10 +46,7 @@ const updatePresentLocationValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.statusCode = 400;
-      err.message = errors.array()[0].msg;
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -66,10 +61,7 @@ const updateFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.statusCode = 400;
-      err.message = errors.array()[0].msg;
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -99,10 +91,41 @@ const signUpFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.statusCode = 400;
-      err.message = errors.array();
-      return next(err);
+      return handleError(errors.array(), 400, next);
+    }
+    return next();
+  },
+];
+const adminSignUpFormValidator = [
+  check('firstName')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('First Name cannot be blank'),
+  check('lastName')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Last name cannot be blank'),
+  check('email')
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage('Email cannot be blank')
+    .isEmail()
+    .withMessage('Email is not valid'),
+  check('password')
+    .isLength({ min: 5 })
+    .trim()
+    .withMessage('Password must be minimum 5 characters'),
+  check('isAdmin')
+    .isBoolean()
+    .trim()
+    .withMessage('is Admin can either be true or false'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -118,10 +141,7 @@ const statusFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.statusCode = 400;
-      err.message = errors.array()[0].msg;
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -141,10 +161,7 @@ const accountVerificationFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.message = errors.array();
-      err.statusCode = 400;
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
 
     return next();
@@ -170,10 +187,7 @@ const changePasswordVerificationFormValidator = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const err = new Error();
-      err.message = errors.array();
-      err.statusCode = 400;
-      return next(err);
+      return handleError(errors.array(), 400, next);
     }
     return next();
   },
@@ -187,4 +201,5 @@ export default {
   statusFormValidator,
   accountVerificationFormValidator,
   changePasswordVerificationFormValidator,
+  adminSignUpFormValidator
 };

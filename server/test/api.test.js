@@ -5,8 +5,22 @@ import testorder from './testorders.test';
 import Parcel from '../models/parcel';
 
 describe('API end point Tests.', () => {
+  let userToken= '';
+  let adminToken = '';
   before(async () => {
     const parcel = await Parcel.remove();
+  });
+  before(async () => {
+    const response = await request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'guest@sendit.com', password: 'guest' });
+     userToken = `Bearer ${response.body.token}`;
+  });
+  before(async () => {
+    const response = await request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'admin@admin.com', password: 'admin' });
+     adminToken = `Bearer ${response.body.token}`;
   });
   beforeEach(async () => {
     const parcel = await Parcel.changeToPlaced();
@@ -17,14 +31,15 @@ describe('API end point Tests.', () => {
   after(async () => {
     const parcel = await Parcel.changeToPlaced();
   });
+
   describe('#Get /', () => {
     it('Should return a status of 200 for an authorized user', done => {
       request(app)
         .get('/api/v1/parcels')
-        .set({ Authorization: process.env.jwtadmin })
+        .set({ Authorization: userToken })
         .end((err, res) => {
-          assert.isDefined(res.body);
           assert.equal(res.statusCode, '200');
+          assert.isDefined(res.body);
           assert.isArray(res.body.data);
           done();
         });
@@ -52,19 +67,20 @@ describe('API end point Tests.', () => {
     it('Should return data with an array for user 1', done => {
       request(app)
         .get('/api/v1/users/1/parcels')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
+          assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
           assert.isArray(res.body.data);
-          assert.equal(res.statusCode, '200');
           done();
         });
     });
     it('Should return an array for user 2', done => {
       request(app)
         .get('/api/v1/users/2/parcels')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
+          assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
           assert.isDefined(res.body.data);
           done();
@@ -73,7 +89,7 @@ describe('API end point Tests.', () => {
     it('Should return a status code of 404 for a user with no parcels', done => {
       request(app)
         .get('/api/v1/users/18/parcels')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           assert.equal(res.body.error, 'The User has no Parcels');
@@ -93,7 +109,7 @@ describe('API end point Tests.', () => {
     it('Should return an array length of 1 for parcelID of 1', done => {
       request(app)
         .get('/api/v1/parcels/2')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isDefined(res.body.data);
@@ -104,7 +120,7 @@ describe('API end point Tests.', () => {
     it('Should return a status code of 404 for an invalid parcel ID', done => {
       request(app)
         .get('/api/v1/parcels/99')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           done();
@@ -125,7 +141,7 @@ describe('API end point Tests.', () => {
       request(app)
         .post('/api/v1/parcels')
         .send(testorder.testOrder)
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '201');
           assert.equal(res.body.message, 'order created');
@@ -135,7 +151,7 @@ describe('API end point Tests.', () => {
     it('Should return error message with a status of 400 for invalid credentials', done => {
       request(app)
         .post('/api/v1/parcels')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -155,7 +171,7 @@ describe('API end point Tests.', () => {
     it('Should return a message order cancelled to the id', done => {
       request(app)
         .put('/api/v1/parcels/1/cancel')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
@@ -166,7 +182,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect Parcel Id', done => {
       request(app)
         .put('/api/v1/parcels/99/cancel')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
           done();
@@ -185,7 +201,7 @@ describe('API end point Tests.', () => {
     it('Should return the parcel order updated', done => {
       request(app)
         .put('/api/v1/parcels/1/destination')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
@@ -196,7 +212,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for empty field', done => {
       request(app)
         .put('/api/v1/parcels/12/destination')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -213,7 +229,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect parcel', done => {
       request(app)
         .put('/api/v1/parcels/89/destination')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .send({ destination: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
@@ -225,7 +241,7 @@ describe('API end point Tests.', () => {
     it('Should return Present Location changed for a valid Admin', async () => {
       const res = await request(app)
         .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: process.env.jwtadmin })
+        .set({ Authorization: adminToken })
         .send({ presentLocation: '22, Jos Road, Kaduna' });
       assert.equal(res.statusCode, '200');
       assert.isDefined(res.body);
@@ -233,7 +249,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for empty field', done => {
       request(app)
         .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: process.env.jwtadmin })
+        .set({ Authorization: adminToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '400');
           done();
@@ -250,7 +266,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for incorrect parcel', done => {
       request(app)
         .put('/api/v1/parcels/89/presentLocation')
-        .set({ Authorization: process.env.jwtadmin })
+        .set({ Authorization: adminToken })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '404');
@@ -260,7 +276,7 @@ describe('API end point Tests.', () => {
     it('Should return an error message for a user that is not an Admin', done => {
       request(app)
         .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: process.env.jwttoken })
+        .set({ Authorization: userToken })
         .send({ presentLocation: '22, Jos Road, Kaduna' })
         .end((err, res) => {
           assert.equal(res.statusCode, '401');
