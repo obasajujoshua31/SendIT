@@ -15,7 +15,7 @@ class ParcelController {
 
   static async getParcelsByUserId(req, res, next) {
     try {
-      const foundParcel = await Parcel.findByUserId(req.params.userId);
+      const foundParcel = await Parcel.findByUserId(req.user.userId);
       if (foundParcel.length === 0) {
         return handleError('The User has no Parcels', null, next);
       }

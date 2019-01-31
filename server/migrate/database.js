@@ -1,3 +1,5 @@
+import Bcrypt from '../helpers/crypt';
+
 const parcel1 = [
   '104A Doherty lane, Lekki, Lagos',
   'B324A Banana Island Ikoyi, Lagos',
@@ -32,16 +34,16 @@ const parcel3 = [
 ];
 
 const user1 = [
-  'obasajujoshua31@gmail.com',
-  '$2a$10$k2ShzIozS3H795I1/fHNCOflvzcgDDqTS1.LTChlhZ1YMDO9/ta6G',
+  process.env.EMAIL,
+  Bcrypt.encrypt(process.env.PASSWORD),
   'Joshua',
   'Fredrick',
   false,
 ];
 
 const user2 = [
-  'obasajujoshua@yahoo.com',
-  '$2a$10$tUxmThwAIFtX3a/b3O7yq.FI7ekgyhU001BnU7I9GnYKksQ48TM4q',
+  process.env.ADMIN_EMAIL,
+  Bcrypt.encrypt(process.env.ADMIN_PASSWORD),
   'Fredrick',
   'Obasaju',
   true,

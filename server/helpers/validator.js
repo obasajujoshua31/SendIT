@@ -133,7 +133,7 @@ const adminSignUpFormValidator = [
 
 const statusFormValidator = [
   check('status')
-    .isIn(['Transiting', 'Delivered'])
+    .isIn(['TRANSITING', 'DELIVERED'])
     .trim()
     .escape()
     .withMessage('Either Transiting or Delivered, No permission to Cancel'),
@@ -201,5 +201,5 @@ export default {
   statusFormValidator,
   accountVerificationFormValidator,
   changePasswordVerificationFormValidator,
-  adminSignUpFormValidator
+  adminSignUpFormValidator,
 };

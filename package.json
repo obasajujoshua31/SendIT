@@ -9,7 +9,8 @@
     "coverage": "nyc report --reporter=text-lcov|coveralls",
     "serve": "nodemon server/app.js --exec babel-node",
     "createdb": "babel-node server/migrate/createdb.js && babel-node server/migrate/createuserdb.js",
-    "alterdb": "babel-node server/migrate/alterTable.js"
+    "alterdb": "babel-node server/migrate/alterTable.js",
+    "pretest": "babel-node server/migrate/dropDb.js && npm run createdb"
   },
   "engines": {
     "node": "10.x"

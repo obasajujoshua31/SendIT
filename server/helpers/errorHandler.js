@@ -1,4 +1,3 @@
-
 /**
  * @param  {String} message
  * @param  {number} statusCode
@@ -13,5 +12,4 @@ const handleError = (message, statusCode = null, next) => {
 
   return next(error);
 };
-
 export default handleError;
