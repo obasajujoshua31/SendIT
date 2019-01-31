@@ -10,14 +10,21 @@ const defaultConfig = {
 const productionConfig = {
   connectionString: process.env.PROD_DATABASE_URL,
 };
+
+const testConfig = {
+  connectionString: process.env.TEST_DATABASE_URL,
+};
 const getConf = () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.NODE_ENV === 'test'
-  ) {
-    return defaultConfig;
+  switch (process.env.NODE_ENV) {
+    case 'test':
+      return testConfig;
+
+    case 'production':
+      return productionConfig;
+
+    default:
+      return defaultConfig;
   }
-  return productionConfig;
 };
 const pool = new Pool(getConf());
 

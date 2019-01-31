@@ -4,23 +4,25 @@ import app from '../app';
 import testorder from './testorders.test';
 import Parcel from '../models/parcel';
 
+let userToken = '';
+let adminToken = '';
 describe('API end point Tests.', () => {
-  let userToken= '';
-  let adminToken = '';
   before(async () => {
     const parcel = await Parcel.remove();
   });
   before(async () => {
     const response = await request(app)
       .post('/api/v1/auth/login')
-      .send({ email: 'guest@sendit.com', password: 'guest' });
-     userToken = `Bearer ${response.body.token}`;
-  });
-  before(async () => {
-    const response = await request(app)
+      .send({ email: process.env.EMAIL, password: process.env.PASSWORD });
+    userToken = `Bearer ${response.body.token}`;
+
+    const res = await request(app)
       .post('/api/v1/auth/login')
-      .send({ email: 'admin@admin.com', password: 'admin' });
-     adminToken = `Bearer ${response.body.token}`;
+      .send({
+        email: process.env.ADMIN_EMAIL,
+        password: process.env.ADMIN_PASSWORD,
+      });
+    adminToken = `Bearer ${res.body.token}`;
   });
   beforeEach(async () => {
     const parcel = await Parcel.changeToPlaced();
@@ -33,10 +35,10 @@ describe('API end point Tests.', () => {
   });
 
   describe('#Get /', () => {
-    it('Should return a status of 200 for an authorized user', done => {
+    it('Should return a status of 200 for an authorized admin', done => {
       request(app)
         .get('/api/v1/parcels')
-        .set({ Authorization: userToken })
+        .set({ Authorization: adminToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
           assert.isDefined(res.body);
@@ -66,7 +68,7 @@ describe('API end point Tests.', () => {
   describe('#Get Parcels by a Particular User', () => {
     it('Should return data with an array for user 1', done => {
       request(app)
-        .get('/api/v1/users/1/parcels')
+        .get('/api/v1/users/parcels')
         .set({ Authorization: userToken })
         .end((err, res) => {
           assert.equal(res.statusCode, '200');
@@ -75,36 +77,27 @@ describe('API end point Tests.', () => {
           done();
         });
     });
-    it('Should return an array for user 2', done => {
-      request(app)
-        .get('/api/v1/users/2/parcels')
-        .set({ Authorization: userToken })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '200');
-          assert.isDefined(res.body);
-          assert.isDefined(res.body.data);
-          done();
-        });
-    });
-    it('Should return a status code of 404 for a user with no parcels', done => {
-      request(app)
-        .get('/api/v1/users/18/parcels')
-        .set({ Authorization: userToken })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '404');
-          assert.equal(res.body.error, 'The User has no Parcels');
-          done();
-        });
-    });
-    it('Should return a status code of 401 for an unauthorized user', done => {
-      request(app)
-        .get('/api/v1/users/6/parcels')
-        .end((err, res) => {
-          assert.equal(res.statusCode, '401');
-          done();
-        });
-    });
   });
+
+  it('Should return a status code of 404 for a wrong route', done => {
+    request(app)
+      .get('/api/v1/users/parcels/gggggdrr')
+      .set({ Authorization: userToken })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '404');
+        done();
+      });
+  });
+
+  it('Should return a status code of 401 for an unauthorized user', done => {
+    request(app)
+      .get('/api/v1/users/6/parcels')
+      .end((err, res) => {
+        assert.equal(res.statusCode, '401');
+        done();
+      });
+  });
+
   describe('# TEst for Get Parcel by Parcel Id', () => {
     it('Should return an array length of 1 for parcelID of 1', done => {
       request(app)
@@ -167,6 +160,7 @@ describe('API end point Tests.', () => {
         });
     });
   });
+
   describe('Test for PUT route to cancel an a parcel Order', () => {
     it('Should return a message order cancelled to the id', done => {
       request(app)
@@ -197,101 +191,107 @@ describe('API end point Tests.', () => {
         });
     });
   });
-  describe('Test for PUT route to update Parcel', () => {
-    it('Should return the parcel order updated', done => {
-      request(app)
-        .put('/api/v1/parcels/1/destination')
-        .set({ Authorization: userToken })
-        .send({ destination: '22, Jos Road, Kaduna' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '200');
-          assert.isDefined(res.body);
-          done();
-        });
-    });
-    it('Should return an error message for empty field', done => {
-      request(app)
-        .put('/api/v1/parcels/12/destination')
-        .set({ Authorization: userToken })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '400');
-          done();
-        });
-    });
-    it('Should return an error message for an unauthorized user', done => {
-      request(app)
-        .put('/api/v1/parcels/1/destination')
-        .end((err, res) => {
-          assert.equal(res.statusCode, '401');
-          done();
-        });
-    });
-    it('Should return an error message for incorrect parcel', done => {
-      request(app)
-        .put('/api/v1/parcels/89/destination')
-        .set({ Authorization: userToken })
-        .send({ destination: '22, Jos Road, Kaduna' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '404');
-          done();
-        });
-    });
+
+  it('Should return the parcel order updated', done => {
+    request(app)
+      .put('/api/v1/parcels/1/destination')
+      .set({ Authorization: userToken })
+      .send({ destination: '22, Jos Road, Kaduna' })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '200');
+        assert.isDefined(res.body);
+        done();
+      });
   });
-  describe('Test for PUT route to change Present Location by Admin', () => {
-    it('Should return Present Location changed for a valid Admin', async () => {
-      const res = await request(app)
-        .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: adminToken })
-        .send({ presentLocation: '22, Jos Road, Kaduna' });
-      assert.equal(res.statusCode, '200');
-      assert.isDefined(res.body);
-    });
-    it('Should return an error message for empty field', done => {
-      request(app)
-        .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: adminToken })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '400');
-          done();
-        });
-    });
-    it('Should return an error message for an unauthorized Admin', done => {
-      request(app)
-        .put('/api/v1/parcels/1/presentLocation')
-        .end((err, res) => {
-          assert.equal(res.statusCode, '401');
-          done();
-        });
-    });
-    it('Should return an error message for incorrect parcel', done => {
-      request(app)
-        .put('/api/v1/parcels/89/presentLocation')
-        .set({ Authorization: adminToken })
-        .send({ presentLocation: '22, Jos Road, Kaduna' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '404');
-          done();
-        });
-    });
-    it('Should return an error message for a user that is not an Admin', done => {
-      request(app)
-        .put('/api/v1/parcels/1/presentLocation')
-        .set({ Authorization: userToken })
-        .send({ presentLocation: '22, Jos Road, Kaduna' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '401');
-          done();
-        });
-    });
-    it('Should return as status code of 401 for an user with a fake or expired token', done => {
-      request(app)
-        .get('/api/v1/parcels/4/presentLocation')
-        .send({ presentLocation: '22, Lagos-Ibadan Expressway' })
-        .set({ Authorization: 'Bearer oikffrjufjfurjhrhfkloj' })
-        .end((err, res) => {
-          assert.equal(res.statusCode, '401');
-          done();
-        });
-    });
+
+  it('Should return an error message for empty field', done => {
+    request(app)
+      .put('/api/v1/parcels/12/destination')
+      .set({ Authorization: userToken })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '400');
+        done();
+      });
+  });
+
+  it('Should return an error message for an unauthorized user', done => {
+    request(app)
+      .put('/api/v1/parcels/1/destination')
+      .end((err, res) => {
+        assert.equal(res.statusCode, '401');
+        done();
+      });
+  });
+
+  it('Should return an error message for incorrect parcel', done => {
+    request(app)
+      .put('/api/v1/parcels/89/destination')
+      .set({ Authorization: userToken })
+      .send({ destination: '22, Jos Road, Kaduna' })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '404');
+        done();
+      });
+  });
+
+  it('Should return Present Location changed for a valid Admin', async () => {
+    const res = await request(app)
+      .put('/api/v1/parcels/1/presentLocation')
+      .set({ Authorization: adminToken })
+      .send({ presentLocation: '22, Jos Road, Kaduna' });
+    assert.equal(res.statusCode, '200');
+    assert.isDefined(res.body);
+  });
+
+  it('Should return an error message for empty field', done => {
+    request(app)
+      .put('/api/v1/parcels/1/presentLocation')
+      .set({ Authorization: adminToken })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '400');
+        done();
+      });
+  });
+
+  it('Should return an error message for an unauthorized Admin', done => {
+    request(app)
+      .put('/api/v1/parcels/1/presentLocation')
+      .end((err, res) => {
+        assert.equal(res.statusCode, '401');
+        done();
+      });
+  });
+
+  it('Should return an error message for incorrect parcel', done => {
+    request(app)
+      .put('/api/v1/parcels/89/presentLocation')
+      .set({ Authorization: adminToken })
+      .send({ presentLocation: '22, Jos Road, Kaduna' })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '404');
+        done();
+      });
+  });
+
+  it('Should return an error message for a user that is not an Admin', done => {
+    request(app)
+      .put('/api/v1/parcels/1/presentLocation')
+      .set({ Authorization: userToken })
+      .send({ presentLocation: '22, Jos Road, Kaduna' })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '401');
+        done();
+      });
+  });
+
+  it('Should return as status code of 401 for an user with a fake or expired token', done => {
+    request(app)
+      .get('/api/v1/parcels/4/presentLocation')
+      .send({ presentLocation: '22, Lagos-Ibadan Expressway' })
+      .set({ Authorization: 'Bearer oikffrjufjfurjhrhfkloj' })
+      .end((err, res) => {
+        assert.equal(res.statusCode, '401');
+        done();
+      });
   });
 });
