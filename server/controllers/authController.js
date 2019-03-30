@@ -26,8 +26,8 @@ class AuthController {
         email,
         password: dbPassword,
         userId,
-        isAdmin: false
-      }
+        isAdmin: false,
+      };
       return sendAuthResponse(
         JwtAuthenticate.jwtEncode(user),
         'user signed up successfully',
@@ -60,7 +60,8 @@ class AuthController {
         JwtAuthenticate.jwtEncode(user),
         'User signed in successfully',
         200,
-        res
+        res,
+        user
       );
     } catch (e) {
       return next(e);
@@ -90,8 +91,8 @@ class AuthController {
         email,
         password: dbPassword,
         userId,
-        isAdmin
-      }
+        isAdmin,
+      };
       return sendAuthResponse(
         JwtAuthenticate.jwtEncode(user),
         'user signed up successfully',

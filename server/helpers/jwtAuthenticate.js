@@ -19,7 +19,7 @@ class JwtAuthenticate {
   static jwtVerifyToken(req, res, next) {
     const bearerHeader = req.headers.authorization;
     if (typeof bearerHeader === 'undefined') {
-      return handleError('You are not authorized', 401, next);
+      return handleError('No token is found!', 401, next);
     }
     const bearer = bearerHeader.split(' ');
     jwt.verify(bearer[1], process.env.secret_key, (err, user) => {
@@ -30,6 +30,7 @@ class JwtAuthenticate {
       return next();
     });
   }
+
   /**
   * @param  {ServerRequest} req
    * @param  {ServerResponse} res

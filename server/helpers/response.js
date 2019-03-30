@@ -19,11 +19,18 @@ const sendResponse = (data, message, statusCode, res) => {
  * @param  {ServerResponse} res
  * @return  {ServerResponse} sendAuthResponse
  */
-export const sendAuthResponse = (token, message, statusCode, res) => {
+export const sendAuthResponse = (
+  token,
+  message,
+  statusCode,
+  res,
+  user = null
+) => {
   return res.status(statusCode).json({
     success: true,
     token,
     message,
+    user,
   });
 };
 export default sendResponse;
